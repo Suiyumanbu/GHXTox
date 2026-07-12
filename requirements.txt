@@ -1,0 +1,5 @@
+numpy>=1.23
+torch>=2.0
+networkx>=2.8
+# Optional, used only for richer validation metrics when installed.
+scikit-learn>=1.2
