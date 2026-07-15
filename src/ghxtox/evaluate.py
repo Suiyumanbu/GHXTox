@@ -4,14 +4,16 @@ from __future__ import annotations
 
 import argparse
 import csv
+from functools import partial
 from pathlib import Path
 from typing import Any
 
 import torch
-from torch.utils.data import DataLoader
+from torch.utils.data import DataLoader, Subset
 
 from ghxtox.data import PeptideTensorDataset, collate_peptides, validate_plm_feature_dim
 from ghxtox.metrics import binary_metrics
+from ghxtox.nested_folds import load_nested_indices
 from ghxtox.models import GHXToxModel
 from ghxtox.preprocess import preprocess_fasta
 from ghxtox.utils import (
@@ -89,9 +91,25 @@ def evaluate(args: argparse.Namespace) -> dict[str, float]:
 
     processed_path = _prepare_input(args)
     dataset = PeptideTensorDataset(processed_path, require_labels=True)
+    if args.nested_manifest:
+        roles = load_nested_indices(args.nested_manifest, args.outer_fold, len(dataset))
+        dataset = Subset(dataset, roles[args.nested_role])
     required_plm_dim = int(config.get("model", {}).get("plm_embedding_dim", 0))
-    validate_plm_feature_dim(dataset.records, required_plm_dim, processed_path)
-    loader = DataLoader(dataset, batch_size=args.batch_size, shuffle=False, collate_fn=collate_peptides)
+    records = dataset.dataset.records if isinstance(dataset, Subset) else dataset.records
+    validate_plm_feature_dim(records, required_plm_dim, processed_path)
+    modality = str(config.get("model", {}).get("modality", "fusion")).lower()
+    include_structure = modality not in {"sequence_only", "atom_only", "sequence_atom"}
+    include_atom = modality in {"atom_only", "sequence_atom", "fusion_atom_residual", "residual_experts"}
+    loader = DataLoader(
+        dataset,
+        batch_size=args.batch_size,
+        shuffle=False,
+        collate_fn=partial(
+            collate_peptides,
+            include_structure=include_structure,
+            include_atom=include_atom,
+        ),
+    )
 
     logits_all = []
     labels_all = []
@@ -174,6 +192,9 @@ def build_arg_parser() -> argparse.ArgumentParser:
     parser.add_argument("--structure-mode", default="heuristic", choices=["heuristic", "cached"])
     parser.add_argument("--structure-cache-dir", default=DEFAULT_STRUCTURE_CACHE_DIR)
     parser.add_argument("--max-length", type=int, default=128)
+    parser.add_argument("--nested-manifest", default=None)
+    parser.add_argument("--outer-fold", type=int, default=0)
+    parser.add_argument("--nested-role", choices=["train", "validation", "calibration", "test"], default="test")
     return parser
 
 

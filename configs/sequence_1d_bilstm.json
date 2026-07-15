@@ -1,0 +1,18 @@
+{
+  "seed": 42,
+  "data": {"max_length": 128, "structure_mode": "cached", "structure_cache_dir": "data/structures"},
+  "model": {
+    "modality": "sequence_only",
+    "sequence_architecture": "multiscale_1d",
+    "sequence_use_multiscale": false,
+    "sequence_use_bilstm": true,
+    "sequence_use_residual": false,
+    "aa_embedding_dim": 32,
+    "group_embedding_dim": 12,
+    "hidden_dim": 128,
+    "dropout": 0.22,
+    "plm_embedding_dim": 1280,
+    "global_features": true
+  },
+  "train": {"epochs": 30, "batch_size": 32, "learning_rate": 0.0005, "weight_decay": 0.0001, "val_fraction": 0.15, "early_stop_patience": 8, "pos_weight": "auto", "monitor": "mcc"}
+}

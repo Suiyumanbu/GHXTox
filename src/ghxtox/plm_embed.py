@@ -129,9 +129,10 @@ def attach_esm2_embeddings(
     cache_path = Path(cache_dir) if cache_dir else None
     payload = torch.load(input_path, map_location="cpu", weights_only=False)
     records: list[dict[str, Any]] = payload["records"]
-    device = resolve_device(device_name)
-    model, alphabet, layer, expected_dim = _load_esm2(model_name, device)
-    batch_converter = alphabet.get_batch_converter()
+    if model_name not in ESM2_MODELS:
+        choices = ", ".join(sorted(ESM2_MODELS))
+        raise ValueError(f"Unsupported ESM2 model '{model_name}'. Available: {choices}")
+    _, layer, expected_dim = ESM2_MODELS[model_name]
 
     attached = 0
     loaded_from_cache = 0
@@ -153,8 +154,22 @@ def attach_esm2_embeddings(
         else:
             pending.append(record)
 
+    model = None
+    batch_converter = None
+    device = None
+    if pending:
+        device = resolve_device(device_name)
+        model, alphabet, loaded_layer, loaded_dim = _load_esm2(model_name, device)
+        if loaded_layer != layer or loaded_dim != expected_dim:
+            raise RuntimeError(
+                f"Loaded ESM2 metadata differs from registry for {model_name}: "
+                f"layer={loaded_layer}/{layer}, dim={loaded_dim}/{expected_dim}"
+            )
+        batch_converter = alphabet.get_batch_converter()
+
     with torch.no_grad():
         for start in range(0, len(pending), batch_size):
+            assert model is not None and batch_converter is not None and device is not None
             chunk = pending[start : start + batch_size]
             labels_and_sequences = [(item["sample_id"], item["sequence"]) for item in chunk]
             _, _, tokens = batch_converter(labels_and_sequences)

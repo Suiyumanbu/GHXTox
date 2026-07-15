@@ -1,0 +1,27 @@
+{
+  "seed": 42,
+  "data": {"max_length": 128, "structure_mode": "cached", "structure_cache_dir": "data/structures"},
+  "model": {
+    "aa_embedding_dim": 32,
+    "group_embedding_dim": 12,
+    "hidden_dim": 128,
+    "num_sequence_layers": 2,
+    "num_egnn_layers": 3,
+    "num_attention_heads": 4,
+    "dropout": 0.22,
+    "graph_mode": "hybrid",
+    "spatial_top_k": 10,
+    "rbf_bins": 16,
+    "rbf_max_distance": 24.0,
+    "fusion_gate": "learned_confidence",
+    "ahp_initial_3d_weight": 0.35,
+    "plddt_gate_center": 0.7,
+    "plddt_gate_temperature": 0.12,
+    "plddt_edge_min": 0.1,
+    "plddt_edge_power": 1.5,
+    "plm_embedding_dim": 1280,
+    "structure_feature_dim": 16,
+    "global_features": true
+  },
+  "train": {"epochs": 30, "batch_size": 32, "learning_rate": 0.0005, "weight_decay": 0.0001, "val_fraction": 0.15, "early_stop_patience": 8, "pos_weight": "auto", "coord_noise_std": 0.12, "coord_noise_plddt_scale": 2.0, "monitor": "mcc"}
+}

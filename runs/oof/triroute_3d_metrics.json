@@ -1,0 +1,98 @@
+{
+  "protocol": {
+    "processed": "data\\processed\\train_cached_func_esm2.pt",
+    "fold_manifest": "data\\folds\\train_cdhit080_fallback_folds.csv",
+    "num_folds": 5,
+    "num_samples": 6387,
+    "threshold_selection": "all OOF predictions maximize mcc",
+    "mc_dropout_samples": 5
+  },
+  "fold_metrics_at_0.5": [
+    {
+      "fold": 0,
+      "checkpoint": "runs\\default_groupfold_control_fold0\\best_model.pt",
+      "checkpoint_epoch": 20,
+      "accuracy": 0.9441384736428009,
+      "balanced_accuracy": 0.9182814720735433,
+      "precision": 0.9427710843373494,
+      "recall": 0.8575342465753425,
+      "f1": 0.8981348637015782,
+      "mcc": 0.8616032263033445,
+      "auroc": 0.9734963258641024,
+      "auprc": 0.9529280615950917
+    },
+    {
+      "fold": 1,
+      "checkpoint": "runs\\default_groupfold_control_fold1\\best_model.pt",
+      "checkpoint_epoch": 6,
+      "accuracy": 0.9104963384865744,
+      "balanced_accuracy": 0.9017277202403784,
+      "precision": 0.8255208333333334,
+      "recall": 0.8805555555555555,
+      "f1": 0.8521505376344086,
+      "mcc": 0.7889127370103951,
+      "auroc": 0.9620572816775347,
+      "auprc": 0.9257995049800861
+    },
+    {
+      "fold": 2,
+      "checkpoint": "runs\\default_groupfold_control_fold2\\best_model.pt",
+      "checkpoint_epoch": 11,
+      "accuracy": 0.9324430479183032,
+      "balanced_accuracy": 0.918738436278534,
+      "precision": 0.8729281767955801,
+      "recall": 0.8876404494382022,
+      "f1": 0.8802228412256268,
+      "mcc": 0.833237899868189,
+      "auroc": 0.9746945952238002,
+      "auprc": 0.9453228717718225
+    },
+    {
+      "fold": 3,
+      "checkpoint": "runs\\default_groupfold_control_fold3\\best_model.pt",
+      "checkpoint_epoch": 10,
+      "accuracy": 0.9372579395817195,
+      "balanced_accuracy": 0.9259449557680279,
+      "precision": 0.8783783783783784,
+      "recall": 0.9002770083102493,
+      "f1": 0.8891928864569083,
+      "mcc": 0.8455667038075653,
+      "auroc": 0.9686295535102613,
+      "auprc": 0.9392479675083685
+    },
+    {
+      "fold": 4,
+      "checkpoint": "runs\\default_groupfold_control_fold4\\best_model.pt",
+      "checkpoint_epoch": 24,
+      "accuracy": 0.9297052154195011,
+      "balanced_accuracy": 0.9116091689321261,
+      "precision": 0.8814016172506739,
+      "recall": 0.8696808510638298,
+      "f1": 0.8755020080321285,
+      "mcc": 0.8265678691117925,
+      "auroc": 0.9647121930396099,
+      "auprc": 0.9306407508976191
+    }
+  ],
+  "aggregate_at_0.5": {
+    "accuracy": 0.9309534992954439,
+    "balanced_accuracy": 0.9153092262607745,
+    "precision": 0.8785046728971962,
+    "recall": 0.878987898789879,
+    "f1": 0.878746219411603,
+    "mcc": 0.8304809909145849,
+    "auroc": 0.9584715694156415,
+    "auprc": 0.9249919168794548
+  },
+  "oof_threshold": 0.72987,
+  "aggregate_at_oof_threshold": {
+    "accuracy": 0.9340848598716143,
+    "balanced_accuracy": 0.9107085199655882,
+    "precision": 0.906814210832848,
+    "recall": 0.8564356435643564,
+    "f1": 0.8809052333804809,
+    "mcc": 0.8360411201547319,
+    "auroc": 0.9584715694156415,
+    "auprc": 0.9249919168794548
+  }
+}

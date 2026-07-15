@@ -1,0 +1,52 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ghxtox"
+version = "0.1.0"
+description = "PLDDT-aware dual-modal peptide toxicity prediction framework."
+requires-python = ">=3.9"
+dependencies = [
+    "numpy>=1.23",
+    "torch>=2.0",
+    "networkx>=2.8",
+]
+
+[project.optional-dependencies]
+metrics = ["scikit-learn>=1.2"]
+similarity = ["biopython>=1.80"]
+reporting = ["matplotlib>=3.7", "scikit-learn>=1.2"]
+plm = ["fair-esm>=2.0.0"]
+esmfold = ["fair-esm[esmfold]>=2.0.0"]
+atom-graph = ["rdkit>=2023.9"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[project.scripts]
+ghxtox-preprocess = "ghxtox.preprocess:main"
+ghxtox-train = "ghxtox.train:main"
+ghxtox-predict = "ghxtox.predict:main"
+ghxtox-evaluate = "ghxtox.evaluate:main"
+ghxtox-esmfold-cache = "ghxtox.esmfold_cache:main"
+ghxtox-esmfold-predict = "ghxtox.esmfold_predict:main"
+ghxtox-plm-embed = "ghxtox.plm_embed:main"
+ghxtox-optimize-threshold = "ghxtox.optimize_threshold:main"
+ghxtox-atom-graph = "ghxtox.atom_graph:main"
+ghxtox-bootstrap-ci = "ghxtox.bootstrap_ci:main"
+ghxtox-sequence-similarity = "ghxtox.sequence_similarity:main"
+ghxtox-similarity-subset-eval = "ghxtox.similarity_subset_eval:main"
+ghxtox-prepare-cdhit = "ghxtox.prepare_cdhit:main"
+ghxtox-prepare-toxinpred3 = "ghxtox.prepare_toxinpred3:main"
+ghxtox-cdhit-clusters = "ghxtox.cdhit_clusters:main"
+ghxtox-subset-processed = "ghxtox.subset_processed:main"
+ghxtox-report-figures = "ghxtox.report_figures:main"
+ghxtox-folds = "ghxtox.folds:main"
+ghxtox-oof = "ghxtox.oof:main"
+ghxtox-complementarity = "ghxtox.complementarity:main"
+ghxtox-triroute = "ghxtox.triroute:main"
+ghxtox-confidence-predict = "ghxtox.confidence_predict:main"
+ghxtox-triroute-apply = "ghxtox.triroute_apply:main"
+ghxtox-nested-folds = "ghxtox.nested_folds:main"
+ghxtox-interpret = "ghxtox.biological_interpretation:main"

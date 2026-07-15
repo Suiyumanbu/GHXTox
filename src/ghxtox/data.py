@@ -123,7 +123,11 @@ def _global_feature_tensor(item: dict[str, Any]) -> torch.Tensor:
     return torch.tensor(values, dtype=torch.float32)
 
 
-def collate_peptides(batch: list[dict[str, Any]]) -> dict[str, Any]:
+def collate_peptides(
+    batch: list[dict[str, Any]],
+    include_structure: bool = True,
+    include_atom: bool = True,
+) -> dict[str, Any]:
     max_len = max(item["aa_ids"].shape[0] for item in batch)
     residue_dim = RESIDUE_FEATURE_DIM
     structure_dim = max(
@@ -144,44 +148,7 @@ def collate_peptides(batch: list[dict[str, Any]]) -> dict[str, Any]:
     residue_features = torch.stack(
         [_pad_2d(item["residue_features"], max_len, residue_dim) for item in batch]
     )
-    coords = torch.stack([_pad_2d(item["coords"], max_len, 3) for item in batch])
     plddt = torch.stack([_pad_1d(item["plddt"], max_len, 0.0) for item in batch])
-    backbone_coords = []
-    backbone_mask = []
-    for item in batch:
-        item_coords = item["coords"].float()
-        item_backbone_coords = item.get("backbone_coords")
-        item_backbone_mask = item.get("backbone_mask")
-        if not torch.is_tensor(item_backbone_coords):
-            item_backbone_coords = item_coords.unsqueeze(1).expand(-1, 5, -1).clone()
-        else:
-            item_backbone_coords = item_backbone_coords.float()
-        if not torch.is_tensor(item_backbone_mask):
-            item_backbone_mask = torch.zeros(item_backbone_coords.shape[:2], dtype=torch.bool)
-            if item_backbone_mask.shape[0] > 0:
-                item_backbone_mask[:, 1] = True
-        else:
-            item_backbone_mask = item_backbone_mask.bool()
-        backbone_coords.append(_pad_3d(item_backbone_coords, max_len, 5, 3))
-        backbone_mask.append(_pad_2d(item_backbone_mask, max_len, 5, False))
-    backbone_coords = torch.stack(backbone_coords)
-    backbone_mask = torch.stack(backbone_mask)
-    structure_features = torch.stack(
-        [
-            _pad_2d(
-                item["structure_features"]
-                if torch.is_tensor(item.get("structure_features"))
-                else (
-                    chemical_structure_feature_matrix(item.get("sequence", ""), item["coords"], item["plddt"])
-                    if structure_dim == CHEMICAL_STRUCTURE_FEATURE_DIM
-                    else structure_feature_matrix(item["coords"], item["plddt"])
-                ),
-                max_len,
-                structure_dim,
-            )
-            for item in batch
-        ]
-    )
     global_features = torch.stack([_global_feature_tensor(item) for item in batch])
     lengths = torch.tensor([item["aa_ids"].shape[0] for item in batch], dtype=torch.long)
     mask = torch.arange(max_len).unsqueeze(0) < lengths.unsqueeze(1)
@@ -198,16 +165,50 @@ def collate_peptides(batch: list[dict[str, Any]]) -> dict[str, Any]:
         "aa_ids": aa_ids,
         "group_ids": group_ids,
         "residue_features": residue_features,
-        "coords": coords,
         "plddt": plddt,
-        "backbone_coords": backbone_coords,
-        "backbone_mask": backbone_mask,
-        "structure_features": structure_features,
         "global_features": global_features,
         "lengths": lengths,
         "mask": mask,
         "labels": label_tensor,
     }
+    if include_structure:
+        result["coords"] = torch.stack([_pad_2d(item["coords"], max_len, 3) for item in batch])
+        backbone_coords = []
+        backbone_mask = []
+        for item in batch:
+            item_coords = item["coords"].float()
+            item_backbone_coords = item.get("backbone_coords")
+            item_backbone_mask = item.get("backbone_mask")
+            if not torch.is_tensor(item_backbone_coords):
+                item_backbone_coords = item_coords.unsqueeze(1).expand(-1, 5, -1).clone()
+            else:
+                item_backbone_coords = item_backbone_coords.float()
+            if not torch.is_tensor(item_backbone_mask):
+                item_backbone_mask = torch.zeros(item_backbone_coords.shape[:2], dtype=torch.bool)
+                if item_backbone_mask.shape[0] > 0:
+                    item_backbone_mask[:, 1] = True
+            else:
+                item_backbone_mask = item_backbone_mask.bool()
+            backbone_coords.append(_pad_3d(item_backbone_coords, max_len, 5, 3))
+            backbone_mask.append(_pad_2d(item_backbone_mask, max_len, 5, False))
+        result["backbone_coords"] = torch.stack(backbone_coords)
+        result["backbone_mask"] = torch.stack(backbone_mask)
+        result["structure_features"] = torch.stack(
+            [
+                _pad_2d(
+                    item["structure_features"]
+                    if torch.is_tensor(item.get("structure_features"))
+                    else (
+                        chemical_structure_feature_matrix(item.get("sequence", ""), item["coords"], item["plddt"])
+                        if structure_dim == CHEMICAL_STRUCTURE_FEATURE_DIM
+                        else structure_feature_matrix(item["coords"], item["plddt"])
+                    ),
+                    max_len,
+                    structure_dim,
+                )
+                for item in batch
+            ]
+        )
     if plm_dim > 0:
         plm_features = []
         for item in batch:
@@ -216,7 +217,7 @@ def collate_peptides(batch: list[dict[str, Any]]) -> dict[str, Any]:
                 features = torch.zeros(item["aa_ids"].shape[0], plm_dim, dtype=torch.float32)
             plm_features.append(_pad_2d(features.float(), max_len, plm_dim))
         result["plm_features"] = torch.stack(plm_features)
-    if all(torch.is_tensor(item.get("atom_features")) for item in batch):
+    if include_atom and all(torch.is_tensor(item.get("atom_features")) for item in batch):
         atom_features = []
         edge_indices = []
         edge_features = []

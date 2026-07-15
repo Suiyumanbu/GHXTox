@@ -3,14 +3,17 @@
 from __future__ import annotations
 
 import argparse
+from functools import partial
 from pathlib import Path
 
 import torch
 from torch.utils.data import DataLoader, Subset, random_split
 
 from ghxtox.data import PeptideTensorDataset, collate_peptides, validate_plm_feature_dim
+from ghxtox.folds import load_fold_indices
 from ghxtox.metrics import binary_metrics
 from ghxtox.models import GHXToxModel
+from ghxtox.nested_folds import load_nested_indices
 from ghxtox.utils import DEFAULT_DEVICE, DEFAULT_TRAIN_PROCESSED, move_batch_to_device, resolve_device, save_json
 
 
@@ -28,6 +31,11 @@ def _collect_logits(
     device_name: str,
     batch_size: int,
     val_fraction: float | None,
+    fold_manifest: str | Path | None = None,
+    validation_fold: int = 0,
+    nested_manifest: str | Path | None = None,
+    outer_fold: int = 0,
+    nested_role: str = "calibration",
 ) -> tuple[torch.Tensor, torch.Tensor, dict]:
     device = resolve_device(device_name)
     checkpoint = torch.load(checkpoint_path, map_location=device, weights_only=False)
@@ -39,12 +47,33 @@ def _collect_logits(
     dataset = PeptideTensorDataset(processed_path, require_labels=True)
     required_plm_dim = int(config.get("model", {}).get("plm_embedding_dim", 0))
     validate_plm_feature_dim(dataset.records, required_plm_dim, processed_path)
-    if val_fraction is None:
-        train_cfg = config.get("train", {})
-        val_fraction = float(train_cfg.get("val_fraction", 0.15))
-    seed = int(config.get("seed", 42))
-    eval_dataset = _validation_subset(dataset, val_fraction, seed)
-    loader = DataLoader(eval_dataset, batch_size=batch_size, shuffle=False, collate_fn=collate_peptides)
+    if fold_manifest and nested_manifest:
+        raise ValueError("fold_manifest and nested_manifest are mutually exclusive.")
+    if nested_manifest:
+        roles = load_nested_indices(nested_manifest, outer_fold, len(dataset))
+        eval_dataset = Subset(dataset, roles[nested_role])
+    elif fold_manifest:
+        _, validation_indices = load_fold_indices(fold_manifest, validation_fold, len(dataset))
+        eval_dataset = Subset(dataset, validation_indices)
+    else:
+        if val_fraction is None:
+            train_cfg = config.get("train", {})
+            val_fraction = float(train_cfg.get("val_fraction", 0.15))
+        seed = int(config.get("seed", 42))
+        eval_dataset = _validation_subset(dataset, val_fraction, seed)
+    modality = str(config.get("model", {}).get("modality", "fusion")).lower()
+    include_structure = modality not in {"sequence_only", "atom_only", "sequence_atom"}
+    include_atom = modality in {"atom_only", "sequence_atom", "fusion_atom_residual", "residual_experts"}
+    loader = DataLoader(
+        eval_dataset,
+        batch_size=batch_size,
+        shuffle=False,
+        collate_fn=partial(
+            collate_peptides,
+            include_structure=include_structure,
+            include_atom=include_atom,
+        ),
+    )
 
     logits_all = []
     labels_all = []
@@ -65,8 +94,24 @@ def optimize_threshold(
     batch_size: int,
     metric: str,
     val_fraction: float | None = None,
+    fold_manifest: str | Path | None = None,
+    validation_fold: int = 0,
+    nested_manifest: str | Path | None = None,
+    outer_fold: int = 0,
+    nested_role: str = "calibration",
 ) -> dict[str, float]:
-    logits, labels, checkpoint_payload = _collect_logits(checkpoint, processed, device, batch_size, val_fraction)
+    logits, labels, checkpoint_payload = _collect_logits(
+        checkpoint,
+        processed,
+        device,
+        batch_size,
+        val_fraction,
+        fold_manifest=fold_manifest,
+        validation_fold=validation_fold,
+        nested_manifest=nested_manifest,
+        outer_fold=outer_fold,
+        nested_role=nested_role,
+    )
     candidates = torch.linspace(0.01, 0.99, 99).tolist()
     probs = torch.sigmoid(logits)
     candidates.extend(float(x) for x in probs.unique().tolist())
@@ -104,6 +149,11 @@ def build_arg_parser() -> argparse.ArgumentParser:
     parser.add_argument("--batch-size", type=int, default=64)
     parser.add_argument("--metric", choices=["accuracy", "balanced_accuracy", "precision", "recall", "f1", "mcc"], default="mcc")
     parser.add_argument("--val-fraction", type=float, default=None)
+    parser.add_argument("--fold-manifest", default=None)
+    parser.add_argument("--fold", type=int, default=0)
+    parser.add_argument("--nested-manifest", default=None)
+    parser.add_argument("--outer-fold", type=int, default=0)
+    parser.add_argument("--nested-role", choices=["train", "validation", "calibration", "test"], default="calibration")
     return parser
 
 
@@ -117,6 +167,11 @@ def main() -> None:
         batch_size=args.batch_size,
         metric=args.metric,
         val_fraction=args.val_fraction,
+        fold_manifest=args.fold_manifest,
+        validation_fold=args.fold,
+        nested_manifest=args.nested_manifest,
+        outer_fold=args.outer_fold,
+        nested_role=args.nested_role,
     )
     print(f"threshold: {result['threshold']:.6f}")
     print(f"{result['metric']}: {result['score']:.6f}")

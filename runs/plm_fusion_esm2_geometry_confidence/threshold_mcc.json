@@ -1,0 +1,15 @@
+{
+  "threshold": 0.823286,
+  "metric": "mcc",
+  "score": 0.8740391878540744,
+  "num_validation_samples": 958.0,
+  "checkpoint_epoch": 15.0,
+  "val_accuracy": 0.9488517745302714,
+  "val_balanced_accuracy": 0.9326314388393451,
+  "val_precision": 0.924812030075188,
+  "val_recall": 0.8945454545454545,
+  "val_f1": 0.9094269870609982,
+  "val_mcc": 0.8740391878540744,
+  "val_auroc": 0.9747105017968855,
+  "val_auprc": 0.9494050711127645
+}

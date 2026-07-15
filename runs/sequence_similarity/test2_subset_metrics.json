@@ -1,0 +1,199 @@
+{
+  "protocol": {
+    "method": "exclude_test_samples_with_train_identity_at_or_above_threshold",
+    "audit_rows": "runs\\sequence_similarity\\test2_rows.csv",
+    "identity_thresholds": [
+      0.9,
+      0.8
+    ],
+    "decision_threshold": 0.85,
+    "num_model_seeds": 3
+  },
+  "runs": [
+    {
+      "path": "runs\\plm_fusion_esm2_geometry_confidence\\test2_predictions.csv",
+      "subsets": {
+        "0.9": {
+          "num_samples": 506,
+          "num_positive": 35,
+          "num_negative": 471,
+          "metrics": {
+            "accuracy": 0.9387351778656127,
+            "balanced_accuracy": 0.8348498635122839,
+            "precision": 0.5434782608695652,
+            "recall": 0.7142857142857143,
+            "f1": 0.617283950617284,
+            "mcc": 0.591107903203983,
+            "auroc": 0.9373976342129209,
+            "auprc": 0.666621007998699
+          }
+        },
+        "0.8": {
+          "num_samples": 208,
+          "num_positive": 15,
+          "num_negative": 193,
+          "metrics": {
+            "accuracy": 0.9086538461538461,
+            "balanced_accuracy": 0.7970639032815199,
+            "precision": 0.4166666666666667,
+            "recall": 0.6666666666666666,
+            "f1": 0.5128205128205129,
+            "mcc": 0.4810493481778594,
+            "auroc": 0.9001727115716753,
+            "auprc": 0.530688454562245
+          }
+        }
+      }
+    },
+    {
+      "path": "runs\\plm_fusion_esm2_geometry_confidence_seed123\\test2_predictions.csv",
+      "subsets": {
+        "0.9": {
+          "num_samples": 506,
+          "num_positive": 35,
+          "num_negative": 471,
+          "metrics": {
+            "accuracy": 0.932806324110672,
+            "balanced_accuracy": 0.7787685774946922,
+            "precision": 0.5121951219512195,
+            "recall": 0.6,
+            "f1": 0.5526315789473684,
+            "mcc": 0.5184416516935371,
+            "auroc": 0.9236882013952078,
+            "auprc": 0.5691448195336642
+          }
+        },
+        "0.8": {
+          "num_samples": 208,
+          "num_positive": 15,
+          "num_negative": 193,
+          "metrics": {
+            "accuracy": 0.9134615384615384,
+            "balanced_accuracy": 0.7381692573402419,
+            "precision": 0.42105263157894735,
+            "recall": 0.5333333333333333,
+            "f1": 0.47058823529411764,
+            "mcc": 0.4276931352245864,
+            "auroc": 0.8728842832469776,
+            "auprc": 0.4277717158568222
+          }
+        }
+      }
+    },
+    {
+      "path": "runs\\plm_fusion_esm2_geometry_confidence_seed2025\\test2_predictions.csv",
+      "subsets": {
+        "0.9": {
+          "num_samples": 506,
+          "num_positive": 35,
+          "num_negative": 471,
+          "metrics": {
+            "accuracy": 0.924901185770751,
+            "balanced_accuracy": 0.7480740066727327,
+            "precision": 0.4634146341463415,
+            "recall": 0.5428571428571428,
+            "f1": 0.5,
+            "mcc": 0.4613572265478664,
+            "auroc": 0.9134364573855019,
+            "auprc": 0.5478055575534893
+          }
+        },
+        "0.8": {
+          "num_samples": 208,
+          "num_positive": 15,
+          "num_negative": 193,
+          "metrics": {
+            "accuracy": 0.8990384615384616,
+            "balanced_accuracy": 0.7303972366148532,
+            "precision": 0.36363636363636365,
+            "recall": 0.5333333333333333,
+            "f1": 0.43243243243243246,
+            "mcc": 0.3875821192235842,
+            "auroc": 0.8186528497409327,
+            "auprc": 0.45284946025342093
+          }
+        }
+      }
+    }
+  ],
+  "aggregate": {
+    "0.9": {
+      "num_samples": 506,
+      "num_positive": 35,
+      "num_negative": 471,
+      "metrics": {
+        "accuracy": {
+          "mean": 0.9321475625823452,
+          "sample_std": 0.0069404833681507025
+        },
+        "balanced_accuracy": {
+          "mean": 0.7872308158932363,
+          "sample_std": 0.04400249358382902
+        },
+        "precision": {
+          "mean": 0.5063626723223754,
+          "sample_std": 0.04034921538919534
+        },
+        "recall": {
+          "mean": 0.6190476190476191,
+          "sample_std": 0.08728715609439698
+        },
+        "f1": {
+          "mean": 0.5566385098548842,
+          "sample_std": 0.05874455625479338
+        },
+        "mcc": {
+          "mean": 0.5236355938151288,
+          "sample_std": 0.06503108717568748
+        },
+        "auroc": {
+          "mean": 0.9248407643312101,
+          "sample_std": 0.012022096311783335
+        },
+        "auprc": {
+          "mean": 0.5945237950286175,
+          "sample_std": 0.06334309049931648
+        }
+      }
+    },
+    "0.8": {
+      "num_samples": 208,
+      "num_positive": 15,
+      "num_negative": 193,
+      "metrics": {
+        "accuracy": {
+          "mean": 0.907051282051282,
+          "sample_std": 0.007343871306018948
+        },
+        "balanced_accuracy": {
+          "mean": 0.755210132412205,
+          "sample_std": 0.03645414487441451
+        },
+        "precision": {
+          "mean": 0.40045188729399256,
+          "sample_std": 0.03195850839278978
+        },
+        "recall": {
+          "mean": 0.5777777777777778,
+          "sample_std": 0.07698003589195009
+        },
+        "f1": {
+          "mean": 0.4719470601823543,
+          "sample_std": 0.04021126298598179
+        },
+        "mcc": {
+          "mean": 0.43210820087534335,
+          "sample_std": 0.04688976781370424
+        },
+        "auroc": {
+          "mean": 0.8639032815198618,
+          "sample_std": 0.04149537037119546
+        },
+        "auprc": {
+          "mean": 0.47043654355749603,
+          "sample_std": 0.05366509946695734
+        }
+      }
+    }
+  }
+}

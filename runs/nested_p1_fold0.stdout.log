@@ -1,0 +1,75 @@
+epoch=001 train_loss=0.5648 val_loss=0.4049 val_auprc=0.8760 val_mcc=0.7959 gate=0.000
+epoch=002 train_loss=0.4340 val_loss=0.3570 val_auprc=0.8976 val_mcc=0.8012 gate=0.000
+epoch=003 train_loss=0.3614 val_loss=0.3750 val_auprc=0.9016 val_mcc=0.7615 gate=0.000
+epoch=004 train_loss=0.3193 val_loss=0.3372 val_auprc=0.9246 val_mcc=0.7676 gate=0.000
+epoch=005 train_loss=0.2424 val_loss=0.4153 val_auprc=0.9419 val_mcc=0.8154 gate=0.000
+epoch=006 train_loss=0.2077 val_loss=0.3573 val_auprc=0.9426 val_mcc=0.7660 gate=0.000
+epoch=007 train_loss=0.1793 val_loss=0.3556 val_auprc=0.9426 val_mcc=0.7856 gate=0.000
+epoch=008 train_loss=0.1236 val_loss=0.4095 val_auprc=0.9450 val_mcc=0.7823 gate=0.000
+epoch=009 train_loss=0.0901 val_loss=0.5414 val_auprc=0.9421 val_mcc=0.8178 gate=0.000
+epoch=010 train_loss=0.0712 val_loss=0.6100 val_auprc=0.9283 val_mcc=0.7561 gate=0.000
+epoch=011 train_loss=0.0705 val_loss=0.5524 val_auprc=0.9431 val_mcc=0.8038 gate=0.000
+epoch=012 train_loss=0.0494 val_loss=0.4997 val_auprc=0.9397 val_mcc=0.7694 gate=0.000
+epoch=013 train_loss=0.0428 val_loss=0.5116 val_auprc=0.9456 val_mcc=0.7871 gate=0.000
+epoch=014 train_loss=0.0194 val_loss=0.7998 val_auprc=0.9501 val_mcc=0.8278 gate=0.000
+epoch=015 train_loss=0.0102 val_loss=0.8170 val_auprc=0.9439 val_mcc=0.8136 gate=0.000
+epoch=016 train_loss=0.0149 val_loss=0.7805 val_auprc=0.9392 val_mcc=0.7855 gate=0.000
+epoch=017 train_loss=0.0192 val_loss=0.8630 val_auprc=0.9458 val_mcc=0.8076 gate=0.000
+epoch=018 train_loss=0.0167 val_loss=1.0295 val_auprc=0.9334 val_mcc=0.7882 gate=0.000
+epoch=019 train_loss=0.0246 val_loss=0.7619 val_auprc=0.9442 val_mcc=0.8136 gate=0.000
+epoch=020 train_loss=0.0316 val_loss=1.0520 val_auprc=0.9331 val_mcc=0.7574 gate=0.000
+epoch=021 train_loss=0.0370 val_loss=0.7599 val_auprc=0.9449 val_mcc=0.8072 gate=0.000
+epoch=022 train_loss=0.0127 val_loss=0.8205 val_auprc=0.9420 val_mcc=0.7892 gate=0.000
+Early stopping after 22 epochs.
+Best checkpoint saved to runs\nested_p1\sequence_bilstm_fold0\best_model.pt (mcc=0.827771)
+threshold: 0.890799
+mcc: 0.860220
+saved: runs\nested_p1\sequence_bilstm_fold0\calibration_threshold.json
+Evaluation metrics saved to runs\nested_p1\sequence_bilstm_fold0\outer_test_metrics.json
+accuracy: 0.926042
+balanced_accuracy: 0.884321
+precision: 0.947195
+recall: 0.786301
+f1: 0.859281
+mcc: 0.816160
+auroc: 0.971312
+auprc: 0.946878
+mean_global_gate: 0.000000
+epoch=001 train_loss=0.7208 val_loss=0.4066 val_auprc=0.8842 val_mcc=0.7775 gate=0.102
+epoch=002 train_loss=0.5418 val_loss=0.3854 val_auprc=0.9196 val_mcc=0.7757 gate=0.101
+epoch=003 train_loss=0.4623 val_loss=0.3505 val_auprc=0.9198 val_mcc=0.8081 gate=0.101
+epoch=004 train_loss=0.3529 val_loss=0.3780 val_auprc=0.9316 val_mcc=0.8056 gate=0.101
+epoch=005 train_loss=0.2873 val_loss=0.3685 val_auprc=0.9396 val_mcc=0.7921 gate=0.101
+epoch=006 train_loss=0.2464 val_loss=0.4713 val_auprc=0.9263 val_mcc=0.7856 gate=0.101
+epoch=007 train_loss=0.1797 val_loss=0.4100 val_auprc=0.9413 val_mcc=0.8097 gate=0.101
+epoch=008 train_loss=0.1310 val_loss=0.8105 val_auprc=0.9494 val_mcc=0.7791 gate=0.101
+epoch=009 train_loss=0.0942 val_loss=1.2493 val_auprc=0.8899 val_mcc=0.6981 gate=0.101
+epoch=010 train_loss=0.0738 val_loss=0.6670 val_auprc=0.9325 val_mcc=0.7830 gate=0.101
+epoch=011 train_loss=0.0597 val_loss=0.8791 val_auprc=0.9234 val_mcc=0.8131 gate=0.101
+epoch=012 train_loss=0.0619 val_loss=1.3286 val_auprc=0.9373 val_mcc=0.7714 gate=0.101
+epoch=013 train_loss=0.0331 val_loss=1.2526 val_auprc=0.9381 val_mcc=0.8113 gate=0.101
+epoch=014 train_loss=0.0363 val_loss=0.7980 val_auprc=0.9383 val_mcc=0.8231 gate=0.101
+epoch=015 train_loss=0.0284 val_loss=0.8908 val_auprc=0.9397 val_mcc=0.7875 gate=0.101
+epoch=016 train_loss=0.0272 val_loss=1.4067 val_auprc=0.9285 val_mcc=0.7450 gate=0.101
+epoch=017 train_loss=0.0363 val_loss=0.9555 val_auprc=0.9401 val_mcc=0.8076 gate=0.101
+epoch=018 train_loss=0.0257 val_loss=0.9680 val_auprc=0.9360 val_mcc=0.8076 gate=0.101
+epoch=019 train_loss=0.0282 val_loss=1.1347 val_auprc=0.9318 val_mcc=0.7963 gate=0.101
+epoch=020 train_loss=0.0387 val_loss=1.2508 val_auprc=0.9362 val_mcc=0.8195 gate=0.101
+epoch=021 train_loss=0.0292 val_loss=1.2473 val_auprc=0.9406 val_mcc=0.7868 gate=0.101
+epoch=022 train_loss=0.0217 val_loss=1.2449 val_auprc=0.9305 val_mcc=0.8139 gate=0.101
+Early stopping after 22 epochs.
+Best checkpoint saved to runs\nested_p1\residual_experts_fold0\best_model.pt (mcc=0.823112)
+threshold: 0.789240
+mcc: 0.836266
+saved: runs\nested_p1\residual_experts_fold0\calibration_threshold.json
+Evaluation metrics saved to runs\nested_p1\residual_experts_fold0\outer_test_metrics.json
+accuracy: 0.932337
+balanced_accuracy: 0.919819
+precision: 0.876011
+recall: 0.890411
+f1: 0.883152
+mcc: 0.835593
+auroc: 0.974369
+auprc: 0.946539
+mean_global_gate: 0.101037
+NESTED P1 FOLD0 COMPLETE

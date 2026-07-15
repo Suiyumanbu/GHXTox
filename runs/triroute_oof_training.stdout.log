@@ -1,0 +1,197 @@
+START sequence_atom_groupfold_fold1
+epoch=001 train_loss=0.5715 val_loss=0.5137 val_auprc=0.8424 val_mcc=0.7470 gate=0.000
+epoch=002 train_loss=0.4580 val_loss=0.4913 val_auprc=0.8803 val_mcc=0.7600 gate=0.000
+epoch=003 train_loss=0.4062 val_loss=0.4309 val_auprc=0.9030 val_mcc=0.7640 gate=0.000
+epoch=004 train_loss=0.3379 val_loss=0.4640 val_auprc=0.9179 val_mcc=0.7953 gate=0.000
+epoch=005 train_loss=0.3009 val_loss=0.3634 val_auprc=0.9290 val_mcc=0.7921 gate=0.000
+epoch=006 train_loss=0.2435 val_loss=0.3935 val_auprc=0.9188 val_mcc=0.7828 gate=0.000
+epoch=007 train_loss=0.2117 val_loss=0.4018 val_auprc=0.9313 val_mcc=0.7814 gate=0.000
+epoch=008 train_loss=0.1845 val_loss=0.4755 val_auprc=0.9244 val_mcc=0.7901 gate=0.000
+epoch=009 train_loss=0.1524 val_loss=0.4636 val_auprc=0.9314 val_mcc=0.8135 gate=0.000
+epoch=010 train_loss=0.1126 val_loss=0.5496 val_auprc=0.9279 val_mcc=0.7975 gate=0.000
+epoch=011 train_loss=0.1073 val_loss=0.4741 val_auprc=0.9279 val_mcc=0.7537 gate=0.000
+epoch=012 train_loss=0.0738 val_loss=0.6331 val_auprc=0.9283 val_mcc=0.8074 gate=0.000
+epoch=013 train_loss=0.0516 val_loss=1.0647 val_auprc=0.9184 val_mcc=0.8005 gate=0.000
+epoch=014 train_loss=0.0532 val_loss=0.7992 val_auprc=0.9269 val_mcc=0.7893 gate=0.000
+epoch=015 train_loss=0.0478 val_loss=0.7887 val_auprc=0.9279 val_mcc=0.7963 gate=0.000
+epoch=016 train_loss=0.0420 val_loss=0.7973 val_auprc=0.9321 val_mcc=0.8272 gate=0.000
+epoch=017 train_loss=0.0505 val_loss=0.9003 val_auprc=0.9205 val_mcc=0.7889 gate=0.000
+epoch=018 train_loss=0.0341 val_loss=0.7921 val_auprc=0.9270 val_mcc=0.7701 gate=0.000
+epoch=019 train_loss=0.0287 val_loss=1.0034 val_auprc=0.9315 val_mcc=0.8053 gate=0.000
+epoch=020 train_loss=0.0271 val_loss=0.9048 val_auprc=0.9275 val_mcc=0.7876 gate=0.000
+epoch=021 train_loss=0.0212 val_loss=1.1728 val_auprc=0.9212 val_mcc=0.8035 gate=0.000
+epoch=022 train_loss=0.0214 val_loss=0.9542 val_auprc=0.9204 val_mcc=0.8121 gate=0.000
+epoch=023 train_loss=0.0247 val_loss=1.1878 val_auprc=0.9269 val_mcc=0.8066 gate=0.000
+epoch=024 train_loss=0.0228 val_loss=1.1759 val_auprc=0.9204 val_mcc=0.8021 gate=0.000
+Early stopping after 24 epochs.
+Best checkpoint saved to runs\sequence_atom_groupfold_fold1\best_model.pt (mcc=0.827187)
+DONE sequence_atom_groupfold_fold1
+START sequence_atom_groupfold_fold2
+epoch=001 train_loss=0.5801 val_loss=0.4281 val_auprc=0.8499 val_mcc=0.7604 gate=0.000
+epoch=002 train_loss=0.4458 val_loss=0.3795 val_auprc=0.9058 val_mcc=0.7849 gate=0.000
+epoch=003 train_loss=0.3538 val_loss=0.4075 val_auprc=0.9252 val_mcc=0.7993 gate=0.000
+epoch=004 train_loss=0.3001 val_loss=0.3659 val_auprc=0.9124 val_mcc=0.7894 gate=0.000
+epoch=005 train_loss=0.2481 val_loss=0.4238 val_auprc=0.9371 val_mcc=0.8028 gate=0.000
+epoch=006 train_loss=0.2204 val_loss=0.3568 val_auprc=0.9421 val_mcc=0.8332 gate=0.000
+epoch=007 train_loss=0.1721 val_loss=0.5858 val_auprc=0.9383 val_mcc=0.8375 gate=0.000
+epoch=008 train_loss=0.1489 val_loss=0.4433 val_auprc=0.9388 val_mcc=0.7771 gate=0.000
+epoch=009 train_loss=0.1217 val_loss=0.4586 val_auprc=0.9405 val_mcc=0.8333 gate=0.000
+epoch=010 train_loss=0.0950 val_loss=0.5273 val_auprc=0.9274 val_mcc=0.8188 gate=0.000
+epoch=011 train_loss=0.0872 val_loss=0.4666 val_auprc=0.9320 val_mcc=0.8276 gate=0.000
+epoch=012 train_loss=0.0717 val_loss=0.6886 val_auprc=0.9353 val_mcc=0.8438 gate=0.000
+epoch=013 train_loss=0.0403 val_loss=0.7241 val_auprc=0.9380 val_mcc=0.8477 gate=0.000
+epoch=014 train_loss=0.0415 val_loss=0.9978 val_auprc=0.9423 val_mcc=0.8233 gate=0.000
+epoch=015 train_loss=0.0446 val_loss=0.8131 val_auprc=0.9399 val_mcc=0.8284 gate=0.000
+epoch=016 train_loss=0.0407 val_loss=0.5708 val_auprc=0.9470 val_mcc=0.8370 gate=0.000
+epoch=017 train_loss=0.0252 val_loss=0.5974 val_auprc=0.9438 val_mcc=0.8196 gate=0.000
+epoch=018 train_loss=0.0213 val_loss=0.8256 val_auprc=0.9412 val_mcc=0.8376 gate=0.000
+epoch=019 train_loss=0.0184 val_loss=1.0352 val_auprc=0.9392 val_mcc=0.8417 gate=0.000
+epoch=020 train_loss=0.0369 val_loss=0.8153 val_auprc=0.9363 val_mcc=0.8085 gate=0.000
+epoch=021 train_loss=0.0255 val_loss=0.7416 val_auprc=0.9452 val_mcc=0.8546 gate=0.000
+epoch=022 train_loss=0.0356 val_loss=0.8917 val_auprc=0.9458 val_mcc=0.8400 gate=0.000
+epoch=023 train_loss=0.0384 val_loss=0.7015 val_auprc=0.9346 val_mcc=0.8030 gate=0.000
+epoch=024 train_loss=0.0209 val_loss=1.0994 val_auprc=0.9318 val_mcc=0.8176 gate=0.000
+epoch=025 train_loss=0.0181 val_loss=0.9861 val_auprc=0.9393 val_mcc=0.8254 gate=0.000
+epoch=026 train_loss=0.0127 val_loss=1.1144 val_auprc=0.9349 val_mcc=0.8399 gate=0.000
+epoch=027 train_loss=0.0223 val_loss=0.8208 val_auprc=0.9401 val_mcc=0.8181 gate=0.000
+epoch=028 train_loss=0.0298 val_loss=0.9622 val_auprc=0.9379 val_mcc=0.8188 gate=0.000
+epoch=029 train_loss=0.0196 val_loss=1.0685 val_auprc=0.9420 val_mcc=0.8406 gate=0.000
+Early stopping after 29 epochs.
+Best checkpoint saved to runs\sequence_atom_groupfold_fold2\best_model.pt (mcc=0.854633)
+DONE sequence_atom_groupfold_fold2
+START sequence_atom_groupfold_fold3
+epoch=001 train_loss=0.5617 val_loss=0.5074 val_auprc=0.8656 val_mcc=0.7197 gate=0.000
+epoch=002 train_loss=0.4481 val_loss=0.4638 val_auprc=0.8826 val_mcc=0.7403 gate=0.000
+epoch=003 train_loss=0.3775 val_loss=0.3893 val_auprc=0.9266 val_mcc=0.7623 gate=0.000
+epoch=004 train_loss=0.3097 val_loss=0.3921 val_auprc=0.9358 val_mcc=0.8065 gate=0.000
+epoch=005 train_loss=0.2552 val_loss=0.3898 val_auprc=0.9378 val_mcc=0.8115 gate=0.000
+epoch=006 train_loss=0.2180 val_loss=0.4087 val_auprc=0.9351 val_mcc=0.8206 gate=0.000
+epoch=007 train_loss=0.1840 val_loss=0.4200 val_auprc=0.9406 val_mcc=0.8369 gate=0.000
+epoch=008 train_loss=0.1521 val_loss=0.4549 val_auprc=0.9423 val_mcc=0.8359 gate=0.000
+epoch=009 train_loss=0.1208 val_loss=0.4380 val_auprc=0.9452 val_mcc=0.8447 gate=0.000
+epoch=010 train_loss=0.1054 val_loss=0.6435 val_auprc=0.9436 val_mcc=0.8285 gate=0.000
+epoch=011 train_loss=0.0815 val_loss=0.8587 val_auprc=0.9368 val_mcc=0.8071 gate=0.000
+epoch=012 train_loss=0.0592 val_loss=0.8221 val_auprc=0.9373 val_mcc=0.8225 gate=0.000
+epoch=013 train_loss=0.0611 val_loss=0.8861 val_auprc=0.9361 val_mcc=0.8342 gate=0.000
+epoch=014 train_loss=0.0456 val_loss=0.8433 val_auprc=0.9265 val_mcc=0.8044 gate=0.000
+epoch=015 train_loss=0.0327 val_loss=0.7964 val_auprc=0.9365 val_mcc=0.8119 gate=0.000
+epoch=016 train_loss=0.0316 val_loss=1.0974 val_auprc=0.9361 val_mcc=0.8176 gate=0.000
+epoch=017 train_loss=0.0410 val_loss=0.6703 val_auprc=0.9508 val_mcc=0.8422 gate=0.000
+Early stopping after 17 epochs.
+Best checkpoint saved to runs\sequence_atom_groupfold_fold3\best_model.pt (mcc=0.844653)
+DONE sequence_atom_groupfold_fold3
+START sequence_atom_groupfold_fold4
+epoch=001 train_loss=0.5477 val_loss=0.6164 val_auprc=0.8078 val_mcc=0.7079 gate=0.000
+epoch=002 train_loss=0.4203 val_loss=0.4892 val_auprc=0.8648 val_mcc=0.6978 gate=0.000
+epoch=003 train_loss=0.3606 val_loss=0.4449 val_auprc=0.8912 val_mcc=0.7283 gate=0.000
+epoch=004 train_loss=0.2970 val_loss=0.4518 val_auprc=0.9032 val_mcc=0.7446 gate=0.000
+epoch=005 train_loss=0.2640 val_loss=0.3925 val_auprc=0.9033 val_mcc=0.7948 gate=0.000
+epoch=006 train_loss=0.2154 val_loss=0.4799 val_auprc=0.9180 val_mcc=0.8298 gate=0.000
+epoch=007 train_loss=0.1804 val_loss=0.4772 val_auprc=0.9216 val_mcc=0.7923 gate=0.000
+epoch=008 train_loss=0.1525 val_loss=0.4449 val_auprc=0.9146 val_mcc=0.7811 gate=0.000
+epoch=009 train_loss=0.1186 val_loss=0.5645 val_auprc=0.9254 val_mcc=0.8076 gate=0.000
+epoch=010 train_loss=0.1071 val_loss=0.7601 val_auprc=0.9279 val_mcc=0.8129 gate=0.000
+epoch=011 train_loss=0.0796 val_loss=1.0635 val_auprc=0.9080 val_mcc=0.7988 gate=0.000
+epoch=012 train_loss=0.0581 val_loss=0.9919 val_auprc=0.9185 val_mcc=0.7980 gate=0.000
+epoch=013 train_loss=0.0420 val_loss=0.8645 val_auprc=0.9217 val_mcc=0.8136 gate=0.000
+epoch=014 train_loss=0.0403 val_loss=1.0432 val_auprc=0.9179 val_mcc=0.7933 gate=0.000
+Early stopping after 14 epochs.
+Best checkpoint saved to runs\sequence_atom_groupfold_fold4\best_model.pt (mcc=0.829832)
+DONE sequence_atom_groupfold_fold4
+START default_groupfold_control_fold1
+epoch=001 train_loss=0.5674 val_loss=0.4736 val_auprc=0.8857 val_mcc=0.7447 gate=0.369
+epoch=002 train_loss=0.4173 val_loss=0.4153 val_auprc=0.9124 val_mcc=0.7476 gate=0.367
+epoch=003 train_loss=0.3596 val_loss=0.4410 val_auprc=0.9113 val_mcc=0.7057 gate=0.363
+epoch=004 train_loss=0.2911 val_loss=0.3829 val_auprc=0.9075 val_mcc=0.7533 gate=0.364
+epoch=005 train_loss=0.2525 val_loss=0.5046 val_auprc=0.9175 val_mcc=0.7584 gate=0.365
+epoch=006 train_loss=0.2380 val_loss=0.4604 val_auprc=0.9258 val_mcc=0.7889 gate=0.357
+epoch=007 train_loss=0.1798 val_loss=0.4667 val_auprc=0.9210 val_mcc=0.7417 gate=0.352
+epoch=008 train_loss=0.1571 val_loss=0.4272 val_auprc=0.9291 val_mcc=0.7172 gate=0.346
+epoch=009 train_loss=0.1337 val_loss=0.5911 val_auprc=0.9287 val_mcc=0.7790 gate=0.350
+epoch=010 train_loss=0.1121 val_loss=0.5585 val_auprc=0.9275 val_mcc=0.7807 gate=0.346
+epoch=011 train_loss=0.0868 val_loss=0.6925 val_auprc=0.9243 val_mcc=0.7887 gate=0.346
+epoch=012 train_loss=0.0788 val_loss=0.8864 val_auprc=0.9241 val_mcc=0.7686 gate=0.348
+epoch=013 train_loss=0.0732 val_loss=0.6970 val_auprc=0.9236 val_mcc=0.7657 gate=0.343
+epoch=014 train_loss=0.0570 val_loss=0.8112 val_auprc=0.9211 val_mcc=0.7489 gate=0.347
+Early stopping after 14 epochs.
+Best checkpoint saved to runs\default_groupfold_control_fold1\best_model.pt (mcc=0.788913)
+DONE default_groupfold_control_fold1
+START default_groupfold_control_fold2
+epoch=001 train_loss=0.5491 val_loss=0.4353 val_auprc=0.8696 val_mcc=0.7250 gate=0.366
+epoch=002 train_loss=0.4319 val_loss=0.3700 val_auprc=0.9144 val_mcc=0.7661 gate=0.369
+epoch=003 train_loss=0.3470 val_loss=0.3455 val_auprc=0.9313 val_mcc=0.8065 gate=0.378
+epoch=004 train_loss=0.3077 val_loss=0.3270 val_auprc=0.9354 val_mcc=0.8038 gate=0.373
+epoch=005 train_loss=0.2542 val_loss=0.3553 val_auprc=0.9338 val_mcc=0.8248 gate=0.368
+epoch=006 train_loss=0.2090 val_loss=0.4030 val_auprc=0.9318 val_mcc=0.8098 gate=0.372
+epoch=007 train_loss=0.1685 val_loss=0.4175 val_auprc=0.9311 val_mcc=0.8058 gate=0.376
+epoch=008 train_loss=0.1387 val_loss=0.4784 val_auprc=0.9241 val_mcc=0.8067 gate=0.369
+epoch=009 train_loss=0.1175 val_loss=0.4730 val_auprc=0.9389 val_mcc=0.8077 gate=0.370
+epoch=010 train_loss=0.1011 val_loss=0.5208 val_auprc=0.9227 val_mcc=0.7919 gate=0.371
+epoch=011 train_loss=0.0871 val_loss=0.4280 val_auprc=0.9453 val_mcc=0.8332 gate=0.367
+epoch=012 train_loss=0.0762 val_loss=0.5284 val_auprc=0.9313 val_mcc=0.8103 gate=0.361
+epoch=013 train_loss=0.0600 val_loss=0.6026 val_auprc=0.9368 val_mcc=0.8079 gate=0.368
+epoch=014 train_loss=0.0523 val_loss=0.6726 val_auprc=0.9191 val_mcc=0.7941 gate=0.363
+epoch=015 train_loss=0.0379 val_loss=0.7812 val_auprc=0.9309 val_mcc=0.7979 gate=0.363
+epoch=016 train_loss=0.0400 val_loss=0.6144 val_auprc=0.9314 val_mcc=0.7830 gate=0.347
+epoch=017 train_loss=0.0291 val_loss=0.8712 val_auprc=0.9330 val_mcc=0.8059 gate=0.361
+epoch=018 train_loss=0.0339 val_loss=0.9612 val_auprc=0.9150 val_mcc=0.7880 gate=0.358
+epoch=019 train_loss=0.0199 val_loss=1.3321 val_auprc=0.9295 val_mcc=0.8009 gate=0.361
+Early stopping after 19 epochs.
+Best checkpoint saved to runs\default_groupfold_control_fold2\best_model.pt (mcc=0.833238)
+DONE default_groupfold_control_fold2
+START default_groupfold_control_fold3
+epoch=001 train_loss=0.5404 val_loss=0.4382 val_auprc=0.8758 val_mcc=0.7611 gate=0.379
+epoch=002 train_loss=0.4098 val_loss=0.3842 val_auprc=0.9141 val_mcc=0.7850 gate=0.377
+epoch=003 train_loss=0.3535 val_loss=0.3982 val_auprc=0.9177 val_mcc=0.8112 gate=0.374
+epoch=004 train_loss=0.3005 val_loss=0.3895 val_auprc=0.9278 val_mcc=0.7879 gate=0.368
+epoch=005 train_loss=0.2671 val_loss=0.3678 val_auprc=0.9285 val_mcc=0.7783 gate=0.367
+epoch=006 train_loss=0.2362 val_loss=0.3893 val_auprc=0.9348 val_mcc=0.7891 gate=0.366
+epoch=007 train_loss=0.2144 val_loss=0.4049 val_auprc=0.9455 val_mcc=0.7864 gate=0.366
+epoch=008 train_loss=0.1748 val_loss=0.4377 val_auprc=0.9459 val_mcc=0.8184 gate=0.362
+epoch=009 train_loss=0.1633 val_loss=0.4599 val_auprc=0.9415 val_mcc=0.7900 gate=0.359
+epoch=010 train_loss=0.1419 val_loss=0.5714 val_auprc=0.9392 val_mcc=0.8456 gate=0.358
+epoch=011 train_loss=0.0989 val_loss=0.6293 val_auprc=0.9365 val_mcc=0.8436 gate=0.359
+epoch=012 train_loss=0.0868 val_loss=0.6870 val_auprc=0.9321 val_mcc=0.8064 gate=0.356
+epoch=013 train_loss=0.0823 val_loss=0.5057 val_auprc=0.9496 val_mcc=0.8400 gate=0.351
+epoch=014 train_loss=0.0700 val_loss=0.5928 val_auprc=0.9214 val_mcc=0.7827 gate=0.354
+epoch=015 train_loss=0.0554 val_loss=0.5894 val_auprc=0.9177 val_mcc=0.8120 gate=0.349
+epoch=016 train_loss=0.0467 val_loss=0.6308 val_auprc=0.9309 val_mcc=0.8429 gate=0.347
+epoch=017 train_loss=0.0530 val_loss=0.7642 val_auprc=0.9423 val_mcc=0.8311 gate=0.347
+epoch=018 train_loss=0.0381 val_loss=0.8450 val_auprc=0.9410 val_mcc=0.8373 gate=0.345
+Early stopping after 18 epochs.
+Best checkpoint saved to runs\default_groupfold_control_fold3\best_model.pt (mcc=0.845567)
+DONE default_groupfold_control_fold3
+START default_groupfold_control_fold4
+epoch=001 train_loss=0.5446 val_loss=0.5668 val_auprc=0.7875 val_mcc=0.6610 gate=0.377
+epoch=002 train_loss=0.4427 val_loss=0.5331 val_auprc=0.8208 val_mcc=0.6927 gate=0.362
+epoch=003 train_loss=0.3921 val_loss=0.5169 val_auprc=0.8407 val_mcc=0.6992 gate=0.367
+epoch=004 train_loss=0.3671 val_loss=0.4478 val_auprc=0.8936 val_mcc=0.6967 gate=0.351
+epoch=005 train_loss=0.2922 val_loss=0.3920 val_auprc=0.9171 val_mcc=0.7961 gate=0.352
+epoch=006 train_loss=0.2342 val_loss=0.4259 val_auprc=0.9137 val_mcc=0.7882 gate=0.348
+epoch=007 train_loss=0.1970 val_loss=0.5106 val_auprc=0.9290 val_mcc=0.7938 gate=0.343
+epoch=008 train_loss=0.1574 val_loss=0.4989 val_auprc=0.9244 val_mcc=0.8010 gate=0.346
+epoch=009 train_loss=0.1156 val_loss=0.6717 val_auprc=0.9150 val_mcc=0.7848 gate=0.342
+epoch=010 train_loss=0.1072 val_loss=0.6549 val_auprc=0.9275 val_mcc=0.8047 gate=0.338
+epoch=011 train_loss=0.0767 val_loss=0.6636 val_auprc=0.9312 val_mcc=0.8096 gate=0.340
+epoch=012 train_loss=0.0685 val_loss=0.8045 val_auprc=0.9309 val_mcc=0.7902 gate=0.337
+epoch=013 train_loss=0.0502 val_loss=0.8767 val_auprc=0.9312 val_mcc=0.8148 gate=0.337
+epoch=014 train_loss=0.0395 val_loss=0.9655 val_auprc=0.9211 val_mcc=0.7855 gate=0.335
+epoch=015 train_loss=0.0394 val_loss=1.0072 val_auprc=0.9227 val_mcc=0.7927 gate=0.333
+epoch=016 train_loss=0.0230 val_loss=1.1613 val_auprc=0.9226 val_mcc=0.7786 gate=0.338
+epoch=017 train_loss=0.0231 val_loss=1.5788 val_auprc=0.9241 val_mcc=0.8066 gate=0.336
+epoch=018 train_loss=0.0296 val_loss=1.0417 val_auprc=0.9314 val_mcc=0.8165 gate=0.329
+epoch=019 train_loss=0.0217 val_loss=1.2245 val_auprc=0.9235 val_mcc=0.8039 gate=0.331
+epoch=020 train_loss=0.0144 val_loss=1.3007 val_auprc=0.9293 val_mcc=0.8171 gate=0.331
+epoch=021 train_loss=0.0107 val_loss=1.3079 val_auprc=0.9290 val_mcc=0.7994 gate=0.330
+epoch=022 train_loss=0.0145 val_loss=1.3605 val_auprc=0.9311 val_mcc=0.8197 gate=0.329
+epoch=023 train_loss=0.0196 val_loss=1.0509 val_auprc=0.9280 val_mcc=0.8149 gate=0.330
+epoch=024 train_loss=0.0249 val_loss=1.1591 val_auprc=0.9306 val_mcc=0.8266 gate=0.326
+epoch=025 train_loss=0.0210 val_loss=1.1357 val_auprc=0.9242 val_mcc=0.7877 gate=0.325
+epoch=026 train_loss=0.0245 val_loss=1.2896 val_auprc=0.9298 val_mcc=0.8128 gate=0.324
+epoch=027 train_loss=0.0202 val_loss=1.2933 val_auprc=0.9306 val_mcc=0.8041 gate=0.321
+epoch=028 train_loss=0.0150 val_loss=1.4842 val_auprc=0.9327 val_mcc=0.8191 gate=0.320
+epoch=029 train_loss=0.0107 val_loss=1.8180 val_auprc=0.9321 val_mcc=0.8132 gate=0.319
+epoch=030 train_loss=0.0295 val_loss=1.3549 val_auprc=0.9301 val_mcc=0.8187 gate=0.313
+Best checkpoint saved to runs\default_groupfold_control_fold4\best_model.pt (mcc=0.826568)
+DONE default_groupfold_control_fold4
+ALL TRIROUTE OOF TRAINING COMPLETE

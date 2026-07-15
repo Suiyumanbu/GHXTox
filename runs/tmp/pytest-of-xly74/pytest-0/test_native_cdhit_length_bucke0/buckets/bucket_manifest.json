@@ -1,0 +1,27 @@
+{
+  "minimum_length_ratio": 0.8,
+  "num_reference_sequences": 2,
+  "num_candidate_sequences": 2,
+  "buckets": [
+    {
+      "query_length": 4,
+      "minimum_reference_length": 4,
+      "maximum_reference_length": 5,
+      "num_references": 1,
+      "num_candidates": 1,
+      "reference_fasta": "D:\\code\\Python\\26\u5927\u521b\\GHXTox\\runs\\tmp\\pytest-of-xly74\\pytest-0\\test_native_cdhit_length_bucke0\\buckets\\length_04\\reference.fasta",
+      "candidate_fasta": "D:\\code\\Python\\26\u5927\u521b\\GHXTox\\runs\\tmp\\pytest-of-xly74\\pytest-0\\test_native_cdhit_length_bucke0\\buckets\\length_04\\candidates.fasta",
+      "native_output": "D:\\code\\Python\\26\u5927\u521b\\GHXTox\\runs\\tmp\\pytest-of-xly74\\pytest-0\\test_native_cdhit_length_bucke0\\buckets\\length_04\\native_retained.fasta"
+    },
+    {
+      "query_length": 8,
+      "minimum_reference_length": 7,
+      "maximum_reference_length": 10,
+      "num_references": 1,
+      "num_candidates": 1,
+      "reference_fasta": "D:\\code\\Python\\26\u5927\u521b\\GHXTox\\runs\\tmp\\pytest-of-xly74\\pytest-0\\test_native_cdhit_length_bucke0\\buckets\\length_08\\reference.fasta",
+      "candidate_fasta": "D:\\code\\Python\\26\u5927\u521b\\GHXTox\\runs\\tmp\\pytest-of-xly74\\pytest-0\\test_native_cdhit_length_bucke0\\buckets\\length_08\\candidates.fasta",
+      "native_output": "D:\\code\\Python\\26\u5927\u521b\\GHXTox\\runs\\tmp\\pytest-of-xly74\\pytest-0\\test_native_cdhit_length_bucke0\\buckets\\length_08\\native_retained.fasta"
+    }
+  ]
+}

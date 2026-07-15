@@ -14,6 +14,7 @@ from ghxtox.models.atom_graph import AtomGraphBranch
 from ghxtox.models.layers import (
     PLDDTAwareFusion,
     SequenceBranch,
+    SequenceMultiscaleBranch,
     SpatialBranch,
     masked_max,
     masked_mean,
@@ -28,6 +29,9 @@ class GHXToxModel(nn.Module):
         dropout = float(model_cfg.get("dropout", 0.15))
         heads = int(model_cfg.get("num_attention_heads", 4))
         plm_embedding_dim = int(model_cfg.get("plm_embedding_dim", 0))
+        spatial_plm_embedding_dim = int(
+            model_cfg.get("spatial_plm_embedding_dim", plm_embedding_dim)
+        )
         structure_feature_dim = int(model_cfg.get("structure_feature_dim", 0))
         if structure_feature_dim < 0:
             structure_feature_dim = STRUCTURE_FEATURE_DIM
@@ -40,7 +44,9 @@ class GHXToxModel(nn.Module):
         classifier_input_dim = hidden_dim * 2
         classifier_input_dim += GLOBAL_FEATURE_DIM if self.use_global_features else 0
 
-        self.sequence_branch = SequenceBranch(
+        sequence_architecture = str(model_cfg.get("sequence_architecture", "transformer")).lower()
+        sequence_class = SequenceMultiscaleBranch if sequence_architecture == "multiscale_1d" else SequenceBranch
+        sequence_kwargs = dict(
             vocab_size=len(AA_TO_IDX),
             group_size=len(FUNCTIONAL_GROUPS),
             residue_feature_dim=RESIDUE_FEATURE_DIM,
@@ -48,12 +54,23 @@ class GHXToxModel(nn.Module):
             aa_embedding_dim=int(model_cfg.get("aa_embedding_dim", 32)),
             group_embedding_dim=int(model_cfg.get("group_embedding_dim", 12)),
             hidden_dim=hidden_dim,
-            num_layers=int(model_cfg.get("num_sequence_layers", 2)),
-            num_heads=heads,
             dropout=dropout,
         )
+        if sequence_class is SequenceMultiscaleBranch:
+            sequence_kwargs.update(
+                kernels=tuple(int(value) for value in model_cfg.get("sequence_kernels", [3, 5, 7])),
+                use_multiscale=bool(model_cfg.get("sequence_use_multiscale", True)),
+                use_bilstm=bool(model_cfg.get("sequence_use_bilstm", True)),
+                use_residual=bool(model_cfg.get("sequence_use_residual", True)),
+            )
+        else:
+            sequence_kwargs.update(
+                num_layers=int(model_cfg.get("num_sequence_layers", 2)),
+                num_heads=heads,
+            )
+        self.sequence_branch = sequence_class(**sequence_kwargs)
         self.atom_branch = None
-        if self.modality in {"atom_only", "sequence_atom", "fusion_atom_residual"}:
+        if self.modality in {"atom_only", "sequence_atom", "fusion_atom_residual", "residual_experts"}:
             self.atom_branch = AtomGraphBranch(
                 atom_feature_dim=int(model_cfg.get("atom_feature_dim", ATOM_FEATURE_DIM)),
                 edge_feature_dim=int(model_cfg.get("atom_edge_feature_dim", EDGE_FEATURE_DIM)),
@@ -81,10 +98,39 @@ class GHXToxModel(nn.Module):
                 nn.GELU(),
                 nn.LayerNorm(hidden_dim * 2),
             )
+        if self.modality == "residual_experts":
+            self.residual_atom_attention = nn.MultiheadAttention(
+                hidden_dim, heads, dropout=dropout, batch_first=True
+            )
+            self.residual_spatial_attention = nn.MultiheadAttention(
+                hidden_dim, heads, dropout=dropout, batch_first=True
+            )
+            self.residual_atom_norm = nn.LayerNorm(hidden_dim)
+            self.residual_spatial_norm = nn.LayerNorm(hidden_dim)
+            self.atom_delta_head = nn.Sequential(
+                nn.Linear(hidden_dim, hidden_dim // 2),
+                nn.GELU(),
+                nn.Dropout(dropout),
+                nn.Linear(hidden_dim // 2, 1),
+            )
+            self.spatial_delta_head = nn.Sequential(
+                nn.Linear(hidden_dim, hidden_dim // 2),
+                nn.GELU(),
+                nn.Dropout(dropout),
+                nn.Linear(hidden_dim // 2, 1),
+            )
+            nn.init.zeros_(self.atom_delta_head[-1].weight)
+            nn.init.zeros_(self.atom_delta_head[-1].bias)
+            nn.init.zeros_(self.spatial_delta_head[-1].weight)
+            nn.init.zeros_(self.spatial_delta_head[-1].bias)
+            initial_atom = min(max(float(model_cfg.get("residual_atom_initial_weight", 0.10)), 1e-4), 1 - 1e-4)
+            initial_spatial = min(max(float(model_cfg.get("residual_spatial_initial_weight", 0.10)), 1e-4), 1 - 1e-4)
+            self.residual_atom_logit = nn.Parameter(torch.logit(torch.tensor(initial_atom)))
+            self.residual_spatial_logit = nn.Parameter(torch.logit(torch.tensor(initial_spatial)))
         self.spatial_branch = SpatialBranch(
             residue_feature_dim=RESIDUE_FEATURE_DIM,
             structure_feature_dim=spatial_structure_feature_dim,
-            plm_embedding_dim=plm_embedding_dim,
+            plm_embedding_dim=spatial_plm_embedding_dim,
             hidden_dim=hidden_dim,
             num_layers=int(model_cfg.get("num_egnn_layers", 3)),
             rbf_bins=int(model_cfg.get("rbf_bins", 16)),
@@ -236,6 +282,59 @@ class GHXToxModel(nn.Module):
             backbone_coords=batch.get("backbone_coords"),
             backbone_mask=batch.get("backbone_mask"),
         )
+
+        if self.modality == "residual_experts":
+            required = (
+                "atom_features", "atom_edge_index", "atom_edge_features", "atom_batch", "atom_residue_index"
+            )
+            missing = [key for key in required if key not in batch]
+            if missing:
+                raise ValueError(f"residual_experts model requires atom graph fields; missing {missing}.")
+            atom_h = self.atom_branch.encode_atoms(
+                batch["atom_features"], batch["atom_edge_index"], batch["atom_edge_features"]
+            )
+            residue_atom_h = self.atom_branch.residue_embeddings(
+                atom_h=atom_h,
+                atom_batch=batch["atom_batch"],
+                atom_residue_index=batch["atom_residue_index"],
+                batch_size=mask.shape[0],
+                max_length=mask.shape[1],
+            )
+            atom_context, _ = self.residual_atom_attention(
+                query=sequence_h,
+                key=residue_atom_h,
+                value=residue_atom_h,
+                key_padding_mask=~mask,
+                need_weights=False,
+            )
+            spatial_values = spatial_h * batch["plddt"].clamp(0.0, 1.0).unsqueeze(-1)
+            spatial_context, _ = self.residual_spatial_attention(
+                query=sequence_h,
+                key=spatial_values,
+                value=spatial_values,
+                key_padding_mask=~mask,
+                need_weights=False,
+            )
+            base_pooled = torch.cat([masked_mean(sequence_h, mask), masked_max(sequence_h, mask)], dim=-1)
+            base_logits = self.classifier(self._classifier_input(base_pooled, batch)).squeeze(-1)
+            atom_delta = self.atom_delta_head(masked_mean(self.residual_atom_norm(atom_context), mask)).squeeze(-1)
+            spatial_delta = self.spatial_delta_head(
+                masked_mean(self.residual_spatial_norm(spatial_context), mask)
+            ).squeeze(-1)
+            atom_weight = torch.sigmoid(self.residual_atom_logit)
+            spatial_weight = torch.sigmoid(self.residual_spatial_logit)
+            logits = base_logits + atom_weight * atom_delta + spatial_weight * spatial_delta
+            return {
+                "logits": logits,
+                "base_logits": base_logits,
+                "atom_delta": atom_weight * atom_delta,
+                "spatial_delta": spatial_weight * spatial_delta,
+                "atom_expert_weight": atom_weight,
+                "spatial_expert_weight": spatial_weight,
+                "embedding": base_pooled,
+                "node_gate": batch["plddt"] * spatial_weight,
+                "global_gate": spatial_weight.expand(mask.shape[0]),
+            }
 
         if self.modality == "spatial_only":
             zero = torch.zeros_like(spatial_h)

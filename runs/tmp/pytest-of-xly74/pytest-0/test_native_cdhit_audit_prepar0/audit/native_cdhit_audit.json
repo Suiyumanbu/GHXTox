@@ -1,0 +1,28 @@
+{
+  "protocol": {},
+  "candidate_after_exact_dedup": 2,
+  "fallback": {
+    "retained": 1,
+    "retained_positive": 1,
+    "retained_negative": 0
+  },
+  "native_variants": {
+    "standard": {
+      "retained": 1,
+      "retained_positive": 0,
+      "retained_negative": 1,
+      "intersection_with_fallback": 0,
+      "native_only": 1,
+      "native_only_positive": 0,
+      "native_only_negative": 1,
+      "fallback_only": 1,
+      "fallback_only_positive": 1,
+      "fallback_only_negative": 0,
+      "jaccard_with_fallback": 0.0
+    }
+  },
+  "num_any_disagreement": 2,
+  "outputs": {
+    "retention_disagreements": "D:\\code\\Python\\26\u5927\u521b\\GHXTox\\runs\\tmp\\pytest-of-xly74\\pytest-0\\test_native_cdhit_audit_prepar0\\audit\\retention_disagreements.csv"
+  }
+}

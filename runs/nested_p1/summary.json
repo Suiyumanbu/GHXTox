@@ -1,0 +1,229 @@
+{
+  "protocol": {
+    "root": "runs\\nested_p1",
+    "baseline": "sequence_bilstm",
+    "challenger": "residual_experts",
+    "folds": 5,
+    "threshold_source": "each outer fold's disjoint calibration role",
+    "outer_test_used_for_selection": false
+  },
+  "folds": [
+    {
+      "fold": 0,
+      "baseline_threshold": 0.890799,
+      "challenger_threshold": 0.78924,
+      "baseline": {
+        "accuracy": 0.9260424862313139,
+        "balanced_accuracy": 0.8843206628564517,
+        "f1": 0.8592814371257484,
+        "mcc": 0.816159929358585,
+        "auroc": 0.9713115001965587,
+        "auprc": 0.9468779897170387
+      },
+      "challenger": {
+        "accuracy": 0.932336742722266,
+        "balanced_accuracy": 0.9198191659862711,
+        "f1": 0.8831521739130435,
+        "mcc": 0.8355925875171197,
+        "auroc": 0.9743687441410385,
+        "auprc": 0.9465387590097042
+      },
+      "delta": {
+        "accuracy": 0.006294256490952055,
+        "balanced_accuracy": 0.03549850312981939,
+        "f1": 0.02387073678729501,
+        "mcc": 0.019432658158534788,
+        "auroc": 0.003057243944479815,
+        "auprc": -0.00033923070733454797
+      },
+      "challenger_wins_mcc": true
+    },
+    {
+      "fold": 1,
+      "baseline_threshold": 0.25,
+      "challenger_threshold": 0.874302,
+      "baseline": {
+        "accuracy": 0.9186330349877949,
+        "balanced_accuracy": 0.9001598261091932,
+        "f1": 0.8603351955307262,
+        "mcc": 0.802957389294127,
+        "auroc": 0.9656166091292674,
+        "auprc": 0.9330360841773506
+      },
+      "challenger": {
+        "accuracy": 0.9104963384865744,
+        "balanced_accuracy": 0.8716276690960235,
+        "f1": 0.835820895522388,
+        "mcc": 0.778862103228013,
+        "auroc": 0.96297148702212,
+        "auprc": 0.9229607407302481
+      },
+      "delta": {
+        "accuracy": -0.008136696501220508,
+        "balanced_accuracy": -0.02853215701316969,
+        "f1": -0.024514300008338208,
+        "mcc": -0.024095286066113997,
+        "auroc": -0.002645122107147402,
+        "auprc": -0.01007534344710248
+      },
+      "challenger_wins_mcc": false
+    },
+    {
+      "fold": 2,
+      "baseline_threshold": 0.810259,
+      "challenger_threshold": 0.425727,
+      "baseline": {
+        "accuracy": 0.9332285938727416,
+        "balanced_accuracy": 0.9072543589869261,
+        "f1": 0.876632801161103,
+        "mcc": 0.8318008509942071,
+        "auroc": 0.9694870915172829,
+        "auprc": 0.9324962316421597
+      },
+      "challenger": {
+        "accuracy": 0.9261586802827966,
+        "balanced_accuracy": 0.9032062906644776,
+        "f1": 0.8657142857142858,
+        "mcc": 0.8150418018201753,
+        "auroc": 0.9708349160060283,
+        "auprc": 0.9367920502770657
+      },
+      "delta": {
+        "accuracy": -0.0070699135899450205,
+        "balanced_accuracy": -0.004048068322448528,
+        "f1": -0.010918515446817212,
+        "mcc": -0.016759049174031815,
+        "auroc": 0.001347824488745486,
+        "auprc": 0.0042958186349060234
+      },
+      "challenger_wins_mcc": false
+    },
+    {
+      "fold": 3,
+      "baseline_threshold": 0.043724,
+      "challenger_threshold": 0.406446,
+      "baseline": {
+        "accuracy": 0.9295120061967467,
+        "balanced_accuracy": 0.9197212045393619,
+        "f1": 0.8768606224627875,
+        "mcc": 0.8279511100779872,
+        "auroc": 0.9648586661900931,
+        "auprc": 0.9394519813819671
+      },
+      "challenger": {
+        "accuracy": 0.9364833462432223,
+        "balanced_accuracy": 0.9169332499329819,
+        "f1": 0.8848314606741573,
+        "mcc": 0.8411512929769398,
+        "auroc": 0.9707890268966134,
+        "auprc": 0.9490976841419613
+      },
+      "delta": {
+        "accuracy": 0.006971340046475594,
+        "balanced_accuracy": -0.0027879546063800387,
+        "f1": 0.00797083821136979,
+        "mcc": 0.01320018289895264,
+        "auroc": 0.00593036070652031,
+        "auprc": 0.009645702759994212
+      },
+      "challenger_wins_mcc": true
+    },
+    {
+      "fold": 4,
+      "baseline_threshold": 0.52,
+      "challenger_threshold": 0.559906,
+      "baseline": {
+        "accuracy": 0.9229024943310657,
+        "balanced_accuracy": 0.9052537127322564,
+        "f1": 0.8643617021276596,
+        "mcc": 0.8105074254645128,
+        "auroc": 0.9589886315127278,
+        "auprc": 0.9019569194340813
+      },
+      "challenger": {
+        "accuracy": 0.9198790627362056,
+        "balanced_accuracy": 0.9031417803140938,
+        "f1": 0.8597883597883598,
+        "mcc": 0.8037279517425759,
+        "auroc": 0.9628333595452606,
+        "auprc": 0.919126093443519
+      },
+      "delta": {
+        "accuracy": -0.003023431594860182,
+        "balanced_accuracy": -0.002111932418162654,
+        "f1": -0.004573342339299846,
+        "mcc": -0.0067794737219368795,
+        "auroc": 0.0038447280325327737,
+        "auprc": 0.017169174009437738
+      },
+      "challenger_wins_mcc": false
+    }
+  ],
+  "baseline_mean_sd": {
+    "accuracy": {
+      "mean": 0.9260637231239326,
+      "sample_sd": 0.00566645774846135
+    },
+    "balanced_accuracy": {
+      "mean": 0.9033419530448379,
+      "sample_sd": 0.012837221634219999
+    },
+    "f1": {
+      "mean": 0.867494351681605,
+      "sample_sd": 0.008656749718544339
+    },
+    "mcc": {
+      "mean": 0.8178753410378838,
+      "sample_sd": 0.011991820656681156
+    },
+    "auroc": {
+      "mean": 0.966052499709186,
+      "sample_sd": 0.004768830568921914
+    },
+    "auprc": {
+      "mean": 0.9307638412705195,
+      "sample_sd": 0.017125657422933132
+    }
+  },
+  "challenger_mean_sd": {
+    "accuracy": {
+      "mean": 0.9250708340942129,
+      "sample_sd": 0.010290683688698938
+    },
+    "balanced_accuracy": {
+      "mean": 0.9029456311987696,
+      "sample_sd": 0.019113416898740628
+    },
+    "f1": {
+      "mean": 0.8658614351224468,
+      "sample_sd": 0.019988555686828093
+    },
+    "mcc": {
+      "mean": 0.8148751474569647,
+      "sample_sd": 0.025203547600690674
+    },
+    "auroc": {
+      "mean": 0.9683595067222122,
+      "sample_sd": 0.005189176540308662
+    },
+    "auprc": {
+      "mean": 0.9349030655204997,
+      "sample_sd": 0.013527534822609797
+    }
+  },
+  "mean_delta": {
+    "accuracy": -0.0009928890297197235,
+    "balanced_accuracy": -0.0003963218460683038,
+    "f1": -0.001632916559158204,
+    "mcc": -0.003000193580919186,
+    "auroc": 0.0023070070130261078,
+    "auprc": 0.004139224249980256
+  },
+  "mcc_winning_folds": 2,
+  "adoption_checks": {
+    "mean_mcc_gain_at_least_0.005": false,
+    "mean_auprc_drop_no_more_than_0.003": true,
+    "wins_at_least_3_of_5_folds": false
+  },
+  "advance_to_next_priority": false
+}

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+from functools import partial
 from pathlib import Path
 from typing import Any
 
@@ -11,6 +12,8 @@ from torch import nn
 from torch.utils.data import DataLoader, Subset, random_split
 
 from ghxtox.data import PeptideTensorDataset, collate_peptides, validate_plm_feature_dim
+from ghxtox.folds import load_fold_indices
+from ghxtox.nested_folds import load_nested_indices
 from ghxtox.metrics import binary_metrics
 from ghxtox.models import GHXToxModel
 from ghxtox.utils import (
@@ -30,9 +33,32 @@ def _make_loaders(
     batch_size: int,
     val_fraction: float,
     seed: int,
+    fold_manifest: str | Path | None = None,
+    validation_fold: int = 0,
+    nested_manifest: str | Path | None = None,
+    outer_fold: int = 0,
+    modality: str = "fusion",
 ) -> tuple[DataLoader, DataLoader]:
     train_dataset = PeptideTensorDataset(train_path, require_labels=True)
-    if val_path:
+    if fold_manifest and nested_manifest:
+        raise ValueError("--fold-manifest and --nested-manifest are mutually exclusive.")
+    if nested_manifest:
+        if val_path:
+            raise ValueError("--val and --nested-manifest are mutually exclusive.")
+        roles = load_nested_indices(nested_manifest, outer_fold, len(train_dataset))
+        source_dataset = train_dataset
+        train_dataset = Subset(source_dataset, roles["train"])
+        val_dataset = Subset(source_dataset, roles["validation"])
+    elif fold_manifest:
+        if val_path:
+            raise ValueError("--val and --fold-manifest are mutually exclusive.")
+        train_indices, val_indices = load_fold_indices(
+            fold_manifest, validation_fold, len(train_dataset)
+        )
+        source_dataset = train_dataset
+        train_dataset = Subset(source_dataset, train_indices)
+        val_dataset = Subset(source_dataset, val_indices)
+    elif val_path:
         val_dataset = PeptideTensorDataset(val_path, require_labels=True)
     else:
         val_size = max(1, int(round(len(train_dataset) * val_fraction)))
@@ -40,17 +66,27 @@ def _make_loaders(
         generator = torch.Generator().manual_seed(seed)
         train_dataset, val_dataset = random_split(train_dataset, [train_size, val_size], generator=generator)
 
+    modality = modality.lower()
+    include_structure = modality not in {"sequence_only", "atom_only", "sequence_atom"}
+    include_atom = modality in {
+        "atom_only", "sequence_atom", "fusion_atom_residual", "residual_experts"
+    }
+    collate_fn = partial(
+        collate_peptides,
+        include_structure=include_structure,
+        include_atom=include_atom,
+    )
     train_loader = DataLoader(
         train_dataset,
         batch_size=batch_size,
         shuffle=True,
-        collate_fn=collate_peptides,
+        collate_fn=collate_fn,
     )
     val_loader = DataLoader(
         val_dataset,
         batch_size=batch_size,
         shuffle=False,
-        collate_fn=collate_peptides,
+        collate_fn=collate_fn,
     )
     return train_loader, val_loader
 
@@ -216,6 +252,8 @@ def _run_epoch(
     contrastive_weight: float = 0.0,
     contrastive_temperature: float = 0.2,
     atom_residual_l1: float = 0.0,
+    residual_base_aux_weight: float = 0.0,
+    residual_delta_l1: float = 0.0,
 ) -> dict[str, Any]:
     training = optimizer is not None
     model.train(training)
@@ -236,6 +274,11 @@ def _run_epoch(
         output = model(batch)
         logits = output["logits"]
         loss = criterion(logits, labels)
+        if residual_base_aux_weight > 0.0 and "base_logits" in output:
+            loss = loss + residual_base_aux_weight * criterion(output["base_logits"], labels)
+        if residual_delta_l1 > 0.0 and "atom_delta" in output and "spatial_delta" in output:
+            residual_size = output["atom_delta"].abs().mean() + output["spatial_delta"].abs().mean()
+            loss = loss + residual_delta_l1 * residual_size
         if training and atom_residual_l1 > 0.0 and "atom_residual_weight" in output:
             loss = loss + atom_residual_l1 * output["atom_residual_weight"].abs()
         if training and contrastive_weight > 0.0:
@@ -277,6 +320,11 @@ def train(config: dict, args: argparse.Namespace) -> Path:
         batch_size=int(args.batch_size or train_cfg["batch_size"]),
         val_fraction=float(train_cfg.get("val_fraction", 0.15)),
         seed=int(config.get("seed", 42)),
+        fold_manifest=args.fold_manifest,
+        validation_fold=args.fold,
+        nested_manifest=args.nested_manifest,
+        outer_fold=args.outer_fold,
+        modality=str(config.get("model", {}).get("modality", "fusion")),
     )
     required_plm_dim = int(config.get("model", {}).get("plm_embedding_dim", 0))
     _validate_loader_plm_features(train_loader, required_plm_dim, args.train)
@@ -296,6 +344,78 @@ def train(config: dict, args: argparse.Namespace) -> Path:
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
     save_json(config, output_dir / "config.json")
+
+    if args.full_data_epochs is not None:
+        if args.val or args.fold_manifest or args.nested_manifest:
+            raise ValueError("--full-data-epochs cannot be combined with validation manifests.")
+        sequence_only = str(config.get("model", {}).get("modality", "fusion")).lower() == "sequence_only"
+        full_dataset = PeptideTensorDataset(args.train, require_labels=True)
+        full_loader = DataLoader(
+            full_dataset,
+            batch_size=int(args.batch_size or train_cfg["batch_size"]),
+            shuffle=True,
+            collate_fn=partial(
+                collate_peptides,
+                include_structure=not sequence_only,
+                include_atom=not sequence_only,
+            ),
+        )
+        _validate_loader_plm_features(full_loader, required_plm_dim, args.train)
+        full_pos_weight = _pos_weight(full_loader, args.pos_weight or train_cfg.get("pos_weight", "auto"))
+        if full_pos_weight is not None:
+            full_pos_weight = full_pos_weight.to(device)
+        criterion = _make_criterion(train_cfg, full_pos_weight)
+        optimizer = torch.optim.AdamW(
+            model.parameters(),
+            lr=float(args.learning_rate or train_cfg["learning_rate"]),
+            weight_decay=float(train_cfg.get("weight_decay", 0.0)),
+        )
+        fixed_epochs = int(args.full_data_epochs)
+        if fixed_epochs <= 0:
+            raise ValueError("--full-data-epochs must be positive.")
+        history = []
+        coord_noise_std = float(train_cfg.get("coord_noise_std", 0.0))
+        coord_noise_plddt_scale = float(train_cfg.get("coord_noise_plddt_scale", 0.0))
+        contrastive_weight = float(train_cfg.get("contrastive_weight", 0.0))
+        contrastive_temperature = float(train_cfg.get("contrastive_temperature", 0.2))
+        atom_residual_l1 = float(train_cfg.get("atom_residual_l1", 0.0))
+        for epoch in range(1, fixed_epochs + 1):
+            train_metrics = _run_epoch(
+                model,
+                full_loader,
+                criterion,
+                device,
+                optimizer,
+                coord_noise_std=coord_noise_std,
+                coord_noise_plddt_scale=coord_noise_plddt_scale,
+                contrastive_weight=contrastive_weight,
+                contrastive_temperature=contrastive_temperature,
+                atom_residual_l1=atom_residual_l1,
+            )
+            history.append({"epoch": epoch, "train": train_metrics})
+            print(
+                f"epoch={epoch:03d} train_loss={train_metrics['loss']:.4f} "
+                f"train_auprc={train_metrics['auprc']:.4f} train_mcc={train_metrics['mcc']:.4f}"
+            )
+        best_path = output_dir / "best_model.pt"
+        torch.save(
+            {
+                "model_state": model.state_dict(),
+                "config": config,
+                "epoch": fixed_epochs,
+                "train_metrics": history[-1]["train"],
+                "monitor": "fixed_epoch_full_data_refit",
+                "refit_protocol": {
+                    "full_training_data": True,
+                    "fixed_epochs": fixed_epochs,
+                    "epoch_source": "median best epoch from fixed group-aware cross-validation",
+                },
+            },
+            best_path,
+        )
+        save_json({"history": history}, output_dir / "history.json")
+        print(f"Full-data fixed-epoch checkpoint saved to {best_path}")
+        return best_path
 
     monitor = args.monitor or train_cfg.get("monitor", "loss")
     monitor_modes = {
@@ -321,6 +441,8 @@ def train(config: dict, args: argparse.Namespace) -> Path:
     contrastive_weight = float(train_cfg.get("contrastive_weight", 0.0))
     contrastive_temperature = float(train_cfg.get("contrastive_temperature", 0.2))
     atom_residual_l1 = float(train_cfg.get("atom_residual_l1", 0.0))
+    residual_base_aux_weight = float(train_cfg.get("residual_base_aux_weight", 0.0))
+    residual_delta_l1 = float(train_cfg.get("residual_delta_l1", 0.0))
 
     for epoch in range(1, epochs + 1):
         train_metrics = _run_epoch(
@@ -334,6 +456,8 @@ def train(config: dict, args: argparse.Namespace) -> Path:
             contrastive_weight=contrastive_weight,
             contrastive_temperature=contrastive_temperature,
             atom_residual_l1=atom_residual_l1,
+            residual_base_aux_weight=residual_base_aux_weight,
+            residual_delta_l1=residual_delta_l1,
         )
         with torch.no_grad():
             val_metrics = _run_epoch(model, val_loader, criterion, device, optimizer=None)
@@ -381,6 +505,10 @@ def build_arg_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Train GHXTox.")
     parser.add_argument("--train", default=DEFAULT_TRAIN_PROCESSED, help="Preprocessed training .pt file.")
     parser.add_argument("--val", default=None, help="Optional preprocessed validation .pt file.")
+    parser.add_argument("--fold-manifest", default=None, help="Fixed fold CSV created by ghxtox.folds.")
+    parser.add_argument("--fold", type=int, default=0, help="Validation fold used with --fold-manifest.")
+    parser.add_argument("--nested-manifest", default=None, help="Nested role manifest created by ghxtox.nested_folds.")
+    parser.add_argument("--outer-fold", type=int, default=0, help="Outer fold used with --nested-manifest.")
     parser.add_argument("--config", default="configs/default.json")
     parser.add_argument("--output-dir", default="runs/plm_sequence_only_esm2_mcc")
     parser.add_argument("--device", default=DEFAULT_DEVICE)
@@ -388,6 +516,12 @@ def build_arg_parser() -> argparse.ArgumentParser:
     parser.add_argument("--batch-size", type=int, default=None)
     parser.add_argument("--learning-rate", type=float, default=None)
     parser.add_argument("--pos-weight", default=None, help="'auto', 'none', or a numeric weight.")
+    parser.add_argument(
+        "--full-data-epochs",
+        type=int,
+        default=None,
+        help="Refit on all training records for a fixed CV-selected number of epochs.",
+    )
     parser.add_argument(
         "--monitor",
         choices=["loss", "accuracy", "balanced_accuracy", "precision", "recall", "f1", "mcc", "auroc", "auprc"],

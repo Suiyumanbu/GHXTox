@@ -1,0 +1,43 @@
+{
+  "protocol": {
+    "method": "biopython_global_alignment_audit",
+    "identity_definition": "identical_aligned_residues / shorter_sequence_length",
+    "match_score": 2.0,
+    "mismatch_score": -1.0,
+    "open_gap_score": -2.0,
+    "extend_gap_score": -0.5,
+    "candidate_filter": "shared_2mer",
+    "thresholds": [
+      0.9,
+      0.8
+    ],
+    "note": "Pre-audit compatible with high-identity screening; not a native CD-HIT run."
+  },
+  "summary": {
+    "num_train": 6387,
+    "num_query": 582,
+    "exact_train_matches": 5,
+    "thresholds": {
+      "0.9": {
+        "high_similarity": 76,
+        "high_similarity_positive": 11,
+        "high_similarity_negative": 65,
+        "high_similarity_label_match": 66,
+        "high_similarity_label_conflict": 10,
+        "retained": 506,
+        "retained_positive": 35,
+        "retained_negative": 471
+      },
+      "0.8": {
+        "high_similarity": 374,
+        "high_similarity_positive": 31,
+        "high_similarity_negative": 343,
+        "high_similarity_label_match": 334,
+        "high_similarity_label_conflict": 40,
+        "retained": 208,
+        "retained_positive": 15,
+        "retained_negative": 193
+      }
+    }
+  }
+}

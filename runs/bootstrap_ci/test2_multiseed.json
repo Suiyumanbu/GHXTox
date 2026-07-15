@@ -1,0 +1,203 @@
+{
+  "protocol": {
+    "method": "stratified_percentile_bootstrap",
+    "aggregate_method": "hierarchical_seed_then_stratified_sample_bootstrap",
+    "iterations": 5000,
+    "confidence": 0.95,
+    "random_seed": 2026,
+    "threshold": 0.85,
+    "num_samples": 582,
+    "num_positive": 46,
+    "num_negative": 536,
+    "num_model_seeds": 3
+  },
+  "runs": [
+    {
+      "path": "runs\\plm_fusion_esm2_geometry_confidence\\test2_predictions.csv",
+      "point_estimate": {
+        "accuracy": 0.9398625429553265,
+        "balanced_accuracy": 0.8481099935107073,
+        "precision": 0.5964912280701754,
+        "recall": 0.7391304347826086,
+        "f1": 0.6601941747572816,
+        "mcc": 0.6319616407362544,
+        "auroc": 0.9316190785204412,
+        "auprc": 0.6969214430828964
+      },
+      "confidence_interval": {
+        "accuracy": {
+          "lower": 0.9192439862542955,
+          "upper": 0.9587628865979382
+        },
+        "balanced_accuracy": {
+          "lower": 0.780094094743673,
+          "upper": 0.9105288773523685
+        },
+        "precision": {
+          "lower": 0.4929526433966116,
+          "upper": 0.7090909090909091
+        },
+        "recall": {
+          "lower": 0.6086956521739131,
+          "upper": 0.8695652173913043
+        },
+        "f1": {
+          "lower": 0.5607476635514019,
+          "upper": 0.7551434087148367
+        },
+        "mcc": {
+          "lower": 0.5234932634611597,
+          "upper": 0.7383442323466811
+        },
+        "auroc": {
+          "lower": 0.8928039828033743,
+          "upper": 0.965365428293316
+        },
+        "auprc": {
+          "lower": 0.5784175959467007,
+          "upper": 0.8114370283008118
+        }
+      }
+    },
+    {
+      "path": "runs\\plm_fusion_esm2_geometry_confidence_seed123\\test2_predictions.csv",
+      "point_estimate": {
+        "accuracy": 0.9347079037800687,
+        "balanced_accuracy": 0.7956278390655418,
+        "precision": 0.58,
+        "recall": 0.6304347826086957,
+        "f1": 0.6041666666666666,
+        "mcc": 0.5692405333462481,
+        "auroc": 0.9237508111615834,
+        "auprc": 0.6216893335648891
+      },
+      "confidence_interval": {
+        "accuracy": {
+          "lower": 0.915807560137457,
+          "upper": 0.9536082474226805
+        },
+        "balanced_accuracy": {
+          "lower": 0.7223393900064893,
+          "upper": 0.8642602206359506
+        },
+        "precision": {
+          "lower": 0.4716981132075472,
+          "upper": 0.7058823529411765
+        },
+        "recall": {
+          "lower": 0.4782608695652174,
+          "upper": 0.7608695652173914
+        },
+        "f1": {
+          "lower": 0.49461761507792684,
+          "upper": 0.7115384615384616
+        },
+        "mcc": {
+          "lower": 0.45019725495898766,
+          "upper": 0.6891104168590833
+        },
+        "auroc": {
+          "lower": 0.8858695652173914,
+          "upper": 0.9574175657040882
+        },
+        "auprc": {
+          "lower": 0.48989701433633187,
+          "upper": 0.76090656053204
+        }
+      }
+    },
+    {
+      "path": "runs\\plm_fusion_esm2_geometry_confidence_seed2025\\test2_predictions.csv",
+      "point_estimate": {
+        "accuracy": 0.9278350515463918,
+        "balanced_accuracy": 0.781959766385464,
+        "precision": 0.5384615384615384,
+        "recall": 0.6086956521739131,
+        "f1": 0.5714285714285715,
+        "mcc": 0.5333825972531377,
+        "auroc": 0.9120295262816352,
+        "auprc": 0.5881900291345237
+      },
+      "confidence_interval": {
+        "accuracy": {
+          "lower": 0.9072164948453608,
+          "upper": 0.9467353951890034
+        },
+        "balanced_accuracy": {
+          "lower": 0.7083316434133681,
+          "upper": 0.8518413367942894
+        },
+        "precision": {
+          "lower": 0.42857142857142855,
+          "upper": 0.6590909090909091
+        },
+        "recall": {
+          "lower": 0.45652173913043476,
+          "upper": 0.7391304347826086
+        },
+        "f1": {
+          "lower": 0.45652173913043476,
+          "upper": 0.6804123711340206
+        },
+        "mcc": {
+          "lower": 0.40987994808565864,
+          "upper": 0.6526364934599134
+        },
+        "auroc": {
+          "lower": 0.8652244889682024,
+          "upper": 0.952631205386113
+        },
+        "auprc": {
+          "lower": 0.4588149986940732,
+          "upper": 0.7289856636575414
+        }
+      }
+    }
+  ],
+  "aggregate": {
+    "point_estimate": {
+      "accuracy": 0.9341351660939289,
+      "balanced_accuracy": 0.808565866320571,
+      "precision": 0.571650922177238,
+      "recall": 0.6594202898550724,
+      "f1": 0.6119298042841733,
+      "mcc": 0.5781949237785468,
+      "auroc": 0.9224664719878866,
+      "auprc": 0.635600268594103
+    },
+    "confidence_interval": {
+      "accuracy": {
+        "lower": 0.9123711340206185,
+        "upper": 0.9553264604810997
+      },
+      "balanced_accuracy": {
+        "lower": 0.7238805970149254,
+        "upper": 0.8934539260220635
+      },
+      "precision": {
+        "lower": 0.45311762971698116,
+        "upper": 0.6976744186046512
+      },
+      "recall": {
+        "lower": 0.5,
+        "upper": 0.8260869565217391
+      },
+      "f1": {
+        "lower": 0.48543689320388345,
+        "upper": 0.7311827956989247
+      },
+      "mcc": {
+        "lower": 0.44193674642728537,
+        "upper": 0.7108812486152436
+      },
+      "auroc": {
+        "lower": 0.8766420952303697,
+        "upper": 0.959890087605451
+      },
+      "auprc": {
+        "lower": 0.4841496272883499,
+        "upper": 0.7884634989832262
+      }
+    }
+  }
+}

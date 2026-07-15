@@ -1,0 +1,44 @@
+{
+  "protocol": {
+    "checkpoint": "runs/plm_fusion_esm2_geometry_confidence/best_model.pt",
+    "threshold": 0.85,
+    "test1_predictions": "runs\\plm_fusion_esm2_geometry_confidence\\test1_predictions.csv",
+    "test2_predictions": "runs\\plm_fusion_esm2_geometry_confidence\\test2_predictions.csv"
+  },
+  "test1": {
+    "confusion_matrix": [
+      [
+        777,
+        29
+      ],
+      [
+        41,
+        279
+      ]
+    ],
+    "auroc": 0.9699499844913152,
+    "auprc": 0.9426273139865955,
+    "prevalence": 0.2841918294849023,
+    "num_samples": 1126,
+    "num_positive": 320,
+    "num_negative": 806
+  },
+  "test2": {
+    "confusion_matrix": [
+      [
+        513,
+        23
+      ],
+      [
+        12,
+        34
+      ]
+    ],
+    "auroc": 0.9316190785204412,
+    "auprc": 0.6969214430828964,
+    "prevalence": 0.07903780068728522,
+    "num_samples": 582,
+    "num_positive": 46,
+    "num_negative": 536
+  }
+}

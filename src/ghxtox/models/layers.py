@@ -111,6 +111,108 @@ class SequenceBranch(nn.Module):
         return self.norm(self.dropout(h))
 
 
+class SequenceMultiscaleBranch(nn.Module):
+    """ESM2-aware 1D branch with optional multi-scale CNN, BiLSTM and residual."""
+
+    def __init__(
+        self,
+        vocab_size: int,
+        group_size: int,
+        residue_feature_dim: int,
+        plm_embedding_dim: int,
+        aa_embedding_dim: int,
+        group_embedding_dim: int,
+        hidden_dim: int,
+        dropout: float,
+        kernels: tuple[int, ...] = (3, 5, 7),
+        use_multiscale: bool = True,
+        use_bilstm: bool = True,
+        use_residual: bool = True,
+        max_positions: int = 512,
+    ) -> None:
+        super().__init__()
+        if hidden_dim % 2:
+            raise ValueError("SequenceMultiscaleBranch requires an even hidden_dim.")
+        self.plm_embedding_dim = max(int(plm_embedding_dim), 0)
+        self.use_multiscale = bool(use_multiscale)
+        self.use_bilstm = bool(use_bilstm)
+        self.use_residual = bool(use_residual)
+        self.aa_embedding = nn.Embedding(vocab_size, aa_embedding_dim, padding_idx=0)
+        self.group_embedding = nn.Embedding(group_size, group_embedding_dim, padding_idx=0)
+        self.plm_projection = (
+            nn.Sequential(nn.LayerNorm(self.plm_embedding_dim), nn.Linear(self.plm_embedding_dim, hidden_dim), nn.GELU())
+            if self.plm_embedding_dim > 0
+            else None
+        )
+        projected_plm_dim = hidden_dim if self.plm_projection is not None else 0
+        self.input_projection = nn.Linear(
+            aa_embedding_dim + group_embedding_dim + residue_feature_dim + projected_plm_dim,
+            hidden_dim,
+        )
+        self.position_embedding = nn.Embedding(max_positions, hidden_dim)
+        self.input_norm = nn.LayerNorm(hidden_dim)
+        self.convolutions = nn.ModuleList(
+            [nn.Conv1d(hidden_dim, hidden_dim, kernel, padding=kernel // 2) for kernel in kernels]
+        ) if self.use_multiscale else nn.ModuleList()
+        self.conv_norm = nn.LayerNorm(hidden_dim)
+        self.bilstm = (
+            nn.LSTM(hidden_dim, hidden_dim // 2, batch_first=True, bidirectional=True)
+            if self.use_bilstm
+            else None
+        )
+        self.output_norm = nn.LayerNorm(hidden_dim)
+        self.dropout = nn.Dropout(dropout)
+
+    def forward(
+        self,
+        aa_ids: torch.Tensor,
+        group_ids: torch.Tensor,
+        residue_features: torch.Tensor,
+        mask: torch.Tensor,
+        plm_features: torch.Tensor | None = None,
+    ) -> torch.Tensor:
+        parts = [self.aa_embedding(aa_ids), self.group_embedding(group_ids), residue_features]
+        if self.plm_projection is not None:
+            if plm_features is None:
+                plm_features = residue_features.new_zeros(
+                    (*residue_features.shape[:2], self.plm_embedding_dim)
+                )
+            if plm_features.shape[-1] != self.plm_embedding_dim:
+                raise ValueError(
+                    f"Expected PLM embedding dim {self.plm_embedding_dim}, got {plm_features.shape[-1]}."
+                )
+            parts.append(self.plm_projection(plm_features.to(dtype=residue_features.dtype)))
+        base = self.input_projection(torch.cat(parts, dim=-1))
+        positions = torch.arange(base.shape[1], device=base.device).clamp_max(
+            self.position_embedding.num_embeddings - 1
+        )
+        base = self.input_norm(base + self.position_embedding(positions).unsqueeze(0))
+        base = base * mask.unsqueeze(-1)
+
+        if self.use_multiscale:
+            channels = base.transpose(1, 2)
+            scales = [torch.nn.functional.gelu(conv(channels)).transpose(1, 2) for conv in self.convolutions]
+            conv_output = self.conv_norm(torch.stack(scales, dim=0).mean(dim=0))
+            conv_output = conv_output * mask.unsqueeze(-1)
+        else:
+            conv_output = base
+
+        if self.bilstm is not None:
+            lengths = mask.sum(dim=1).to("cpu")
+            packed = nn.utils.rnn.pack_padded_sequence(
+                conv_output, lengths, batch_first=True, enforce_sorted=False
+            )
+            packed_output, _ = self.bilstm(packed)
+            recurrent, _ = nn.utils.rnn.pad_packed_sequence(
+                packed_output, batch_first=True, total_length=mask.shape[1]
+            )
+            output = recurrent + conv_output if self.use_residual else recurrent
+        else:
+            output = conv_output
+        output = self.output_norm(self.dropout(output))
+        return output * mask.unsqueeze(-1)
+
+
 class PLDDTAwareEGNNLayer(nn.Module):
     def __init__(
         self,

@@ -13,7 +13,18 @@ import numpy as np
 from sklearn.metrics import average_precision_score, roc_auc_score
 
 
-METRIC_NAMES = ("accuracy", "balanced_accuracy", "precision", "recall", "f1", "mcc", "auroc", "auprc")
+METRIC_NAMES = (
+    "accuracy",
+    "balanced_accuracy",
+    "precision",
+    "recall",
+    "f1",
+    "mcc",
+    "auroc",
+    "auprc",
+    "brier",
+    "ece_10",
+)
 
 
 def _load_predictions(path: str | Path) -> dict[str, Any]:
@@ -46,6 +57,17 @@ def _metrics(labels: np.ndarray, probabilities: np.ndarray, threshold: float) ->
     specificity = tn / max(tn + fp, 1.0)
     f1 = 2.0 * precision * recall / max(precision + recall, 1e-12)
     denominator = math.sqrt(max((tp + fp) * (tp + fn) * (tn + fp) * (tn + fn), 1.0))
+    ece = 0.0
+    for lower in np.linspace(0.0, 0.9, 10):
+        upper = lower + 0.1
+        selected = (probabilities >= lower) & (
+            probabilities < upper if upper < 1.0 else probabilities <= upper
+        )
+        if np.any(selected):
+            ece += float(
+                np.mean(selected)
+                * abs(float(np.mean(probabilities[selected])) - float(np.mean(labels[selected])))
+            )
     return {
         "accuracy": (tp + tn) / max(tp + tn + fp + fn, 1.0),
         "balanced_accuracy": 0.5 * (recall + specificity),
@@ -55,6 +77,8 @@ def _metrics(labels: np.ndarray, probabilities: np.ndarray, threshold: float) ->
         "mcc": (tp * tn - fp * fn) / denominator,
         "auroc": float(roc_auc_score(labels, probabilities)),
         "auprc": float(average_precision_score(labels, probabilities)),
+        "brier": float(np.mean((probabilities - labels) ** 2)),
+        "ece_10": ece,
     }
 
 
@@ -169,7 +193,7 @@ def main() -> None:
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
     print(f"Bootstrap confidence intervals saved to {output_path}")
-    for name in ("mcc", "f1", "auroc", "auprc"):
+    for name in ("mcc", "f1", "auroc", "auprc", "brier", "ece_10"):
         point = result["aggregate"]["point_estimate"][name]
         interval = result["aggregate"]["confidence_interval"][name]
         print(f"{name}: {point:.6f} [{interval['lower']:.6f}, {interval['upper']:.6f}]")

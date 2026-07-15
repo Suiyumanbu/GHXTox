@@ -1,0 +1,14 @@
+{
+  "accuracy": 0.9316163410301954,
+  "balanced_accuracy": 0.9164314516129033,
+  "precision": 0.8785046728971962,
+  "recall": 0.88125,
+  "f1": 0.8798751950078003,
+  "mcc": 0.8320809364990462,
+  "auroc": 0.9693083126550869,
+  "auprc": 0.9418878467629317,
+  "threshold": 0.5,
+  "mean_global_gate": 0.0,
+  "num_samples": 1126.0,
+  "checkpoint_epoch": 6.0
+}

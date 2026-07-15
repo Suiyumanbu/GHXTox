@@ -1,0 +1,27 @@
+{
+  "protocol": {
+    "oof_screen_passed": true,
+    "frozen_threshold": 0.5449999570846558,
+    "test_labels_used_for_fitting_or_tuning": false
+  },
+  "external_results": {
+    "test1": {
+      "mcc": 0.8451031803413047,
+      "f1": 0.8870967741935484,
+      "auprc": 0.9504903609102173
+    },
+    "test2": {
+      "mcc": 0.622688889428433,
+      "f1": 0.6530612244897959,
+      "auprc": 0.7111174277836886
+    }
+  },
+  "frozen_default_test2": {
+    "mcc": 0.632,
+    "f1": 0.6602,
+    "auprc": 0.6969
+  },
+  "adopt_as_default_classifier": false,
+  "retain_as_uncertainty_analysis": true,
+  "reason": "The router improved ranking and calibration, but its frozen test2 MCC and F1 did not exceed the frozen 3D default. No test-based router retuning is allowed."
+}

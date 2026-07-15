@@ -1,0 +1,143 @@
+{
+  "protocol": {
+    "prediction_files": [
+      "runs\\triroute_confidence_final\\test1_1d.csv",
+      "runs\\triroute_confidence_final\\test1_2d.csv",
+      "runs\\triroute_confidence_final\\test1_3d.csv"
+    ],
+    "router_summary": "runs\\triroute_confidence_oof\\summary.json",
+    "threshold": 0.5449999570846558,
+    "test_labels_used_for_fitting": false
+  },
+  "dynamic_router_at_frozen_threshold": {
+    "accuracy": 0.9378330373001776,
+    "balanced_accuracy": 0.9141788151364765,
+    "precision": 0.9166666666666666,
+    "recall": 0.859375,
+    "f1": 0.8870967741935484,
+    "mcc": 0.8451031803413047,
+    "auroc": 0.9750581575682382,
+    "auprc": 0.9504903609102173
+  },
+  "dynamic_router_at_0.5": {
+    "accuracy": 0.9369449378330373,
+    "balanced_accuracy": 0.9163849255583127,
+    "precision": 0.9055374592833876,
+    "recall": 0.86875,
+    "f1": 0.886762360446571,
+    "mcc": 0.8434442180351022,
+    "auroc": 0.9750581575682382,
+    "auprc": 0.9504903609102173
+  },
+  "dynamic_calibration": {
+    "brier": 0.04855100065469742,
+    "ece_10": 0.017610788898309693
+  },
+  "uniform_mean_at_frozen_threshold": {
+    "accuracy": 0.9378330373001776,
+    "balanced_accuracy": 0.9151209677419355,
+    "precision": 0.9139072847682119,
+    "recall": 0.8625,
+    "f1": 0.8874598070739551,
+    "mcc": 0.8452401112844763,
+    "auroc": 0.9753140508684863,
+    "auprc": 0.950113130863891
+  },
+  "uniform_mean_at_0.5": {
+    "accuracy": 0.9387211367673179,
+    "balanced_accuracy": 0.9185677729528536,
+    "precision": 0.9087947882736156,
+    "recall": 0.871875,
+    "f1": 0.8899521531100477,
+    "mcc": 0.8478658718961536,
+    "auroc": 0.9753140508684863,
+    "auprc": 0.950113130863891
+  },
+  "uniform_calibration": {
+    "brier": 0.04950008913874626,
+    "ece_10": 0.029625273658894002
+  },
+  "mean_weights": {
+    "one_dimensional": 0.33122268319129944,
+    "two_dimensional": 0.26282116770744324,
+    "three_dimensional": 0.4059561491012573
+  },
+  "mean_confidence": {
+    "one_dimensional": 0.8792880773544312,
+    "two_dimensional": 0.8487806916236877,
+    "three_dimensional": 0.9081721305847168
+  },
+  "mean_overall_confidence": 0.8961743116378784
+}
+{
+  "protocol": {
+    "prediction_files": [
+      "runs\\triroute_confidence_final\\test2_1d.csv",
+      "runs\\triroute_confidence_final\\test2_2d.csv",
+      "runs\\triroute_confidence_final\\test2_3d.csv"
+    ],
+    "router_summary": "runs\\triroute_confidence_oof\\summary.json",
+    "threshold": 0.5449999570846558,
+    "test_labels_used_for_fitting": false
+  },
+  "dynamic_router_at_frozen_threshold": {
+    "accuracy": 0.9415807560137457,
+    "balanced_accuracy": 0.8291693705386113,
+    "precision": 0.6153846153846154,
+    "recall": 0.6956521739130435,
+    "f1": 0.6530612244897959,
+    "mcc": 0.622688889428433,
+    "auroc": 0.9356343283582089,
+    "auprc": 0.7111174277836886
+  },
+  "dynamic_router_at_0.5": {
+    "accuracy": 0.9398625429553265,
+    "balanced_accuracy": 0.8381732641142116,
+    "precision": 0.6,
+    "recall": 0.717391304347826,
+    "f1": 0.6534653465346534,
+    "mcc": 0.6237979215906021,
+    "auroc": 0.9356343283582089,
+    "auprc": 0.7111174277836886
+  },
+  "dynamic_calibration": {
+    "brier": 0.04939943179488182,
+    "ece_10": 0.05859244160819799
+  },
+  "uniform_mean_at_frozen_threshold": {
+    "accuracy": 0.9415807560137457,
+    "balanced_accuracy": 0.839106099935107,
+    "precision": 0.6111111111111112,
+    "recall": 0.717391304347826,
+    "f1": 0.6599999999999999,
+    "mcc": 0.6306858208296736,
+    "auroc": 0.9346203763789747,
+    "auprc": 0.7023379806114871
+  },
+  "uniform_mean_at_0.5": {
+    "accuracy": 0.9398625429553265,
+    "balanced_accuracy": 0.8381732641142116,
+    "precision": 0.6,
+    "recall": 0.717391304347826,
+    "f1": 0.6534653465346534,
+    "mcc": 0.6237979215906021,
+    "auroc": 0.9346203763789747,
+    "auprc": 0.7023379806114871
+  },
+  "uniform_calibration": {
+    "brier": 0.05095508694648743,
+    "ece_10": 0.06918993138242513
+  },
+  "mean_weights": {
+    "one_dimensional": 0.3349219858646393,
+    "two_dimensional": 0.2635718286037445,
+    "three_dimensional": 0.4015062153339386
+  },
+  "mean_confidence": {
+    "one_dimensional": 0.883313775062561,
+    "two_dimensional": 0.8516927361488342,
+    "three_dimensional": 0.9072283506393433
+  },
+  "mean_overall_confidence": 0.8978413939476013
+}
+FROZEN TRIROUTE EXTERNAL EVALUATION COMPLETE

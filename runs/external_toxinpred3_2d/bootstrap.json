@@ -1,0 +1,129 @@
+{
+  "protocol": {
+    "method": "stratified_percentile_bootstrap",
+    "aggregate_method": "hierarchical_seed_then_stratified_sample_bootstrap",
+    "iterations": 5000,
+    "confidence": 0.95,
+    "random_seed": 2026,
+    "threshold": 0.25,
+    "num_samples": 977,
+    "num_positive": 471,
+    "num_negative": 506,
+    "num_model_seeds": 1
+  },
+  "runs": [
+    {
+      "path": "runs\\external_toxinpred3_2d\\predictions.csv",
+      "point_estimate": {
+        "accuracy": 0.7604912998976459,
+        "balanced_accuracy": 0.7540155081694822,
+        "precision": 0.8910891089108911,
+        "recall": 0.5732484076433121,
+        "f1": 0.6976744186046512,
+        "mcc": 0.5488133626356385,
+        "auroc": 0.7786099712158975,
+        "auprc": 0.8372539676102311,
+        "brier": 0.2159642846210937,
+        "ece_10": 0.2030549349776814
+      },
+      "confidence_interval": {
+        "accuracy": {
+          "lower": 0.7359263050153532,
+          "upper": 0.7850562947799385
+        },
+        "balanced_accuracy": {
+          "lower": 0.7288288415867342,
+          "upper": 0.7792013355655698
+        },
+        "precision": {
+          "lower": 0.8576268380289596,
+          "upper": 0.9242915179312635
+        },
+        "recall": {
+          "lower": 0.5286624203821656,
+          "upper": 0.6199575371549894
+        },
+        "f1": {
+          "lower": 0.6604527296937417,
+          "upper": 0.7341811808001015
+        },
+        "mcc": {
+          "lower": 0.5002534414688036,
+          "upper": 0.5966471561843372
+        },
+        "auroc": {
+          "lower": 0.7474061789313796,
+          "upper": 0.8096115195152859
+        },
+        "auprc": {
+          "lower": 0.813840396042182,
+          "upper": 0.8600085636707177
+        },
+        "brier": {
+          "lower": 0.19516563846797155,
+          "upper": 0.23640348534128536
+        },
+        "ece_10": {
+          "lower": 0.18304894427318275,
+          "upper": 0.22718437081069992
+        }
+      }
+    }
+  ],
+  "aggregate": {
+    "point_estimate": {
+      "accuracy": 0.7604912998976459,
+      "balanced_accuracy": 0.7540155081694822,
+      "precision": 0.8910891089108911,
+      "recall": 0.5732484076433121,
+      "f1": 0.6976744186046512,
+      "mcc": 0.5488133626356385,
+      "auroc": 0.7786099712158975,
+      "auprc": 0.8372539676102311,
+      "brier": 0.2159642846210937,
+      "ece_10": 0.2030549349776814
+    },
+    "confidence_interval": {
+      "accuracy": {
+        "lower": 0.7359263050153532,
+        "upper": 0.7850562947799385
+      },
+      "balanced_accuracy": {
+        "lower": 0.7291976641239312,
+        "upper": 0.7791260710119752
+      },
+      "precision": {
+        "lower": 0.8567068315985708,
+        "upper": 0.9235880398671097
+      },
+      "recall": {
+        "lower": 0.5286624203821656,
+        "upper": 0.6178343949044586
+      },
+      "f1": {
+        "lower": 0.6596858638743455,
+        "upper": 0.7342747111681643
+      },
+      "mcc": {
+        "lower": 0.5002534414688036,
+        "upper": 0.5958192236006774
+      },
+      "auroc": {
+        "lower": 0.7480073512751442,
+        "upper": 0.8090870278526051
+      },
+      "auprc": {
+        "lower": 0.8143387030183628,
+        "upper": 0.8599967920616846
+      },
+      "brier": {
+        "lower": 0.1954816525897095,
+        "upper": 0.2359983380185323
+      },
+      "ece_10": {
+        "lower": 0.18333945835903037,
+        "upper": 0.22665531390629126
+      }
+    }
+  }
+}
