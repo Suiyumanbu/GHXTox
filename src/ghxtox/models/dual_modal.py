@@ -11,6 +11,7 @@ from ghxtox.features import RESIDUE_FEATURE_DIM
 from ghxtox.geometry_features import STRUCTURE_FEATURE_DIM
 from ghxtox.atom_graph import ATOM_FEATURE_DIM, EDGE_FEATURE_DIM
 from ghxtox.models.atom_graph import AtomGraphBranch
+from ghxtox.models.chemical_sites import ChemicalSiteInteractionBranch
 from ghxtox.models.layers import (
     PLDDTAwareFusion,
     SequenceBranch,
@@ -144,6 +145,21 @@ class GHXToxModel(nn.Module):
             local_frame_edge_features=bool(model_cfg.get("local_frame_edge_features", False)),
             backbone_geometry_edge_features=bool(model_cfg.get("backbone_geometry_edge_features", False)),
         )
+        self.chemical_site_branch = None
+        if bool(model_cfg.get("chemical_site_branch", False)):
+            self.chemical_site_branch = ChemicalSiteInteractionBranch(
+                hidden_dim=hidden_dim,
+                site_type_dim=int(model_cfg.get("chemical_site_type_dim", 8)),
+                site_hidden_dim=int(model_cfg.get("chemical_site_hidden_dim", 64)),
+                num_layers=int(model_cfg.get("chemical_site_layers", 2)),
+                raw_rbf_bins=int(model_cfg.get("chemical_site_raw_rbf_bins", 16)),
+                normalized_rbf_bins=int(model_cfg.get("chemical_site_normalized_rbf_bins", 8)),
+                max_distance=float(model_cfg.get("chemical_site_max_distance", 16.0)),
+                normalized_max_distance=float(
+                    model_cfg.get("chemical_site_normalized_max_distance", 4.0)
+                ),
+                dropout=float(model_cfg.get("chemical_site_dropout", dropout)),
+            )
         self.fusion = PLDDTAwareFusion(
             residue_feature_dim=RESIDUE_FEATURE_DIM,
             hidden_dim=hidden_dim,
@@ -282,6 +298,29 @@ class GHXToxModel(nn.Module):
             backbone_coords=batch.get("backbone_coords"),
             backbone_mask=batch.get("backbone_mask"),
         )
+        chemical_diagnostics: dict[str, torch.Tensor] = {}
+        if self.chemical_site_branch is not None:
+            required = (
+                "chemical_site_coords",
+                "chemical_site_types",
+                "chemical_site_orientations",
+                "chemical_site_orientation_mask",
+                "chemical_site_mask",
+            )
+            missing = [key for key in required if key not in batch]
+            if missing:
+                raise ValueError(f"chemical_site_branch requires site fields; missing {missing}.")
+            chemical_residual, chemical_diagnostics = self.chemical_site_branch(
+                site_coords=batch["chemical_site_coords"],
+                site_types=batch["chemical_site_types"],
+                site_orientations=batch["chemical_site_orientations"],
+                site_orientation_mask=batch["chemical_site_orientation_mask"],
+                site_mask=batch["chemical_site_mask"],
+                residue_coords=batch["coords"],
+                residue_mask=mask,
+                plddt=batch["plddt"],
+            )
+            spatial_h = spatial_h + chemical_residual
 
         if self.modality == "residual_experts":
             required = (
@@ -383,5 +422,5 @@ class GHXToxModel(nn.Module):
             diagnostics["atom_residual_weight"] = atom_weight
         pooled = masked_mean(fused_nodes, mask)
         logits = self.classifier(self._classifier_input(pooled, batch)).squeeze(-1)
-        return {"logits": logits, "embedding": pooled, **diagnostics}
+        return {"logits": logits, "embedding": pooled, **diagnostics, **chemical_diagnostics}
 

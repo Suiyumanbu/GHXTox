@@ -18,6 +18,8 @@ class StructureData:
     source: str
     backbone_coords: torch.Tensor | None = None
     backbone_mask: torch.Tensor | None = None
+    functional_group_coords: torch.Tensor | None = None
+    functional_group_mask: torch.Tensor | None = None
 
 
 def _synthesize_backbone(coords: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
@@ -62,6 +64,8 @@ class HeuristicStructureProvider(StructureProvider):
             source="heuristic",
             backbone_coords=backbone_coords,
             backbone_mask=backbone_mask,
+            functional_group_coords=tensor.clone(),
+            functional_group_mask=torch.zeros(length, dtype=torch.bool),
         )
 
 
@@ -94,6 +98,8 @@ class CachedStructureProvider(StructureProvider):
             plddt = torch.as_tensor(payload["plddt"], dtype=torch.float32)
             backbone_coords_raw = payload.get("backbone_coords")
             backbone_mask_raw = payload.get("backbone_mask")
+            functional_group_coords_raw = payload.get("functional_group_coords")
+            functional_group_mask_raw = payload.get("functional_group_mask")
         elif path.suffix == ".npz":
             import numpy as np
 
@@ -102,6 +108,12 @@ class CachedStructureProvider(StructureProvider):
             plddt = torch.as_tensor(payload["plddt"], dtype=torch.float32)
             backbone_coords_raw = payload["backbone_coords"] if "backbone_coords" in payload.files else None
             backbone_mask_raw = payload["backbone_mask"] if "backbone_mask" in payload.files else None
+            functional_group_coords_raw = (
+                payload["functional_group_coords"] if "functional_group_coords" in payload.files else None
+            )
+            functional_group_mask_raw = (
+                payload["functional_group_mask"] if "functional_group_mask" in payload.files else None
+            )
         else:
             raise ValueError(f"Unsupported structure file: {path}")
 
@@ -112,12 +124,20 @@ class CachedStructureProvider(StructureProvider):
         else:
             backbone_coords = torch.as_tensor(backbone_coords_raw, dtype=torch.float32)
             backbone_mask = torch.as_tensor(backbone_mask_raw, dtype=torch.bool)
+        if functional_group_coords_raw is None or functional_group_mask_raw is None:
+            functional_group_coords = coords.clone()
+            functional_group_mask = torch.zeros(coords.shape[0], dtype=torch.bool)
+        else:
+            functional_group_coords = torch.as_tensor(functional_group_coords_raw, dtype=torch.float32)
+            functional_group_mask = torch.as_tensor(functional_group_mask_raw, dtype=torch.bool)
         return StructureData(
             coords=coords,
             plddt=plddt.clamp(0.0, 1.0),
             source=str(path),
             backbone_coords=backbone_coords,
             backbone_mask=backbone_mask,
+            functional_group_coords=functional_group_coords,
+            functional_group_mask=functional_group_mask,
         )
 
 

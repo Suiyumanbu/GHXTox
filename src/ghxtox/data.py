@@ -8,6 +8,7 @@ from typing import Any
 import torch
 from torch.utils.data import Dataset
 
+from ghxtox.chemical_sites import CHEMICAL_SITE_TYPE_DIM, MAX_CHEMICAL_SITES
 from ghxtox.constants import AA_TO_IDX
 from ghxtox.features import RESIDUE_FEATURE_DIM, sequence_global_features
 from ghxtox.geometry_features import (
@@ -193,6 +194,82 @@ def collate_peptides(
             backbone_mask.append(_pad_2d(item_backbone_mask, max_len, 5, False))
         result["backbone_coords"] = torch.stack(backbone_coords)
         result["backbone_mask"] = torch.stack(backbone_mask)
+        functional_group_coords = []
+        functional_group_mask = []
+        for item in batch:
+            item_coords = item["coords"].float()
+            group_coords = item.get("functional_group_coords")
+            group_mask = item.get("functional_group_mask")
+            if not torch.is_tensor(group_coords):
+                group_coords = item_coords.clone()
+            else:
+                group_coords = group_coords.float()
+            if not torch.is_tensor(group_mask):
+                group_mask = torch.zeros(item_coords.shape[0], dtype=torch.bool)
+            else:
+                group_mask = group_mask.bool()
+            functional_group_coords.append(_pad_2d(group_coords, max_len, 3))
+            functional_group_mask.append(_pad_1d(group_mask, max_len, False))
+        result["functional_group_coords"] = torch.stack(functional_group_coords)
+        result["functional_group_mask"] = torch.stack(functional_group_mask)
+        site_slots = max(
+            max(
+                (
+                    int(item["chemical_site_coords"].shape[1])
+                    for item in batch
+                    if torch.is_tensor(item.get("chemical_site_coords"))
+                ),
+                default=0,
+            ),
+            MAX_CHEMICAL_SITES,
+        )
+        site_type_dim = max(
+            max(
+                (
+                    int(item["chemical_site_types"].shape[2])
+                    for item in batch
+                    if torch.is_tensor(item.get("chemical_site_types"))
+                ),
+                default=0,
+            ),
+            CHEMICAL_SITE_TYPE_DIM,
+        )
+        chemical_site_coords = []
+        chemical_site_types = []
+        chemical_site_orientations = []
+        chemical_site_orientation_mask = []
+        chemical_site_mask = []
+        for item in batch:
+            item_length = item["coords"].shape[0]
+            site_coords = item.get("chemical_site_coords")
+            site_types = item.get("chemical_site_types")
+            site_orientations = item.get("chemical_site_orientations")
+            site_orientation_mask = item.get("chemical_site_orientation_mask")
+            site_mask = item.get("chemical_site_mask")
+            if not torch.is_tensor(site_coords):
+                site_coords = torch.zeros(item_length, site_slots, 3, dtype=torch.float32)
+            if not torch.is_tensor(site_types):
+                site_types = torch.zeros(item_length, site_slots, site_type_dim, dtype=torch.float32)
+            if not torch.is_tensor(site_orientations):
+                site_orientations = torch.zeros(item_length, site_slots, 3, dtype=torch.float32)
+            if not torch.is_tensor(site_orientation_mask):
+                site_orientation_mask = torch.zeros(item_length, site_slots, dtype=torch.bool)
+            if not torch.is_tensor(site_mask):
+                site_mask = torch.zeros(item_length, site_slots, dtype=torch.bool)
+            chemical_site_coords.append(_pad_3d(site_coords.float(), max_len, site_slots, 3))
+            chemical_site_types.append(_pad_3d(site_types.float(), max_len, site_slots, site_type_dim))
+            chemical_site_orientations.append(
+                _pad_3d(site_orientations.float(), max_len, site_slots, 3)
+            )
+            chemical_site_orientation_mask.append(
+                _pad_2d(site_orientation_mask.bool(), max_len, site_slots, False)
+            )
+            chemical_site_mask.append(_pad_2d(site_mask.bool(), max_len, site_slots, False))
+        result["chemical_site_coords"] = torch.stack(chemical_site_coords)
+        result["chemical_site_types"] = torch.stack(chemical_site_types)
+        result["chemical_site_orientations"] = torch.stack(chemical_site_orientations)
+        result["chemical_site_orientation_mask"] = torch.stack(chemical_site_orientation_mask)
+        result["chemical_site_mask"] = torch.stack(chemical_site_mask)
         result["structure_features"] = torch.stack(
             [
                 _pad_2d(

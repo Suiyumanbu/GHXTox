@@ -3,6 +3,7 @@ import torch
 from pathlib import Path
 
 from ghxtox import plm_embed
+from ghxtox.chemical_sites import CHEMICAL_SITE_TYPE_TO_INDEX, parse_chemical_sites
 from ghxtox.data import collate_peptides
 from ghxtox.esmfold_cache import parse_esmfold_pdb
 from ghxtox.fasta import read_fasta
@@ -14,6 +15,7 @@ from ghxtox.models import GHXToxModel
 from ghxtox.atom_graph import ATOM_FEATURE_DIM, EDGE_FEATURE_DIM, EXTENDED_ATOM_FEATURE_DIM, peptide_atom_graph
 from ghxtox.train import SmoothedBCEWithLogitsLoss, _apply_coordinate_noise
 from ghxtox.models.layers import PLDDTAwareEGNNLayer
+from ghxtox.models.chemical_sites import ChemicalSiteInteractionBranch
 from ghxtox.bootstrap_ci import bootstrap_confidence_intervals
 from ghxtox.sequence_similarity import alignment_identity, audit_similarity
 from ghxtox.similarity_subset_eval import evaluate_similarity_subsets
@@ -114,6 +116,54 @@ END
     assert np.allclose(parsed.backbone_coords[0, 0] - parsed.backbone_coords[0, 1], [0.072, 0.513, 1.366], atol=1e-3)
 
 
+def test_parse_esmfold_pdb_extracts_functional_group_center(tmp_path):
+    pdb_text = """ATOM      1  N   LYS A   1       0.000   0.000   0.000  1.00 80.00           N
+ATOM      2  CA  LYS A   1       1.000   0.000   0.000  1.00 80.00           C
+ATOM      3  C   LYS A   1       2.000   0.000   0.000  1.00 80.00           C
+ATOM      4  O   LYS A   1       3.000   0.000   0.000  1.00 80.00           O
+ATOM      5  NZ  LYS A   1       1.000   4.000   0.000  1.00 80.00           N
+END
+"""
+    pdb_path = tmp_path / "lys.pdb"
+    pdb_path.write_text(pdb_text, encoding="utf-8")
+    parsed = parse_esmfold_pdb(pdb_path)
+    assert parsed.functional_group_mask.tolist() == [True]
+    assert np.allclose(parsed.functional_group_coords[0], [0.0, 4.0, 0.0], atol=1e-6)
+
+
+def test_parse_chemical_sites_separates_tyr_ring_and_hydroxyl(tmp_path):
+    atoms = {
+        "N": (0.0, 0.0, 0.0),
+        "CA": (1.0, 0.0, 0.0),
+        "C": (2.0, 0.0, 0.0),
+        "O": (3.0, 0.0, 0.0),
+        "CB": (1.0, 1.0, 0.0),
+        "CG": (1.0, 2.0, 0.0),
+        "CD1": (0.0, 3.0, 0.0),
+        "CD2": (2.0, 3.0, 0.0),
+        "CE1": (0.0, 4.0, 0.0),
+        "CE2": (2.0, 4.0, 0.0),
+        "CZ": (1.0, 5.0, 0.0),
+        "OH": (1.0, 6.0, 0.0),
+    }
+    lines = []
+    for serial, (name, (x, y, z)) in enumerate(atoms.items(), start=1):
+        element = name[0]
+        lines.append(
+            f"ATOM  {serial:5d} {name:^4s} TYR A   1    {x:8.3f}{y:8.3f}{z:8.3f}  1.00 90.00          {element:>2s}"
+        )
+    pdb_path = tmp_path / "tyr.pdb"
+    pdb_path.write_text("\n".join(lines) + "\nEND\n", encoding="utf-8")
+    sites = parse_chemical_sites(pdb_path)
+    assert sites.mask.tolist() == [[True, True]]
+    aromatic = CHEMICAL_SITE_TYPE_TO_INDEX["aromatic"]
+    donor = CHEMICAL_SITE_TYPE_TO_INDEX["donor"]
+    assert sites.types[0, 0, aromatic] == 1.0
+    assert sites.types[0, 1, donor] == 1.0
+    assert not np.allclose(sites.coords[0, 0], sites.coords[0, 1])
+    assert sites.orientation_mask.tolist() == [[True, True]]
+
+
 def test_collate_pads_legacy_residue_features():
     batch = [
         {
@@ -133,6 +183,66 @@ def test_collate_pads_legacy_residue_features():
     assert collated["backbone_coords"].shape == (1, 2, 5, 3)
     assert collated["backbone_mask"].shape == (1, 2, 5)
     assert collated["backbone_mask"][0, :, 1].all()
+    assert collated["functional_group_coords"].shape == (1, 2, 3)
+    assert not collated["functional_group_mask"].any()
+    assert collated["chemical_site_coords"].shape == (1, 2, 2, 3)
+    assert collated["chemical_site_types"].shape == (1, 2, 2, 8)
+    assert not collated["chemical_site_mask"].any()
+
+
+def test_chemical_site_branch_is_zero_initialized_and_rotation_invariant():
+    branch = ChemicalSiteInteractionBranch(
+        hidden_dim=16,
+        site_hidden_dim=8,
+        num_layers=1,
+        raw_rbf_bins=8,
+        normalized_rbf_bins=4,
+        dropout=0.0,
+    ).eval()
+    site_coords = torch.tensor(
+        [[[[0.0, 1.0, 0.0], [0.0, 0.0, 0.0]], [[2.0, 1.0, 0.0], [2.0, 2.0, 0.0]], [[4.0, 1.0, 0.0], [0.0, 0.0, 0.0]]]]
+    )
+    site_types = torch.zeros(1, 3, 2, 8)
+    site_types[0, 0, 0, CHEMICAL_SITE_TYPE_TO_INDEX["positive"]] = 1.0
+    site_types[0, 1, 0, CHEMICAL_SITE_TYPE_TO_INDEX["negative"]] = 1.0
+    site_types[0, 1, 1, CHEMICAL_SITE_TYPE_TO_INDEX["aromatic"]] = 1.0
+    site_types[0, 2, 0, CHEMICAL_SITE_TYPE_TO_INDEX["hydrophobic"]] = 1.0
+    site_mask = torch.tensor([[[True, False], [True, True], [True, False]]])
+    orientations = torch.zeros_like(site_coords)
+    orientations[..., 1] = 1.0
+    orientation_mask = site_mask.clone()
+    residue_coords = torch.tensor([[[0.0, 0.0, 0.0], [2.0, 0.0, 0.0], [4.0, 0.0, 0.0]]])
+    residue_mask = torch.ones(1, 3, dtype=torch.bool)
+    plddt = torch.full((1, 3), 0.9)
+    args = (
+        site_coords,
+        site_types,
+        orientations,
+        orientation_mask,
+        site_mask,
+        residue_coords,
+        residue_mask,
+        plddt,
+    )
+    initial, diagnostics = branch(*args)
+    assert torch.count_nonzero(initial) == 0
+    assert diagnostics["chemical_edge_count"].item() > 0
+    with torch.no_grad():
+        torch.nn.init.normal_(branch.residual_projection.weight, std=0.05)
+    output, _ = branch(*args)
+    rotation = torch.tensor([[0.0, -1.0, 0.0], [1.0, 0.0, 0.0], [0.0, 0.0, 1.0]])
+    rotated_args = (
+        site_coords @ rotation.T,
+        site_types,
+        orientations @ rotation.T,
+        orientation_mask,
+        site_mask,
+        residue_coords @ rotation.T,
+        residue_mask,
+        plddt,
+    )
+    rotated, _ = branch(*rotated_args)
+    assert torch.allclose(output, rotated, atol=1e-5)
 
 
 def test_sequence_only_collate_skips_unused_structure_tensors():
@@ -584,10 +694,17 @@ def test_full_backbone_geometry_is_rotation_invariant():
 
 def test_coordinate_noise_preserves_intra_residue_backbone_geometry():
     backbone = torch.randn(2, 4, 5, 3)
+    functional_group_coords = backbone[:, :, 1] + torch.tensor([0.0, 2.0, 0.0])
+    chemical_site_coords = backbone[:, :, 1].unsqueeze(2) + torch.tensor(
+        [[0.0, 2.0, 0.0], [1.0, 0.0, 0.0]]
+    ).view(1, 1, 2, 3)
     batch = {
         "coords": backbone[:, :, 1].clone(),
         "backbone_coords": backbone.clone(),
         "backbone_mask": torch.ones(2, 4, 5, dtype=torch.bool),
+        "functional_group_coords": functional_group_coords.clone(),
+        "functional_group_mask": torch.ones(2, 4, dtype=torch.bool),
+        "chemical_site_coords": chemical_site_coords.clone(),
         "mask": torch.ones(2, 4, dtype=torch.bool),
         "plddt": torch.full((2, 4), 0.8),
     }
@@ -596,6 +713,16 @@ def test_coordinate_noise_preserves_intra_residue_backbone_geometry():
     after = augmented["backbone_coords"][:, :, 0] - augmented["backbone_coords"][:, :, 1]
     assert torch.allclose(before, after, atol=1e-6)
     assert torch.allclose(augmented["coords"], augmented["backbone_coords"][:, :, 1])
+    assert torch.allclose(
+        augmented["functional_group_coords"] - augmented["coords"],
+        functional_group_coords - backbone[:, :, 1],
+        atol=1e-6,
+    )
+    assert torch.allclose(
+        augmented["chemical_site_coords"] - augmented["coords"].unsqueeze(2),
+        chemical_site_coords - backbone[:, :, 1].unsqueeze(2),
+        atol=1e-6,
+    )
 
 
 def test_bootstrap_confidence_intervals_are_reproducible(tmp_path):

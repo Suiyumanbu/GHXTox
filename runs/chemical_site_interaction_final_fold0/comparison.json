@@ -1,0 +1,40 @@
+{
+  "protocol": {
+    "seed": 42,
+    "fold_manifest": "data/folds/train_cdhit080_fallback_folds.csv",
+    "validation_fold": 0,
+    "validation_samples": 1271,
+    "monitor": "mcc",
+    "external_sets_used_for_selection": false,
+    "candidate_training": "control checkpoint frozen; chemical_site_branch only"
+  },
+  "control": {
+    "epoch": 20,
+    "balanced_accuracy": 0.9182814721,
+    "f1": 0.8981348637,
+    "mcc": 0.8616032263,
+    "auroc": 0.9734963259,
+    "auprc": 0.9529280616
+  },
+  "candidate": {
+    "epoch": 8,
+    "balanced_accuracy": 0.9256630077,
+    "f1": 0.9039548023,
+    "mcc": 0.8677315492,
+    "auroc": 0.9737004445,
+    "auprc": 0.9550667632
+  },
+  "candidate_minus_control": {
+    "balanced_accuracy": 0.0073815356,
+    "f1": 0.0058199386,
+    "mcc": 0.0061283229,
+    "auroc": 0.0002041186,
+    "auprc": 0.0021387016
+  },
+  "decision": {
+    "retain_experimental_candidate": true,
+    "replace_default_model": false,
+    "advance_to_multifold_validation": false,
+    "reason": "All five metrics improved on fold 0, but delta MCC did not reach the preregistered approximate +0.01 promotion threshold."
+  }
+}

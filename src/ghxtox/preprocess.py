@@ -62,6 +62,8 @@ def preprocess_fasta(
         plddt = structure.plddt[:length]
         backbone_coords = structure.backbone_coords
         backbone_mask = structure.backbone_mask
+        functional_group_coords = structure.functional_group_coords
+        functional_group_mask = structure.functional_group_mask
         if torch.is_tensor(backbone_coords):
             backbone_coords = backbone_coords[:length]
         if torch.is_tensor(backbone_mask):
@@ -71,6 +73,13 @@ def preprocess_fasta(
             backbone_mask = torch.zeros(length, 5, dtype=torch.bool)
             if length > 0:
                 backbone_mask[:, 1] = True
+        if torch.is_tensor(functional_group_coords):
+            functional_group_coords = functional_group_coords[:length]
+        if torch.is_tensor(functional_group_mask):
+            functional_group_mask = functional_group_mask[:length]
+        if not torch.is_tensor(functional_group_coords) or not torch.is_tensor(functional_group_mask):
+            functional_group_coords = coords.clone()
+            functional_group_mask = torch.zeros(length, dtype=torch.bool)
         if coords.shape[0] != length or plddt.shape[0] != length:
             raise ValueError(
                 f"Structure length mismatch for {record.sample_id}: "
@@ -81,6 +90,12 @@ def preprocess_fasta(
                 f"Backbone length mismatch for {record.sample_id}: "
                 f"sequence={length}, backbone_coords={backbone_coords.shape[0]}, "
                 f"backbone_mask={backbone_mask.shape[0]}"
+            )
+        if functional_group_coords.shape[0] != length or functional_group_mask.shape[0] != length:
+            raise ValueError(
+                f"Functional-group length mismatch for {record.sample_id}: "
+                f"sequence={length}, functional_group_coords={functional_group_coords.shape[0]}, "
+                f"functional_group_mask={functional_group_mask.shape[0]}"
             )
 
         examples.append(
@@ -97,6 +112,8 @@ def preprocess_fasta(
                 "plddt": plddt,
                 "backbone_coords": backbone_coords,
                 "backbone_mask": backbone_mask,
+                "functional_group_coords": functional_group_coords,
+                "functional_group_mask": functional_group_mask,
                 "structure_features": structure_feature_matrix(coords, plddt),
                 "global_features": sequence_global_features(sequence),
                 "structure_source": structure.source,

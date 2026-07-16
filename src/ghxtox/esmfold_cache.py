@@ -47,6 +47,29 @@ BACKBONE_ATOMS = ("N", "CA", "C", "O")
 BACKBONE_INDEX = {name: index for index, name in enumerate(BACKBONE_ATOMS)}
 SIDECHAIN_INDEX = len(BACKBONE_ATOMS)
 
+# The atoms below describe the chemically active side-chain moiety rather than
+# the complete side chain.  This distinction matters for long residues such as
+# Lys/Arg/Glu: the old side-chain centroid is dominated by linker carbons,
+# whereas the functional centre should remain close to NZ, guanidinium or the
+# terminal carboxylate.
+FUNCTIONAL_GROUP_ATOMS: dict[str, tuple[str, ...]] = {
+    "CYS": ("SG",),
+    "ASP": ("CG", "OD1", "OD2"),
+    "GLU": ("CD", "OE1", "OE2"),
+    "ASN": ("CG", "OD1", "ND2"),
+    "GLN": ("CD", "OE1", "NE2"),
+    "HIS": ("CG", "ND1", "CD2", "CE1", "NE2"),
+    "LYS": ("NZ",),
+    "ARG": ("NE", "CZ", "NH1", "NH2"),
+    "MET": ("SD",),
+    "PHE": ("CG", "CD1", "CD2", "CE1", "CE2", "CZ"),
+    "TRP": ("CG", "CD1", "CD2", "NE1", "CE2", "CE3", "CZ2", "CZ3", "CH2"),
+    "TYR": ("CG", "CD1", "CD2", "CE1", "CE2", "CZ", "OH"),
+    "SER": ("OG",),
+    "THR": ("OG1",),
+    "PRO": ("CB", "CG", "CD"),
+}
+
 
 @dataclass(frozen=True)
 class ParsedPdb:
@@ -55,6 +78,8 @@ class ParsedPdb:
     plddt: np.ndarray
     backbone_coords: np.ndarray
     backbone_mask: np.ndarray
+    functional_group_coords: np.ndarray
+    functional_group_mask: np.ndarray
 
 
 def sample_key(record: FastaRecord, index: int) -> str:
@@ -69,7 +94,9 @@ def _empty_backbone(length: int) -> tuple[np.ndarray, np.ndarray]:
     return backbone_coords, backbone_mask
 
 
-def _finalize_residue(entry: dict[str, Any]) -> tuple[str, np.ndarray, float, np.ndarray, np.ndarray]:
+def _finalize_residue(
+    entry: dict[str, Any],
+) -> tuple[str, np.ndarray, float, np.ndarray, np.ndarray, np.ndarray, bool]:
     atoms: dict[str, np.ndarray] = entry["atoms"]
     ca = atoms.get("CA")
     if ca is None:
@@ -91,10 +118,27 @@ def _finalize_residue(entry: dict[str, Any]) -> tuple[str, np.ndarray, float, np
     else:
         residue_coords[SIDECHAIN_INDEX] = ca
 
+    group_atom_names = FUNCTIONAL_GROUP_ATOMS.get(entry["resname"], ())
+    group_atom_coords = [atoms[name] for name in group_atom_names if name in atoms]
+    # Require every named atom for multi-atom groups so a truncated PDB does
+    # not silently move the chemical centre.  Single-atom groups remain valid.
+    group_valid = bool(group_atom_names) and len(group_atom_coords) == len(group_atom_names)
+    functional_group_coord = (
+        np.mean(np.stack(group_atom_coords, axis=0), axis=0) if group_valid else ca.copy()
+    )
+
     plddt = entry["plddt"]
     if plddt is None:
         plddt = float(entry["plddt_fallback"])
-    return entry["residue_one_letter"], ca, plddt, residue_coords, residue_mask
+    return (
+        entry["residue_one_letter"],
+        ca,
+        plddt,
+        residue_coords,
+        residue_mask,
+        functional_group_coord,
+        group_valid,
+    )
 
 
 def parse_esmfold_pdb(path: str | Path, chain: str | None = None) -> ParsedPdb:
@@ -120,6 +164,7 @@ def parse_esmfold_pdb(path: str | Path, chain: str | None = None) -> ParsedPdb:
                 residues.append(
                     {
                         "residue_key": residue_key,
+                        "resname": resname,
                         "residue_one_letter": THREE_TO_ONE.get(resname, "X"),
                         "atoms": {},
                         "sidechain_coords": [],
@@ -152,14 +197,26 @@ def parse_esmfold_pdb(path: str | Path, chain: str | None = None) -> ParsedPdb:
     residues_out: list[str] = []
     coords: list[np.ndarray] = []
     plddt: list[float] = []
+    functional_group_coords: list[np.ndarray] = []
+    functional_group_mask: list[bool] = []
     backbone_coords, backbone_mask = _empty_backbone(len(residues))
     for index, entry in enumerate(residues):
-        residue_one_letter, ca, residue_plddt, residue_backbone_coords, residue_backbone_mask = _finalize_residue(entry)
+        (
+            residue_one_letter,
+            ca,
+            residue_plddt,
+            residue_backbone_coords,
+            residue_backbone_mask,
+            functional_group_coord,
+            functional_group_valid,
+        ) = _finalize_residue(entry)
         residues_out.append(residue_one_letter)
         coords.append(ca)
         plddt.append(residue_plddt)
         backbone_coords[index] = residue_backbone_coords
         backbone_mask[index] = residue_backbone_mask
+        functional_group_coords.append(functional_group_coord)
+        functional_group_mask.append(functional_group_valid)
 
     plddt_array = np.asarray(plddt, dtype=np.float32)
     if plddt_array.size and float(plddt_array.max()) > 1.5:
@@ -169,12 +226,15 @@ def parse_esmfold_pdb(path: str | Path, chain: str | None = None) -> ParsedPdb:
     center = coords_array.mean(axis=0, keepdims=True)
     coords_array = coords_array - center
     backbone_coords = backbone_coords - center.reshape(1, 1, 3)
+    functional_group_coords_array = np.asarray(functional_group_coords, dtype=np.float32) - center
     return ParsedPdb(
         sequence="".join(residues_out),
         coords=coords_array,
         plddt=np.clip(plddt_array, 0.0, 1.0),
         backbone_coords=backbone_coords,
         backbone_mask=backbone_mask,
+        functional_group_coords=functional_group_coords_array,
+        functional_group_mask=np.asarray(functional_group_mask, dtype=bool),
     )
 
 
@@ -233,6 +293,8 @@ def build_structure_cache(
                 plddt = parsed.plddt[: len(sequence)]
                 backbone_coords = parsed.backbone_coords[: len(sequence)]
                 backbone_mask = parsed.backbone_mask[: len(sequence)]
+                functional_group_coords = parsed.functional_group_coords[: len(sequence)]
+                functional_group_mask = parsed.functional_group_mask[: len(sequence)]
             else:
                 raise ValueError(message)
         else:
@@ -240,6 +302,8 @@ def build_structure_cache(
             plddt = parsed.plddt
             backbone_coords = parsed.backbone_coords
             backbone_mask = parsed.backbone_mask
+            functional_group_coords = parsed.functional_group_coords
+            functional_group_mask = parsed.functional_group_mask
 
         if parsed.sequence[: len(sequence)] != sequence[: len(parsed.sequence)]:
             print(
@@ -253,6 +317,8 @@ def build_structure_cache(
             plddt=plddt.astype(np.float32),
             backbone_coords=backbone_coords.astype(np.float32),
             backbone_mask=backbone_mask.astype(np.bool_),
+            functional_group_coords=functional_group_coords.astype(np.float32),
+            functional_group_mask=functional_group_mask.astype(np.bool_),
             sequence=np.asarray(sequence),
             source_pdb=np.asarray(str(pdb_path)),
         )

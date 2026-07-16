@@ -213,6 +213,10 @@ def _apply_coordinate_noise(
     if "backbone_coords" in batch:
         augmented["backbone_coords"] = batch["backbone_coords"] + noise.unsqueeze(2)
         augmented["coords"] = augmented["backbone_coords"][:, :, 1]
+    if "functional_group_coords" in batch:
+        augmented["functional_group_coords"] = batch["functional_group_coords"] + noise
+    if "chemical_site_coords" in batch:
+        augmented["chemical_site_coords"] = batch["chemical_site_coords"] + noise.unsqueeze(2)
     return augmented
 
 
@@ -331,12 +335,47 @@ def train(config: dict, args: argparse.Namespace) -> Path:
     _validate_loader_plm_features(val_loader, required_plm_dim, args.val or args.train)
 
     model = GHXToxModel(config).to(device)
+    initial_checkpoint = train_cfg.get("initial_checkpoint")
+    if initial_checkpoint:
+        initial_checkpoint = str(initial_checkpoint).format(
+            fold=args.fold,
+            outer_fold=args.outer_fold,
+        )
+        checkpoint = torch.load(initial_checkpoint, map_location="cpu", weights_only=False)
+        state = checkpoint.get("model_state", checkpoint)
+        incompatible = model.load_state_dict(state, strict=False)
+        unexpected = list(incompatible.unexpected_keys)
+        missing = list(incompatible.missing_keys)
+        if unexpected:
+            raise ValueError(f"Unexpected keys in initial checkpoint: {unexpected[:10]}")
+        allowed_missing_prefixes = tuple(train_cfg.get("allowed_missing_prefixes", []))
+        disallowed_missing = [
+            key for key in missing if not key.startswith(allowed_missing_prefixes)
+        ] if allowed_missing_prefixes else missing
+        if disallowed_missing:
+            raise ValueError(f"Missing keys in initial checkpoint: {disallowed_missing[:10]}")
+        print(
+            f"Initialized from {initial_checkpoint}; "
+            f"new_parameters={len(missing)} unexpected_parameters={len(unexpected)}"
+        )
+    trainable_prefixes = tuple(train_cfg.get("trainable_prefixes", []))
+    if trainable_prefixes:
+        for name, parameter in model.named_parameters():
+            parameter.requires_grad = name.startswith(trainable_prefixes)
+        trainable_names = [name for name, parameter in model.named_parameters() if parameter.requires_grad]
+        if not trainable_names:
+            raise ValueError(f"No parameters matched trainable_prefixes={trainable_prefixes}.")
+        print(
+            f"Frozen-base training: trainable_tensors={len(trainable_names)} "
+            f"prefixes={trainable_prefixes}"
+        )
+    trainable_parameters = [parameter for parameter in model.parameters() if parameter.requires_grad]
     pos_weight = _pos_weight(train_loader, args.pos_weight or train_cfg.get("pos_weight", "auto"))
     if pos_weight is not None:
         pos_weight = pos_weight.to(device)
     criterion = _make_criterion(train_cfg, pos_weight)
     optimizer = torch.optim.AdamW(
-        model.parameters(),
+        trainable_parameters,
         lr=float(args.learning_rate or train_cfg["learning_rate"]),
         weight_decay=float(train_cfg.get("weight_decay", 0.0)),
     )
@@ -366,7 +405,7 @@ def train(config: dict, args: argparse.Namespace) -> Path:
             full_pos_weight = full_pos_weight.to(device)
         criterion = _make_criterion(train_cfg, full_pos_weight)
         optimizer = torch.optim.AdamW(
-            model.parameters(),
+            trainable_parameters,
             lr=float(args.learning_rate or train_cfg["learning_rate"]),
             weight_decay=float(train_cfg.get("weight_decay", 0.0)),
         )

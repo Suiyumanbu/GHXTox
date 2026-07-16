@@ -59,6 +59,8 @@ def _write_npz_from_pdb(
             plddt = parsed.plddt[: len(sequence)]
             backbone_coords = parsed.backbone_coords[: len(sequence)]
             backbone_mask = parsed.backbone_mask[: len(sequence)]
+            functional_group_coords = parsed.functional_group_coords[: len(sequence)]
+            functional_group_mask = parsed.functional_group_mask[: len(sequence)]
         else:
             raise ValueError(message)
     else:
@@ -66,6 +68,8 @@ def _write_npz_from_pdb(
         plddt = parsed.plddt
         backbone_coords = parsed.backbone_coords
         backbone_mask = parsed.backbone_mask
+        functional_group_coords = parsed.functional_group_coords
+        functional_group_mask = parsed.functional_group_mask
 
     cache_path.parent.mkdir(parents=True, exist_ok=True)
     np.savez_compressed(
@@ -74,6 +78,8 @@ def _write_npz_from_pdb(
         plddt=plddt.astype(np.float32),
         backbone_coords=backbone_coords.astype(np.float32),
         backbone_mask=backbone_mask.astype(np.bool_),
+        functional_group_coords=functional_group_coords.astype(np.float32),
+        functional_group_mask=functional_group_mask.astype(np.bool_),
         sequence=np.asarray(sequence),
         source_pdb=np.asarray(str(pdb_path)),
     )
