@@ -19,6 +19,7 @@ from ghxtox.utils import (
     DEFAULT_TEST_FASTA,
     DEFAULT_THRESHOLD,
     move_batch_to_device,
+    resolve_inference_checkpoint,
     resolve_device,
 )
 
@@ -41,14 +42,19 @@ def _prepare_input(args: argparse.Namespace) -> Path:
 
 def predict(args: argparse.Namespace) -> Path:
     device = resolve_device(args.device)
-    checkpoint = torch.load(args.checkpoint, map_location=device, weights_only=False)
+    processed_path = _prepare_input(args)
+    dataset = PeptideTensorDataset(processed_path, require_labels=False)
+    checkpoint, selected_checkpoint, threshold, fallback_used = resolve_inference_checkpoint(
+        args.checkpoint,
+        dataset.records,
+        device,
+        requested_threshold=args.threshold,
+    )
     config = checkpoint["config"]
     model = GHXToxModel(config).to(device)
     model.load_state_dict(checkpoint["model_state"])
     model.eval()
 
-    processed_path = _prepare_input(args)
-    dataset = PeptideTensorDataset(processed_path, require_labels=False)
     required_plm_dim = int(config.get("model", {}).get("plm_embedding_dim", 0))
     validate_plm_feature_dim(dataset.records, required_plm_dim, processed_path)
     loader = DataLoader(dataset, batch_size=args.batch_size, shuffle=False, collate_fn=collate_peptides)
@@ -64,6 +70,9 @@ def predict(args: argparse.Namespace) -> Path:
                 "toxicity_probability",
                 "prediction",
                 "global_3d_gate",
+                "model_checkpoint",
+                "fallback_used",
+                "decision_threshold",
             ],
         )
         writer.writeheader()
@@ -84,10 +93,18 @@ def predict(args: argparse.Namespace) -> Path:
                             "sample_id": sample_id,
                             "sequence": sequence,
                             "toxicity_probability": f"{prob:.9g}",
-                            "prediction": int(prob >= args.threshold),
+                            "prediction": int(prob >= threshold),
                             "global_3d_gate": f"{gate:.9g}",
+                            "model_checkpoint": selected_checkpoint,
+                            "fallback_used": int(fallback_used),
+                            "decision_threshold": f"{threshold:.9g}",
                         }
                     )
+    if fallback_used:
+        print(
+            "Chemical-site tensors were unavailable; "
+            f"used fallback checkpoint {selected_checkpoint}."
+        )
     print(f"Predictions saved to {output_path}")
     return output_path
 
@@ -100,7 +117,12 @@ def build_arg_parser() -> argparse.ArgumentParser:
     parser.add_argument("--output", default="runs/ghxtox/predictions.csv")
     parser.add_argument("--device", default=DEFAULT_DEVICE)
     parser.add_argument("--batch-size", type=int, default=64)
-    parser.add_argument("--threshold", type=float, default=DEFAULT_THRESHOLD)
+    parser.add_argument(
+        "--threshold",
+        type=float,
+        default=None,
+        help=f"Decision threshold. Defaults to checkpoint metadata ({DEFAULT_THRESHOLD} for 3D-v2).",
+    )
     parser.add_argument("--temp-processed", default="runs/ghxtox/predict_input.pt")
     parser.add_argument("--structure-mode", default="heuristic", choices=["heuristic", "cached"])
     parser.add_argument("--structure-cache-dir", default=DEFAULT_STRUCTURE_CACHE_DIR)

@@ -1,0 +1,436 @@
+{
+  "history": [
+    {
+      "epoch": 1,
+      "train": {
+        "accuracy": 0.9986176935229067,
+        "balanced_accuracy": 0.9981989016114345,
+        "precision": 0.9979181124219292,
+        "recall": 0.9972260748959778,
+        "f1": 0.997571973638571,
+        "mcc": 0.9966059073849525,
+        "auroc": 0.999970706064266,
+        "auprc": 0.9999251538650012,
+        "loss": 0.009615266379364476,
+        "mean_global_gate": 0.3256969749927521
+      },
+      "val": {
+        "accuracy": 0.9297052154195011,
+        "balanced_accuracy": 0.9116091689321261,
+        "precision": 0.8814016172506739,
+        "recall": 0.8696808510638298,
+        "f1": 0.8755020080321285,
+        "mcc": 0.8265678691117925,
+        "auroc": 0.9647206183019165,
+        "auprc": 0.9306532657765637,
+        "loss": 1.1431635358256098,
+        "mean_global_gate": 0.3260382115840912
+      },
+      "selection": {
+        "mode": "pareto",
+        "target_metric": "auprc",
+        "target_value": 0.9306532657765637,
+        "constraint_metric": "mcc",
+        "constraint_threshold": 0.8265678691117925,
+        "constraint_value": 0.8265678691117925,
+        "feasible": true
+      }
+    },
+    {
+      "epoch": 2,
+      "train": {
+        "accuracy": 0.9980252764612955,
+        "balanced_accuracy": 0.9973673750565775,
+        "precision": 0.9972222222222222,
+        "recall": 0.9958391123439667,
+        "f1": 0.996530187369882,
+        "mcc": 0.9951505846813193,
+        "auroc": 0.9999712804551626,
+        "auprc": 0.9999261344293301,
+        "loss": 0.009390406938543577,
+        "mean_global_gate": 0.3256969451904297
+      },
+      "val": {
+        "accuracy": 0.9297052154195011,
+        "balanced_accuracy": 0.912410973061628,
+        "precision": 0.8793565683646113,
+        "recall": 0.8723404255319149,
+        "f1": 0.8758344459279038,
+        "mcc": 0.8268236704006815,
+        "auroc": 0.9657260329371589,
+        "auprc": 0.9311505354342289,
+        "loss": 1.076215888412623,
+        "mean_global_gate": 0.3260382115840912
+      },
+      "selection": {
+        "mode": "pareto",
+        "target_metric": "auprc",
+        "target_value": 0.9311505354342289,
+        "constraint_metric": "mcc",
+        "constraint_threshold": 0.8265678691117925,
+        "constraint_value": 0.8268236704006815,
+        "feasible": true
+      }
+    },
+    {
+      "epoch": 3,
+      "train": {
+        "accuracy": 0.9988151658767772,
+        "balanced_accuracy": 0.9985456422494373,
+        "precision": 0.9979195561719834,
+        "recall": 0.9979195561719834,
+        "f1": 0.9979195561719834,
+        "mcc": 0.9970912844988746,
+        "auroc": 0.9999682170370467,
+        "auprc": 0.9999184377384351,
+        "loss": 0.00808800119322932,
+        "mean_global_gate": 0.3256969749927521
+      },
+      "val": {
+        "accuracy": 0.9297052154195011,
+        "balanced_accuracy": 0.912410973061628,
+        "precision": 0.8793565683646113,
+        "recall": 0.8723404255319149,
+        "f1": 0.8758344459279038,
+        "mcc": 0.8268236704006815,
+        "auroc": 0.9655968455817925,
+        "auprc": 0.931082831545,
+        "loss": 1.0787990160250525,
+        "mean_global_gate": 0.3260382115840912
+      },
+      "selection": {
+        "mode": "pareto",
+        "target_metric": "auprc",
+        "target_value": 0.931082831545,
+        "constraint_metric": "mcc",
+        "constraint_threshold": 0.8265678691117925,
+        "constraint_value": 0.8268236704006815,
+        "feasible": true
+      }
+    },
+    {
+      "epoch": 4,
+      "train": {
+        "accuracy": 0.9982227488151659,
+        "balanced_accuracy": 0.9979228110537316,
+        "precision": 0.9965349965349966,
+        "recall": 0.9972260748959778,
+        "f1": 0.9968804159445407,
+        "mcc": 0.995637954058766,
+        "auroc": 0.999896801102218,
+        "auprc": 0.9996866988448371,
+        "loss": 0.009086283518859931,
+        "mean_global_gate": 0.32569700479507446
+      },
+      "val": {
+        "accuracy": 0.9297052154195011,
+        "balanced_accuracy": 0.912410973061628,
+        "precision": 0.8793565683646113,
+        "recall": 0.8723404255319149,
+        "f1": 0.8758344459279038,
+        "mcc": 0.8268236704006815,
+        "auroc": 0.9658804960794446,
+        "auprc": 0.9311572701728829,
+        "loss": 1.057100805949447,
+        "mean_global_gate": 0.3260382115840912
+      },
+      "selection": {
+        "mode": "pareto",
+        "target_metric": "auprc",
+        "target_value": 0.9311572701728829,
+        "constraint_metric": "mcc",
+        "constraint_threshold": 0.8265678691117925,
+        "constraint_value": 0.8268236704006815,
+        "feasible": true
+      }
+    },
+    {
+      "epoch": 5,
+      "train": {
+        "accuracy": 0.9990126382306477,
+        "balanced_accuracy": 0.9988923828874401,
+        "precision": 0.997920997920998,
+        "recall": 0.9986130374479889,
+        "f1": 0.9982668977469671,
+        "mcc": 0.9975766933480619,
+        "auroc": 0.9999038852566111,
+        "auprc": 0.9997204807383954,
+        "loss": 0.008957463748165292,
+        "mean_global_gate": 0.32569700479507446
+      },
+      "val": {
+        "accuracy": 0.9297052154195011,
+        "balanced_accuracy": 0.912410973061628,
+        "precision": 0.8793565683646113,
+        "recall": 0.8723404255319149,
+        "f1": 0.8758344459279038,
+        "mcc": 0.8268236704006815,
+        "auroc": 0.9653805971825923,
+        "auprc": 0.9307659841300158,
+        "loss": 1.0510474501045854,
+        "mean_global_gate": 0.3260382115840912
+      },
+      "selection": {
+        "mode": "pareto",
+        "target_metric": "auprc",
+        "target_value": 0.9307659841300158,
+        "constraint_metric": "mcc",
+        "constraint_threshold": 0.8265678691117925,
+        "constraint_value": 0.8268236704006815,
+        "feasible": true
+      }
+    },
+    {
+      "epoch": 6,
+      "train": {
+        "accuracy": 0.9984202211690363,
+        "balanced_accuracy": 0.998060856332583,
+        "precision": 0.9972260748959778,
+        "recall": 0.9972260748959778,
+        "f1": 0.9972260748959778,
+        "mcc": 0.9961217126651661,
+        "auroc": 0.9999586438554342,
+        "auprc": 0.9998901333736663,
+        "loss": 0.007956361675851627,
+        "mean_global_gate": 0.3256969749927521
+      },
+      "val": {
+        "accuracy": 0.9297052154195011,
+        "balanced_accuracy": 0.912410973061628,
+        "precision": 0.8793565683646113,
+        "recall": 0.8723404255319149,
+        "f1": 0.8758344459279038,
+        "mcc": 0.8268236704006815,
+        "auroc": 0.9648329551326698,
+        "auprc": 0.9302495664935101,
+        "loss": 1.04185258540239,
+        "mean_global_gate": 0.3260382115840912
+      },
+      "selection": {
+        "mode": "pareto",
+        "target_metric": "auprc",
+        "target_value": 0.9302495664935101,
+        "constraint_metric": "mcc",
+        "constraint_threshold": 0.8265678691117925,
+        "constraint_value": 0.8268236704006815,
+        "feasible": true
+      }
+    },
+    {
+      "epoch": 7,
+      "train": {
+        "accuracy": 0.9988151658767772,
+        "balanced_accuracy": 0.9987543376085886,
+        "precision": 0.997229916897507,
+        "recall": 0.9986130374479889,
+        "f1": 0.997920997920998,
+        "mcc": 0.997092966340679,
+        "auroc": 0.9998780376662574,
+        "auprc": 0.9996103387011055,
+        "loss": 0.008028972269209487,
+        "mean_global_gate": 0.3256969749927521
+      },
+      "val": {
+        "accuracy": 0.9297052154195011,
+        "balanced_accuracy": 0.912410973061628,
+        "precision": 0.8793565683646113,
+        "recall": 0.8723404255319149,
+        "f1": 0.8758344459279038,
+        "mcc": 0.8268236704006815,
+        "auroc": 0.9644130962277293,
+        "auprc": 0.9300664968712402,
+        "loss": 1.0538093719073292,
+        "mean_global_gate": 0.3260382115840912
+      },
+      "selection": {
+        "mode": "pareto",
+        "target_metric": "auprc",
+        "target_value": 0.9300664968712402,
+        "constraint_metric": "mcc",
+        "constraint_threshold": 0.8265678691117925,
+        "constraint_value": 0.8268236704006815,
+        "feasible": true
+      }
+    },
+    {
+      "epoch": 8,
+      "train": {
+        "accuracy": 0.9984202211690363,
+        "balanced_accuracy": 0.998060856332583,
+        "precision": 0.9972260748959778,
+        "recall": 0.9972260748959778,
+        "f1": 0.9972260748959778,
+        "mcc": 0.9961217126651661,
+        "auroc": 0.9998902913387214,
+        "auprc": 0.9996643953459837,
+        "loss": 0.009141645845489968,
+        "mean_global_gate": 0.3256969749927521
+      },
+      "val": {
+        "accuracy": 0.9297052154195011,
+        "balanced_accuracy": 0.912410973061628,
+        "precision": 0.8793565683646113,
+        "recall": 0.8723404255319149,
+        "f1": 0.8758344459279038,
+        "mcc": 0.8268236704006815,
+        "auroc": 0.9643779909681188,
+        "auprc": 0.929969464114848,
+        "loss": 1.0494133123874299,
+        "mean_global_gate": 0.3260382115840912
+      },
+      "selection": {
+        "mode": "pareto",
+        "target_metric": "auprc",
+        "target_value": 0.929969464114848,
+        "constraint_metric": "mcc",
+        "constraint_threshold": 0.8265678691117925,
+        "constraint_value": 0.8268236704006815,
+        "feasible": true
+      }
+    },
+    {
+      "epoch": 9,
+      "train": {
+        "accuracy": 0.9990126382306477,
+        "balanced_accuracy": 0.9988923828874401,
+        "precision": 0.997920997920998,
+        "recall": 0.9986130374479889,
+        "f1": 0.9982668977469671,
+        "mcc": 0.9975766933480619,
+        "auroc": 0.9999490706738218,
+        "auprc": 0.9998603352698878,
+        "loss": 0.0067857386011742115,
+        "mean_global_gate": 0.3256969451904297
+      },
+      "val": {
+        "accuracy": 0.9297052154195011,
+        "balanced_accuracy": 0.9132127771911298,
+        "precision": 0.8773333333333333,
+        "recall": 0.875,
+        "f1": 0.8761651131824234,
+        "mcc": 0.8270901470967268,
+        "auroc": 0.9643723741265812,
+        "auprc": 0.9299831279753945,
+        "loss": 1.017487457130391,
+        "mean_global_gate": 0.3260382115840912
+      },
+      "selection": {
+        "mode": "pareto",
+        "target_metric": "auprc",
+        "target_value": 0.9299831279753945,
+        "constraint_metric": "mcc",
+        "constraint_threshold": 0.8265678691117925,
+        "constraint_value": 0.8270901470967268,
+        "feasible": true
+      }
+    },
+    {
+      "epoch": 10,
+      "train": {
+        "accuracy": 0.9988151658767772,
+        "balanced_accuracy": 0.9989630329677399,
+        "precision": 0.9965421853388658,
+        "recall": 0.9993065187239945,
+        "f1": 0.9979224376731302,
+        "mcc": 0.9970955821694522,
+        "auroc": 0.9999703231370014,
+        "auprc": 0.9999243250587226,
+        "loss": 0.007855248745177,
+        "mean_global_gate": 0.3256969749927521
+      },
+      "val": {
+        "accuracy": 0.9297052154195011,
+        "balanced_accuracy": 0.9132127771911298,
+        "precision": 0.8773333333333333,
+        "recall": 0.875,
+        "f1": 0.8761651131824234,
+        "mcc": 0.8270901470967268,
+        "auroc": 0.9644046709654227,
+        "auprc": 0.9306054805566094,
+        "loss": 1.0144151365573646,
+        "mean_global_gate": 0.3260382115840912
+      },
+      "selection": {
+        "mode": "pareto",
+        "target_metric": "auprc",
+        "target_value": 0.9306054805566094,
+        "constraint_metric": "mcc",
+        "constraint_threshold": 0.8265678691117925,
+        "constraint_value": 0.8270901470967268,
+        "feasible": true
+      }
+    },
+    {
+      "epoch": 11,
+      "train": {
+        "accuracy": 0.9992101105845181,
+        "balanced_accuracy": 0.9992391235254429,
+        "precision": 0.9979224376731302,
+        "recall": 0.9993065187239945,
+        "f1": 0.9986139986139986,
+        "mcc": 0.9980621341081095,
+        "auroc": 0.9999169047836038,
+        "auprc": 0.9997580585216477,
+        "loss": 0.007062673510058149,
+        "mean_global_gate": 0.3256969749927521
+      },
+      "val": {
+        "accuracy": 0.9297052154195011,
+        "balanced_accuracy": 0.9132127771911298,
+        "precision": 0.8773333333333333,
+        "recall": 0.875,
+        "f1": 0.8761651131824234,
+        "mcc": 0.8270901470967268,
+        "auroc": 0.964408883596576,
+        "auprc": 0.9306346070510256,
+        "loss": 1.0185511880731126,
+        "mean_global_gate": 0.3260382115840912
+      },
+      "selection": {
+        "mode": "pareto",
+        "target_metric": "auprc",
+        "target_value": 0.9306346070510256,
+        "constraint_metric": "mcc",
+        "constraint_threshold": 0.8265678691117925,
+        "constraint_value": 0.8270901470967268,
+        "feasible": true
+      }
+    },
+    {
+      "epoch": 12,
+      "train": {
+        "accuracy": 0.9986176935229067,
+        "balanced_accuracy": 0.9981989016114345,
+        "precision": 0.9979181124219292,
+        "recall": 0.9972260748959778,
+        "f1": 0.997571973638571,
+        "mcc": 0.9966059073849525,
+        "auroc": 0.9999312645560227,
+        "auprc": 0.9998072738681386,
+        "loss": 0.008484628452903976,
+        "mean_global_gate": 0.3256969749927521
+      },
+      "val": {
+        "accuracy": 0.9289493575207861,
+        "balanced_accuracy": 0.9126847940865892,
+        "precision": 0.875,
+        "recall": 0.875,
+        "f1": 0.875,
+        "mcc": 0.8253695881731784,
+        "auroc": 0.9643541193915838,
+        "auprc": 0.9305854778196943,
+        "loss": 0.9750886556283428,
+        "mean_global_gate": 0.3260382115840912
+      },
+      "selection": {
+        "mode": "pareto",
+        "target_metric": "auprc",
+        "target_value": 0.9305854778196943,
+        "constraint_metric": "mcc",
+        "constraint_threshold": 0.8265678691117925,
+        "constraint_value": 0.8253695881731784,
+        "feasible": false
+      }
+    }
+  ]
+}

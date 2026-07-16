@@ -1,0 +1,54 @@
+{
+  "default_model": {
+    "name": "3D-v2",
+    "checkpoint": "runs/3d_v2_default/best_model.pt",
+    "config": "configs/default.json",
+    "threshold": 0.677819,
+    "threshold_source": "five-fold group-aware OOF MCC optimization",
+    "full_refit_epochs": 8
+  },
+  "fallback_model": {
+    "name": "3D-v1",
+    "checkpoint": "runs/plm_fusion_esm2_geometry_confidence/best_model.pt",
+    "config": "configs/default_3d_v1.json",
+    "threshold": 0.85,
+    "condition": "chemical-site tensors are unavailable"
+  },
+  "oof_comparison": {
+    "num_samples": 6387,
+    "v1_at_0_5": {
+      "mcc": 0.8304809909,
+      "auroc": 0.9584715694,
+      "auprc": 0.9249919231
+    },
+    "v2_at_0_5": {
+      "mcc": 0.8336678007,
+      "auroc": 0.9605914301,
+      "auprc": 0.9280011613
+    },
+    "v1_at_own_oof_threshold": {
+      "threshold": 0.72987,
+      "mcc": 0.8360411202
+    },
+    "v2_at_own_oof_threshold": {
+      "threshold": 0.677819,
+      "mcc": 0.8362022452
+    }
+  },
+  "historical_test_comparison": {
+    "test1": {
+      "v1": {"mcc": 0.84575, "auroc": 0.96995, "auprc": 0.942627},
+      "v2": {"mcc": 0.846405, "auroc": 0.9711, "auprc": 0.947419}
+    },
+    "test2": {
+      "v1": {"mcc": 0.632, "auroc": 0.9316, "auprc": 0.6969},
+      "v2": {"mcc": 0.612761, "auroc": 0.92947, "auprc": 0.724091}
+    }
+  },
+  "decision": {
+    "promote_v2_to_engineering_default": true,
+    "retain_v1_automatic_fallback": true,
+    "reason": "V2 improved paired five-fold metrics and aggregate OOF MCC/AUROC/AUPRC. Historical Test2 decision metrics declined, so promotion is not evidence of across-domain dominance.",
+    "external_validation_status": "not independently confirmed"
+  }
+}

@@ -159,6 +159,27 @@ class GHXToxModel(nn.Module):
                     model_cfg.get("chemical_site_normalized_max_distance", 4.0)
                 ),
                 dropout=float(model_cfg.get("chemical_site_dropout", dropout)),
+                use_raw_rbf=bool(model_cfg.get("chemical_site_use_raw_rbf", True)),
+                use_normalized_rbf=bool(
+                    model_cfg.get("chemical_site_use_normalized_rbf", True)
+                ),
+                use_orientation=bool(
+                    model_cfg.get("chemical_site_use_orientation", True)
+                ),
+                use_interaction_types=bool(
+                    model_cfg.get("chemical_site_use_interaction_types", True)
+                ),
+                use_plddt=bool(model_cfg.get("chemical_site_use_plddt", True)),
+                use_hydrophobic_sites=bool(
+                    model_cfg.get("chemical_site_use_hydrophobic_sites", True)
+                ),
+                max_site_slots=int(model_cfg.get("chemical_site_max_site_slots", 2)),
+                exclude_same_residue_edges=bool(
+                    model_cfg.get("chemical_site_exclude_same_residue_edges", True)
+                ),
+                zero_init_residual=bool(
+                    model_cfg.get("chemical_site_zero_init_residual", True)
+                ),
             )
         self.fusion = PLDDTAwareFusion(
             residue_feature_dim=RESIDUE_FEATURE_DIM,

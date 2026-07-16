@@ -1,0 +1,50 @@
+{
+  "status": "completed_without_new_external_dataset",
+  "frozen_models": {
+    "v1": "runs/plm_fusion_esm2_geometry_confidence/best_model.pt",
+    "v2": "runs/3d_v2_default/best_model.pt"
+  },
+  "paired_comparison": "paired_comparison.json",
+  "stratified_analysis": "stratified_metrics.csv",
+  "chemical_case_analysis": {
+    "sample_summary": "case_sample_summary.csv",
+    "residue_attribution": "case_residue_chemical_attribution.csv",
+    "site_type_attribution": "case_site_type_attribution.csv",
+    "selected_sample_ids": {
+      "test1": [
+        "peptide_90",
+        "peptide_42",
+        "peptide_537",
+        "peptide_850",
+        "peptide_731",
+        "peptide_762",
+        "peptide_234",
+        "peptide_7"
+      ],
+      "test2": [
+        "sequence_43_43",
+        "sequence_28_28",
+        "sequence_122_122",
+        "sequence_77_77",
+        "sequence_78_78",
+        "sequence_282_282",
+        "sequence_41_41",
+        "sequence_9_9"
+      ]
+    }
+  },
+  "sequence_and_esm2_attribution": {
+    "test1": "sequence_interpretation_test1/",
+    "test2": "sequence_interpretation_test2/",
+    "methods": "fixed-context residue occlusion and ESM2 integrated gradients"
+  },
+  "efficiency": "efficiency.json",
+  "summary_figure": "paper_validation_summary.png",
+  "limitations": [
+    "No new independent external dataset was available.",
+    "Test1 and Test2 analyses are retrospective because their labels were already viewed.",
+    "Chemical-site deletion is a model intervention, not experimental proof of a physical interaction.",
+    "A site-type deletion removes every pseudo-site carrying that type; overlapping site annotations mean it is not a pure isolated-type intervention.",
+    "Timing excludes upstream ESM2 and ESMFold generation."
+  ]
+}

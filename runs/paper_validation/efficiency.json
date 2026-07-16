@@ -1,0 +1,47 @@
+{
+  "scope": "Cached-feature classifier inference only. ESM2 embedding generation and ESMFold structure prediction are excluded.",
+  "device": "cpu",
+  "torch_num_threads": 16,
+  "v1": {
+    "checkpoint": "runs\\plm_fusion_esm2_geometry_confidence\\best_model.pt",
+    "checkpoint_bytes": 5892227,
+    "total_parameters": 1461618,
+    "chemical_site_branch_parameters": 0,
+    "num_samples": 128,
+    "batch_size": 32,
+    "warmup_repeats": 1,
+    "measured_repeats": 5,
+    "seconds_per_repeat": [
+      0.5707601999893086,
+      0.5771059000107925,
+      0.5674083000048995,
+      0.5837371999950847,
+      0.5395856999966782
+    ],
+    "median_seconds_per_repeat": 0.5707601999893086,
+    "median_milliseconds_per_peptide": 4.4590640624164735,
+    "throughput_peptides_per_second": 224.26230841323147
+  },
+  "v2": {
+    "checkpoint": "runs\\3d_v2_default\\best_model.pt",
+    "checkpoint_bytes": 6127199,
+    "total_parameters": 1517106,
+    "chemical_site_branch_parameters": 55488,
+    "num_samples": 128,
+    "batch_size": 32,
+    "warmup_repeats": 1,
+    "measured_repeats": 5,
+    "seconds_per_repeat": [
+      1.0740598999982467,
+      1.1575321999989683,
+      1.10198649999802,
+      1.1059599000000162,
+      1.156349400000181
+    ],
+    "median_seconds_per_repeat": 1.1059599000000162,
+    "median_milliseconds_per_peptide": 8.640311718750127,
+    "throughput_peptides_per_second": 115.73656513224225
+  },
+  "v2_minus_v1_parameters": 55488,
+  "latency_ratio_v2_over_v1": 1.937696251456799
+}

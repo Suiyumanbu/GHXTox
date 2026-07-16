@@ -1,0 +1,134 @@
+{
+  "protocol": {
+    "seed": 42,
+    "fold": 0,
+    "fold_manifest": "data/folds/train_cdhit080_fallback_folds.csv",
+    "selection": "maximize validation AUPRC subject to validation MCC >= matched control MCC",
+    "matched_control_mcc": 0.8616032263,
+    "external_sets_used_for_selection": false,
+    "screening_rule": "all components are screened on fold 0; only a variant that preserves or improves the complete model's MCC and improves AUPRC advances to five folds"
+  },
+  "complete_model": {
+    "variant": "full",
+    "epoch": 8,
+    "balanced_accuracy": 0.9256630077,
+    "f1": 0.9039548023,
+    "mcc": 0.8677315492,
+    "auroc": 0.9737004445,
+    "auprc": 0.9550667632
+  },
+  "variants": [
+    {
+      "variant": "single_site",
+      "removed_or_changed": "second chemical site per residue",
+      "epoch": 8,
+      "mcc": 0.8640006204,
+      "auroc": 0.9735401736,
+      "auprc": 0.9551128886,
+      "delta_mcc_vs_full": -0.0037309288,
+      "delta_auprc_vs_full": 0.0000461254,
+      "decision": "rejected; ranking gain did not preserve full-model MCC"
+    },
+    {
+      "variant": "no_hydrophobic",
+      "removed_or_changed": "hydrophobic site channel and hydrophobic-only sites",
+      "epoch": 4,
+      "mcc": 0.8658126269,
+      "auroc": 0.9736959086,
+      "auprc": 0.9557178398,
+      "delta_mcc_vs_full": -0.0019189223,
+      "delta_auprc_vs_full": 0.0006510766,
+      "decision": "rejected; ranking gain did not preserve full-model MCC"
+    },
+    {
+      "variant": "no_orientation",
+      "removed_or_changed": "site orientation invariants",
+      "epoch": 6,
+      "mcc": 0.8640006204,
+      "auroc": 0.9735900692,
+      "auprc": 0.9549881661,
+      "delta_mcc_vs_full": -0.0037309288,
+      "delta_auprc_vs_full": -0.0000785971,
+      "decision": "rejected"
+    },
+    {
+      "variant": "raw_only",
+      "removed_or_changed": "radius-of-gyration-normalized distance RBF",
+      "epoch": 22,
+      "mcc": 0.8618151518,
+      "auroc": 0.9737579001,
+      "auprc": 0.9550705952,
+      "delta_mcc_vs_full": -0.0059163974,
+      "delta_auprc_vs_full": 0.0000038320,
+      "decision": "rejected; checkpoint was complete although the run timed out after epoch 28 before history serialization"
+    },
+    {
+      "variant": "normalized_only",
+      "removed_or_changed": "raw Angstrom distance RBF",
+      "epoch": 17,
+      "mcc": 0.8618986710,
+      "auroc": 0.9732468475,
+      "auprc": 0.9547066084,
+      "delta_mcc_vs_full": -0.0058328782,
+      "delta_auprc_vs_full": -0.0003601548,
+      "decision": "rejected"
+    },
+    {
+      "variant": "no_interaction_types",
+      "removed_or_changed": "explicit charge/aromatic/hydrophobic interaction compatibility channels",
+      "epoch": 7,
+      "mcc": 0.8619955527,
+      "auroc": 0.9739771387,
+      "auprc": 0.9556243080,
+      "delta_mcc_vs_full": -0.0057359965,
+      "delta_auprc_vs_full": 0.0005575448,
+      "decision": "rejected; ranking gain did not preserve full-model MCC"
+    },
+    {
+      "variant": "no_plddt",
+      "removed_or_changed": "site confidence input and pair-confidence message weighting",
+      "epoch": 9,
+      "mcc": 0.8619955527,
+      "auroc": 0.9737866280,
+      "auprc": 0.9553093435,
+      "delta_mcc_vs_full": -0.0057359965,
+      "delta_auprc_vs_full": 0.0002425803,
+      "decision": "rejected; ranking gain did not preserve full-model MCC"
+    },
+    {
+      "variant": "random_init",
+      "removed_or_changed": "zero initialization of the residual projection",
+      "epoch": 8,
+      "mcc": 0.8658126269,
+      "auroc": 0.9737216124,
+      "auprc": 0.9550501935,
+      "delta_mcc_vs_full": -0.0019189223,
+      "delta_auprc_vs_full": -0.0000165697,
+      "decision": "rejected"
+    },
+    {
+      "variant": "include_same_residue",
+      "removed_or_changed": "allow edges between two sites belonging to the same residue",
+      "epoch": 8,
+      "mcc": 0.8677315492,
+      "auroc": 0.9737579001,
+      "auprc": 0.9553630904,
+      "delta_mcc_vs_full": 0.0,
+      "delta_auprc_vs_full": 0.0002963272,
+      "decision": "advanced to five-fold validation"
+    }
+  ],
+  "decision": {
+    "retain_complete_components": [
+      "two site slots",
+      "hydrophobic sites",
+      "orientation invariants",
+      "raw and normalized distance RBFs",
+      "explicit interaction types",
+      "pLDDT weighting",
+      "zero-initialized residual"
+    ],
+    "advanced_variant": "include_same_residue",
+    "reason": "it was the only fold-0 variant that preserved the complete model's MCC while improving AUPRC"
+  }
+}

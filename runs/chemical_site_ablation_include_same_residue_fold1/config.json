@@ -1,6 +1,10 @@
 {
   "seed": 42,
-  "data": {"max_length": 128, "structure_mode": "cached", "structure_cache_dir": "data/structures"},
+  "data": {
+    "max_length": 128,
+    "structure_mode": "cached",
+    "structure_cache_dir": "data/structures"
+  },
   "model": {
     "aa_embedding_dim": 32,
     "group_embedding_dim": 12,
@@ -38,7 +42,7 @@
     "chemical_site_use_plddt": true,
     "chemical_site_use_hydrophobic_sites": true,
     "chemical_site_max_site_slots": 2,
-    "chemical_site_exclude_same_residue_edges": true,
+    "chemical_site_exclude_same_residue_edges": false,
     "chemical_site_zero_init_residual": true
   },
   "train": {
@@ -52,8 +56,23 @@
     "coord_noise_std": 0.12,
     "coord_noise_plddt_scale": 2.0,
     "monitor": "mcc",
+    "selection_mode": "pareto",
+    "pareto_metric": "auprc",
+    "pareto_constraint_metric": "mcc",
+    "pareto_constraint_margin": 0.0,
+    "save_auxiliary_checkpoints": true,
     "initial_checkpoint": "runs/chemical_site_final_control_fold{fold}/best_model.pt",
-    "allowed_missing_prefixes": ["chemical_site_branch."],
-    "trainable_prefixes": ["chemical_site_branch."]
+    "allowed_missing_prefixes": [
+      "chemical_site_branch."
+    ],
+    "trainable_prefixes": [
+      "chemical_site_branch."
+    ]
+  },
+  "experiment": {
+    "family": "chemical_site_component_ablation",
+    "variant": "include_same_residue",
+    "base_config": "configs/chemical_site_interaction_pareto.json",
+    "fold": 1
   }
 }

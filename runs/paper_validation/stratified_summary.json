@@ -1,0 +1,55 @@
+{
+  "protocol": {
+    "variables": [
+      "length",
+      "mean_plddt",
+      "net_charge",
+      "mean_hydropathy",
+      "cysteine_count",
+      "chemical_site_coverage"
+    ],
+    "minimum_samples": 20,
+    "minimum_per_class": 5,
+    "paired_bootstrap_iterations": 1000,
+    "note": "Subgroups are descriptive and were not used for model selection."
+  },
+  "num_reported_strata": 32,
+  "omitted_strata": [
+    {
+      "dataset": "test2",
+      "variable": "chemical_site_coverage",
+      "bin": "<0.80",
+      "num_samples": 31,
+      "num_positive": 2,
+      "num_negative": 29,
+      "reason": "insufficient total or per-class sample count"
+    },
+    {
+      "dataset": "test2",
+      "variable": "mean_hydropathy",
+      "bin": ">=1",
+      "num_samples": 77,
+      "num_positive": 3,
+      "num_negative": 74,
+      "reason": "insufficient total or per-class sample count"
+    },
+    {
+      "dataset": "test2",
+      "variable": "mean_plddt",
+      "bin": "<0.55",
+      "num_samples": 63,
+      "num_positive": 3,
+      "num_negative": 60,
+      "reason": "insufficient total or per-class sample count"
+    },
+    {
+      "dataset": "test2",
+      "variable": "net_charge",
+      "bin": "negative",
+      "num_samples": 140,
+      "num_positive": 2,
+      "num_negative": 138,
+      "reason": "insufficient total or per-class sample count"
+    }
+  ]
+}

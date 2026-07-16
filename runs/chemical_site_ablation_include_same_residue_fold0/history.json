@@ -1,0 +1,580 @@
+{
+  "history": [
+    {
+      "epoch": 1,
+      "train": {
+        "accuracy": 0.9962861610633307,
+        "balanced_accuracy": 0.9961608044884025,
+        "precision": 0.9910958904109589,
+        "recall": 0.9958706125258087,
+        "f1": 0.99347751458977,
+        "mcc": 0.9908871439601487,
+        "auroc": 0.9998795642291857,
+        "auprc": 0.9997205458777974,
+        "loss": 0.01716179863713242,
+        "mean_global_gate": 0.36663445830345154
+      },
+      "val": {
+        "accuracy": 0.9441384736428009,
+        "balanced_accuracy": 0.9207354319755663,
+        "precision": 0.9349112426035503,
+        "recall": 0.8657534246575342,
+        "f1": 0.8990042674253201,
+        "mcc": 0.8616887880541559,
+        "auroc": 0.9737427802473617,
+        "auprc": 0.9531180299416532,
+        "loss": 0.888534829067396,
+        "mean_global_gate": 0.36688232421875
+      },
+      "selection": {
+        "mode": "pareto",
+        "target_metric": "auprc",
+        "target_value": 0.9531180299416532,
+        "constraint_metric": "mcc",
+        "constraint_threshold": 0.8616032263033445,
+        "constraint_value": 0.8616887880541559,
+        "feasible": true
+      }
+    },
+    {
+      "epoch": 2,
+      "train": {
+        "accuracy": 0.9974589523064894,
+        "balanced_accuracy": 0.9971874207937526,
+        "precision": 0.9945054945054945,
+        "recall": 0.9965588437715073,
+        "f1": 0.9955311103471984,
+        "mcc": 0.9937569159411497,
+        "auroc": 0.9998842614121348,
+        "auprc": 0.999729634466795,
+        "loss": 0.01769464505914008,
+        "mean_global_gate": 0.36663445830345154
+      },
+      "val": {
+        "accuracy": 0.9362706530291109,
+        "balanced_accuracy": 0.9193066013486952,
+        "precision": 0.8966480446927374,
+        "recall": 0.8794520547945206,
+        "f1": 0.8879668049792531,
+        "mcc": 0.8435198837883023,
+        "auroc": 0.9734948138740209,
+        "auprc": 0.9529646018951611,
+        "loss": 0.7192277467973021,
+        "mean_global_gate": 0.36688232421875
+      },
+      "selection": {
+        "mode": "pareto",
+        "target_metric": "auprc",
+        "target_value": 0.9529646018951611,
+        "constraint_metric": "mcc",
+        "constraint_threshold": 0.8616032263033445,
+        "constraint_value": 0.8435198837883023,
+        "feasible": false
+      }
+    },
+    {
+      "epoch": 3,
+      "train": {
+        "accuracy": 0.9970680218921032,
+        "balanced_accuracy": 0.9969144205207523,
+        "precision": 0.9931412894375857,
+        "recall": 0.9965588437715073,
+        "f1": 0.9948471315699072,
+        "mcc": 0.9928011002643513,
+        "auroc": 0.9998510053568552,
+        "auprc": 0.9996670200965186,
+        "loss": 0.018168642342638916,
+        "mean_global_gate": 0.36663445830345154
+      },
+      "val": {
+        "accuracy": 0.943351691581432,
+        "balanced_accuracy": 0.923455502131906,
+        "precision": 0.9221902017291066,
+        "recall": 0.8767123287671232,
+        "f1": 0.898876404494382,
+        "mcc": 0.8600972991915371,
+        "auroc": 0.9737805799993952,
+        "auprc": 0.9533610499335838,
+        "loss": 0.7842886924251246,
+        "mean_global_gate": 0.36688232421875
+      },
+      "selection": {
+        "mode": "pareto",
+        "target_metric": "auprc",
+        "target_value": 0.9533610499335838,
+        "constraint_metric": "mcc",
+        "constraint_threshold": 0.8616032263033445,
+        "constraint_value": 0.8600972991915371,
+        "feasible": false
+      }
+    },
+    {
+      "epoch": 4,
+      "train": {
+        "accuracy": 0.9964816262705238,
+        "balanced_accuracy": 0.9960896891385536,
+        "precision": 0.9924502402196294,
+        "recall": 0.9951823812801102,
+        "f1": 0.9938144329896907,
+        "mcc": 0.9913579236908857,
+        "auroc": 0.9998438656387727,
+        "auprc": 0.999635693045051,
+        "loss": 0.020014103512343222,
+        "mean_global_gate": 0.3666344881057739
+      },
+      "val": {
+        "accuracy": 0.943351691581432,
+        "balanced_accuracy": 0.9226375154978983,
+        "precision": 0.9246376811594202,
+        "recall": 0.873972602739726,
+        "f1": 0.8985915492957746,
+        "mcc": 0.859990255906651,
+        "auroc": 0.9738667634340318,
+        "auprc": 0.953410276948049,
+        "loss": 0.8148515119761768,
+        "mean_global_gate": 0.36688232421875
+      },
+      "selection": {
+        "mode": "pareto",
+        "target_metric": "auprc",
+        "target_value": 0.953410276948049,
+        "constraint_metric": "mcc",
+        "constraint_threshold": 0.8616032263033445,
+        "constraint_value": 0.859990255906651,
+        "feasible": false
+      }
+    },
+    {
+      "epoch": 5,
+      "train": {
+        "accuracy": 0.9964816262705238,
+        "balanced_accuracy": 0.996712535597601,
+        "precision": 0.9904306220095693,
+        "recall": 0.9972470750172058,
+        "f1": 0.9938271604938271,
+        "mcc": 0.9913782427756707,
+        "auroc": 0.9999254087347687,
+        "auprc": 0.9998137261630595,
+        "loss": 0.01576682356159087,
+        "mean_global_gate": 0.3666344881057739
+      },
+      "val": {
+        "accuracy": 0.9441384736428009,
+        "balanced_accuracy": 0.9231893918775893,
+        "precision": 0.9273255813953488,
+        "recall": 0.873972602739726,
+        "f1": 0.8998589562764456,
+        "mcc": 0.8618986709751856,
+        "auroc": 0.9738576914935437,
+        "auprc": 0.9534266445334346,
+        "loss": 0.8346288417452062,
+        "mean_global_gate": 0.36688232421875
+      },
+      "selection": {
+        "mode": "pareto",
+        "target_metric": "auprc",
+        "target_value": 0.9534266445334346,
+        "constraint_metric": "mcc",
+        "constraint_threshold": 0.8616032263033445,
+        "constraint_value": 0.8618986709751856,
+        "feasible": true
+      }
+    },
+    {
+      "epoch": 6,
+      "train": {
+        "accuracy": 0.9962861610633307,
+        "balanced_accuracy": 0.9961608044884025,
+        "precision": 0.9910958904109589,
+        "recall": 0.9958706125258087,
+        "f1": 0.99347751458977,
+        "mcc": 0.9908871439601487,
+        "auroc": 0.99992897859381,
+        "auprc": 0.9998238552513385,
+        "loss": 0.01464000314758454,
+        "mean_global_gate": 0.36663445830345154
+      },
+      "val": {
+        "accuracy": 0.94492525570417,
+        "balanced_accuracy": 0.9245592548912879,
+        "precision": 0.927536231884058,
+        "recall": 0.8767123287671232,
+        "f1": 0.9014084507042253,
+        "mcc": 0.8639006450512589,
+        "auroc": 0.9739544588587499,
+        "auprc": 0.9533926649607516,
+        "loss": 0.8412848722503281,
+        "mean_global_gate": 0.36688232421875
+      },
+      "selection": {
+        "mode": "pareto",
+        "target_metric": "auprc",
+        "target_value": 0.9533926649607516,
+        "constraint_metric": "mcc",
+        "constraint_threshold": 0.8616032263033445,
+        "constraint_value": 0.8639006450512589,
+        "feasible": true
+      }
+    },
+    {
+      "epoch": 7,
+      "train": {
+        "accuracy": 0.996677091477717,
+        "balanced_accuracy": 0.9964338047614028,
+        "precision": 0.9924554183813443,
+        "recall": 0.9958706125258087,
+        "f1": 0.9941600824458948,
+        "mcc": 0.9918408627768048,
+        "auroc": 0.9999372456358003,
+        "auprc": 0.9998487135882568,
+        "loss": 0.014596824139117047,
+        "mean_global_gate": 0.36663445830345154
+      },
+      "val": {
+        "accuracy": 0.9386309992132179,
+        "balanced_accuracy": 0.9242341770237987,
+        "precision": 0.8953168044077136,
+        "recall": 0.8904109589041096,
+        "f1": 0.8928571428571428,
+        "mcc": 0.8498649980180595,
+        "auroc": 0.9735447095467054,
+        "auprc": 0.9551584484314827,
+        "loss": 0.7378691965486945,
+        "mean_global_gate": 0.36688232421875
+      },
+      "selection": {
+        "mode": "pareto",
+        "target_metric": "auprc",
+        "target_value": 0.9551584484314827,
+        "constraint_metric": "mcc",
+        "constraint_threshold": 0.8616032263033445,
+        "constraint_value": 0.8498649980180595,
+        "feasible": false
+      }
+    },
+    {
+      "epoch": 8,
+      "train": {
+        "accuracy": 0.9962861610633307,
+        "balanced_accuracy": 0.9965760354611009,
+        "precision": 0.9897540983606558,
+        "recall": 0.9972470750172058,
+        "f1": 0.9934864586904354,
+        "mcc": 0.9909028926734798,
+        "auroc": 0.9999485188748782,
+        "auprc": 0.9998725591702666,
+        "loss": 0.014157059445884006,
+        "mean_global_gate": 0.36663442850112915
+      },
+      "val": {
+        "accuracy": 0.946498819826908,
+        "balanced_accuracy": 0.9256630076506698,
+        "precision": 0.9329446064139941,
+        "recall": 0.8767123287671232,
+        "f1": 0.9039548022598869,
+        "mcc": 0.8677315492423683,
+        "auroc": 0.9737579001481751,
+        "auprc": 0.9553630904293998,
+        "loss": 0.8893273665527957,
+        "mean_global_gate": 0.36688232421875
+      },
+      "selection": {
+        "mode": "pareto",
+        "target_metric": "auprc",
+        "target_value": 0.9553630904293998,
+        "constraint_metric": "mcc",
+        "constraint_threshold": 0.8616032263033445,
+        "constraint_value": 0.8677315492423683,
+        "feasible": true
+      }
+    },
+    {
+      "epoch": 9,
+      "train": {
+        "accuracy": 0.99687255668491,
+        "balanced_accuracy": 0.996570304897903,
+        "precision": 0.9931365820178449,
+        "recall": 0.9958706125258087,
+        "f1": 0.9945017182130584,
+        "mcc": 0.9923183593776445,
+        "auroc": 0.9999034259185671,
+        "auprc": 0.9997531932897148,
+        "loss": 0.015779899275129693,
+        "mean_global_gate": 0.3666344881057739
+      },
+      "val": {
+        "accuracy": 0.9354838709677419,
+        "balanced_accuracy": 0.9203906982370196,
+        "precision": 0.8898071625344353,
+        "recall": 0.8849315068493151,
+        "f1": 0.8873626373626373,
+        "mcc": 0.8421653871229069,
+        "auroc": 0.9728915298315644,
+        "auprc": 0.9523280359793902,
+        "loss": 0.7263534014720695,
+        "mean_global_gate": 0.36688232421875
+      },
+      "selection": {
+        "mode": "pareto",
+        "target_metric": "auprc",
+        "target_value": 0.9523280359793902,
+        "constraint_metric": "mcc",
+        "constraint_threshold": 0.8616032263033445,
+        "constraint_value": 0.8421653871229069,
+        "feasible": false
+      }
+    },
+    {
+      "epoch": 10,
+      "train": {
+        "accuracy": 0.9978498827208757,
+        "balanced_accuracy": 0.9978756520394512,
+        "precision": 0.9945130315500685,
+        "recall": 0.9979353062629044,
+        "f1": 0.996221229817932,
+        "mcc": 0.9947215752394444,
+        "auroc": 0.99992897859381,
+        "auprc": 0.9998301130092506,
+        "loss": 0.013048096366796097,
+        "mean_global_gate": 0.3666344881057739
+      },
+      "val": {
+        "accuracy": 0.9425649095200629,
+        "balanced_accuracy": 0.922903625752215,
+        "precision": 0.9195402298850575,
+        "recall": 0.8767123287671232,
+        "f1": 0.8976157082748948,
+        "mcc": 0.8582058346327338,
+        "auroc": 0.9734887659136956,
+        "auprc": 0.9554444936653298,
+        "loss": 0.8478714821319426,
+        "mean_global_gate": 0.36688232421875
+      },
+      "selection": {
+        "mode": "pareto",
+        "target_metric": "auprc",
+        "target_value": 0.9554444936653298,
+        "constraint_metric": "mcc",
+        "constraint_threshold": 0.8616032263033445,
+        "constraint_value": 0.8582058346327338,
+        "feasible": false
+      }
+    },
+    {
+      "epoch": 11,
+      "train": {
+        "accuracy": 0.99687255668491,
+        "balanced_accuracy": 0.9971931513569504,
+        "precision": 0.9911141490088858,
+        "recall": 0.9979353062629044,
+        "f1": 0.9945130315500688,
+        "mcc": 0.9923374937967484,
+        "auroc": 0.9999428822553392,
+        "auprc": 0.9998541457097398,
+        "loss": 0.012986491262338229,
+        "mean_global_gate": 0.3666344881057739
+      },
+      "val": {
+        "accuracy": 0.9457120377655389,
+        "balanced_accuracy": 0.9242931446369711,
+        "precision": 0.9327485380116959,
+        "recall": 0.873972602739726,
+        "f1": 0.9024045261669024,
+        "mcc": 0.8657363077113716,
+        "auroc": 0.9733693186972693,
+        "auprc": 0.9550646979084745,
+        "loss": 0.9078871417383243,
+        "mean_global_gate": 0.36688232421875
+      },
+      "selection": {
+        "mode": "pareto",
+        "target_metric": "auprc",
+        "target_value": 0.9550646979084745,
+        "constraint_metric": "mcc",
+        "constraint_threshold": 0.8616032263033445,
+        "constraint_value": 0.8657363077113716,
+        "feasible": true
+      }
+    },
+    {
+      "epoch": 12,
+      "train": {
+        "accuracy": 0.9972634870992964,
+        "balanced_accuracy": 0.9972585361436015,
+        "precision": 0.9931459904043866,
+        "recall": 0.9972470750172058,
+        "f1": 0.9951923076923077,
+        "mcc": 0.993283870397037,
+        "auroc": 0.9999637377476331,
+        "auprc": 0.9999067270971863,
+        "loss": 0.010448498183164066,
+        "mean_global_gate": 0.3666344881057739
+      },
+      "val": {
+        "accuracy": 0.940991345397325,
+        "balanced_accuracy": 0.9226178596268408,
+        "precision": 0.9119318181818182,
+        "recall": 0.8794520547945206,
+        "f1": 0.8953974895397488,
+        "mcc": 0.8545929100783394,
+        "auroc": 0.9729278175935167,
+        "auprc": 0.9536663649542853,
+        "loss": 0.8254000563071902,
+        "mean_global_gate": 0.36688232421875
+      },
+      "selection": {
+        "mode": "pareto",
+        "target_metric": "auprc",
+        "target_value": 0.9536663649542853,
+        "constraint_metric": "mcc",
+        "constraint_threshold": 0.8616032263033445,
+        "constraint_value": 0.8545929100783394,
+        "feasible": false
+      }
+    },
+    {
+      "epoch": 13,
+      "train": {
+        "accuracy": 0.9970680218921032,
+        "balanced_accuracy": 0.9973296514934505,
+        "precision": 0.9917920656634747,
+        "recall": 0.9979353062629044,
+        "f1": 0.9948542024013722,
+        "mcc": 0.9928134625835242,
+        "auroc": 0.9999526523958733,
+        "auprc": 0.9998825752697162,
+        "loss": 0.012305809167933529,
+        "mean_global_gate": 0.36663445830345154
+      },
+      "val": {
+        "accuracy": 0.9386309992132179,
+        "balanced_accuracy": 0.9225982037557834,
+        "precision": 0.8997214484679665,
+        "recall": 0.8849315068493151,
+        "f1": 0.8922651933701657,
+        "mcc": 0.8494220489481354,
+        "auroc": 0.9718800084671445,
+        "auprc": 0.9527999674112952,
+        "loss": 0.8144267167834481,
+        "mean_global_gate": 0.36688232421875
+      },
+      "selection": {
+        "mode": "pareto",
+        "target_metric": "auprc",
+        "target_value": 0.9527999674112952,
+        "constraint_metric": "mcc",
+        "constraint_threshold": 0.8616032263033445,
+        "constraint_value": 0.8494220489481354,
+        "feasible": false
+      }
+    },
+    {
+      "epoch": 14,
+      "train": {
+        "accuracy": 0.9976544175136826,
+        "balanced_accuracy": 0.997739151902951,
+        "precision": 0.9938313913639479,
+        "recall": 0.9979353062629044,
+        "f1": 0.9958791208791209,
+        "mcc": 0.9942439099879562,
+        "auroc": 0.9999535918324631,
+        "auprc": 0.9998795056635367,
+        "loss": 0.011089567597816204,
+        "mean_global_gate": 0.3666344881057739
+      },
+      "val": {
+        "accuracy": 0.943351691581432,
+        "balanced_accuracy": 0.9242734887659136,
+        "precision": 0.9197707736389685,
+        "recall": 0.8794520547945206,
+        "f1": 0.8991596638655462,
+        "mcc": 0.8602174494315215,
+        "auroc": 0.9720735431975566,
+        "auprc": 0.9527309004741427,
+        "loss": 0.857875484014758,
+        "mean_global_gate": 0.36688232421875
+      },
+      "selection": {
+        "mode": "pareto",
+        "target_metric": "auprc",
+        "target_value": 0.9527309004741427,
+        "constraint_metric": "mcc",
+        "constraint_threshold": 0.8616032263033445,
+        "constraint_value": 0.8602174494315215,
+        "feasible": false
+      }
+    },
+    {
+      "epoch": 15,
+      "train": {
+        "accuracy": 0.9974589523064894,
+        "balanced_accuracy": 0.9973950362801016,
+        "precision": 0.9938271604938271,
+        "recall": 0.9972470750172058,
+        "f1": 0.9955341806939196,
+        "mcc": 0.9937613377518979,
+        "auroc": 0.9999667439447205,
+        "auprc": 0.9999159897378838,
+        "loss": 0.011322650353435538,
+        "mean_global_gate": 0.36663445830345154
+      },
+      "val": {
+        "accuracy": 0.937844217151849,
+        "balanced_accuracy": 0.9212283407420847,
+        "precision": 0.8994413407821229,
+        "recall": 0.8821917808219178,
+        "f1": 0.8907330567081604,
+        "mcc": 0.8473858505643306,
+        "auroc": 0.9723154616105718,
+        "auprc": 0.9533307644278359,
+        "loss": 0.8155920988199375,
+        "mean_global_gate": 0.36688232421875
+      },
+      "selection": {
+        "mode": "pareto",
+        "target_metric": "auprc",
+        "target_value": 0.9533307644278359,
+        "constraint_metric": "mcc",
+        "constraint_threshold": 0.8616032263033445,
+        "constraint_value": 0.8473858505643306,
+        "feasible": false
+      }
+    },
+    {
+      "epoch": 16,
+      "train": {
+        "accuracy": 0.99687255668491,
+        "balanced_accuracy": 0.9967779203842522,
+        "precision": 0.9924605894448252,
+        "recall": 0.9965588437715073,
+        "f1": 0.9945054945054945,
+        "mcc": 0.9923238308061177,
+        "auroc": 0.9999520887339195,
+        "auprc": 0.999876824267981,
+        "loss": 0.011669006940143794,
+        "mean_global_gate": 0.3666344881057739
+      },
+      "val": {
+        "accuracy": 0.9425649095200629,
+        "balanced_accuracy": 0.922903625752215,
+        "precision": 0.9195402298850575,
+        "recall": 0.8767123287671232,
+        "f1": 0.8976157082748948,
+        "mcc": 0.8582058346327338,
+        "auroc": 0.9729036257522151,
+        "auprc": 0.9534123938367592,
+        "loss": 0.9056877085336731,
+        "mean_global_gate": 0.36688232421875
+      },
+      "selection": {
+        "mode": "pareto",
+        "target_metric": "auprc",
+        "target_value": 0.9534123938367592,
+        "constraint_metric": "mcc",
+        "constraint_threshold": 0.8616032263033445,
+        "constraint_value": 0.8582058346327338,
+        "feasible": false
+      }
+    }
+  ]
+}

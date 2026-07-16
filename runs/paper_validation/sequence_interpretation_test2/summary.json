@@ -1,0 +1,35 @@
+{
+  "processed": "data\\processed\\test2_chemical_sites_final_esm2.pt",
+  "checkpoints": [
+    "runs\\3d_v2_default\\best_model.pt"
+  ],
+  "seeds": [
+    42
+  ],
+  "num_samples": 8,
+  "num_residues": 182,
+  "num_mutations": 0,
+  "threshold_for_case_labels_only": 0.677819,
+  "methods": {
+    "fixed_context_occlusion": true,
+    "plm_integrated_gradients": true,
+    "integrated_gradients_steps": 16,
+    "integrated_gradients_baseline": "sequence_mean",
+    "mutation_scan": false
+  },
+  "interpretation_scope": {
+    "occlusion": "AA identity, functional group, deterministic residue descriptors, and the ESM2 vector are masked at one position; geometry and global descriptors remain frozen.",
+    "integrated_gradients": "Attribution of the ESM2 input pathway relative to a repeated within-peptide mean ESM2 vector by default; other inputs remain frozen.",
+    "attention_and_gate": "Model-use diagnostics, not causal residue importance.",
+    "mutation_scan": "Mutant AA descriptors and ESM2 representations are regenerated, but ESMFold geometry is kept fixed; results require structural or experimental validation."
+  },
+  "hotspot_fraction": 0.2,
+  "contact_cutoff_angstrom": 8.0,
+  "minimum_sequence_separation": 3,
+  "generated_files": [
+    "residue_attributions.csv",
+    "sample_summary.csv",
+    "amino_acid_summary.csv",
+    "figures/*.png"
+  ]
+}

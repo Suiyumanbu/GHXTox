@@ -1,6 +1,10 @@
 {
   "seed": 42,
-  "data": {"max_length": 128, "structure_mode": "cached", "structure_cache_dir": "data/structures"},
+  "data": {
+    "max_length": 128,
+    "structure_mode": "cached",
+    "structure_cache_dir": "data/structures"
+  },
   "model": {
     "aa_embedding_dim": 32,
     "group_embedding_dim": 12,
@@ -38,7 +42,7 @@
     "chemical_site_use_plddt": true,
     "chemical_site_use_hydrophobic_sites": true,
     "chemical_site_max_site_slots": 2,
-    "chemical_site_exclude_same_residue_edges": true,
+    "chemical_site_exclude_same_residue_edges": false,
     "chemical_site_zero_init_residual": true
   },
   "train": {
@@ -52,8 +56,25 @@
     "coord_noise_std": 0.12,
     "coord_noise_plddt_scale": 2.0,
     "monitor": "mcc",
-    "initial_checkpoint": "runs/chemical_site_final_control_fold{fold}/best_model.pt",
-    "allowed_missing_prefixes": ["chemical_site_branch."],
-    "trainable_prefixes": ["chemical_site_branch."]
+    "initial_checkpoint": "runs/plm_fusion_esm2_geometry_confidence/best_model.pt",
+    "allowed_missing_prefixes": [
+      "chemical_site_branch."
+    ],
+    "trainable_prefixes": [
+      "chemical_site_branch."
+    ]
+  },
+  "inference": {
+    "default_threshold": 0.677819,
+    "threshold_source": "five-fold group-aware OOF MCC optimization",
+    "fallback_checkpoint": "runs/plm_fusion_esm2_geometry_confidence/best_model.pt",
+    "fallback_threshold": 0.85
+  },
+  "experiment": {
+    "name": "3d_v2_default_full_refit",
+    "fixed_epochs": 8,
+    "epoch_source": "median of five Pareto-selected best epochs: 8, 8, 14, 2, 4",
+    "selection_data": "training-only CD-HIT 0.80 group folds",
+    "external_sets_used_for_selection": false
   }
 }

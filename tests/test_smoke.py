@@ -1,4 +1,5 @@
 import numpy as np
+import pytest
 import torch
 from pathlib import Path
 
@@ -17,6 +18,7 @@ from ghxtox.train import SmoothedBCEWithLogitsLoss, _apply_coordinate_noise
 from ghxtox.models.layers import PLDDTAwareEGNNLayer
 from ghxtox.models.chemical_sites import ChemicalSiteInteractionBranch
 from ghxtox.bootstrap_ci import bootstrap_confidence_intervals
+from ghxtox.chemical_site_report import summarize as summarize_chemical_site
 from ghxtox.sequence_similarity import alignment_identity, audit_similarity
 from ghxtox.similarity_subset_eval import evaluate_similarity_subsets
 from ghxtox.prepare_cdhit import prepare_cdhit_fasta
@@ -25,6 +27,7 @@ from ghxtox.subset_processed import subset_processed
 from ghxtox.report_figures import generate_evaluation_figure
 from ghxtox.folds import assign_reference_groups, load_fold_indices
 from ghxtox.oof import _best_threshold
+from ghxtox.utils import resolve_inference_checkpoint
 from ghxtox.native_cdhit_audit import (
     combine_bucket_outputs,
     prepare_inputs,
@@ -245,6 +248,85 @@ def test_chemical_site_branch_is_zero_initialized_and_rotation_invariant():
     assert torch.allclose(output, rotated, atol=1e-5)
 
 
+def test_chemical_site_ablation_switches_construct_and_forward():
+    branch = ChemicalSiteInteractionBranch(
+        hidden_dim=8,
+        site_hidden_dim=8,
+        num_layers=1,
+        raw_rbf_bins=4,
+        normalized_rbf_bins=4,
+        use_normalized_rbf=False,
+        use_orientation=False,
+        use_interaction_types=False,
+        use_plddt=False,
+        use_hydrophobic_sites=False,
+        max_site_slots=1,
+        dropout=0.0,
+    )
+    site_coords = torch.zeros(1, 2, 2, 3)
+    site_coords[0, 1, 0, 0] = 3.0
+    site_types = torch.zeros(1, 2, 2, 8)
+    site_types[..., CHEMICAL_SITE_TYPE_TO_INDEX["positive"]] = 1.0
+    site_types[0, 0, 0, CHEMICAL_SITE_TYPE_TO_INDEX["hydrophobic"]] = 1.0
+    site_mask = torch.ones(1, 2, 2, dtype=torch.bool)
+    output, diagnostics = branch(
+        site_coords,
+        site_types,
+        torch.zeros_like(site_coords),
+        torch.zeros(1, 2, 2, dtype=torch.bool),
+        site_mask,
+        torch.zeros(1, 2, 3),
+        torch.ones(1, 2, dtype=torch.bool),
+        torch.ones(1, 2),
+    )
+    assert output.shape == (1, 2, 8)
+    assert diagnostics["chemical_site_count"].item() == 2
+
+
+def test_chemical_site_report_summarizes_and_audits_frozen_base(tmp_path):
+    control_dir = tmp_path / "control_fold0"
+    candidate_dir = tmp_path / "candidate_fold0"
+    control_dir.mkdir()
+    candidate_dir.mkdir()
+    metrics = {
+        "balanced_accuracy": 0.80,
+        "f1": 0.75,
+        "mcc": 0.60,
+        "auroc": 0.90,
+        "auprc": 0.85,
+    }
+    torch.save(
+        {
+            "model_state": {"shared.weight": torch.tensor([1.0])},
+            "epoch": 2,
+            "val_metrics": metrics,
+        },
+        control_dir / "best_model.pt",
+    )
+    candidate_metrics = dict(metrics)
+    candidate_metrics["mcc"] = 0.62
+    candidate_metrics["auprc"] = 0.87
+    torch.save(
+        {
+            "model_state": {
+                "shared.weight": torch.tensor([1.0]),
+                "chemical_site_branch.weight": torch.tensor([2.0]),
+            },
+            "epoch": 3,
+            "val_metrics": candidate_metrics,
+        },
+        candidate_dir / "best_model.pt",
+    )
+    summary = summarize_chemical_site(
+        str(tmp_path / "control_fold{fold}" / "best_model.pt"),
+        str(tmp_path / "candidate_fold{fold}" / "best_model.pt"),
+        [0],
+    )
+    assert summary["unweighted_fold_mean"]["candidate_minus_control"]["mcc"] == pytest.approx(0.02)
+    assert summary["unweighted_fold_mean"]["candidate_minus_control"]["auprc"] == pytest.approx(0.02)
+    assert summary["frozen_base_audit"]["all_nonchemical_tensors_unchanged"]
+
+
 def test_sequence_only_collate_skips_unused_structure_tensors():
     record = {
         "sample_id": "sequence_only",
@@ -334,9 +416,67 @@ def test_model_forwards_with_plm_features():
 
 def test_evaluate_parser_constructs():
     args = build_evaluate_arg_parser().parse_args([])
-    assert args.checkpoint == "runs/plm_fusion_esm2_geometry_confidence/best_model.pt"
-    assert args.processed == "data/processed/test1_cached_func_esm2.pt"
-    assert args.threshold == 0.85
+    assert args.checkpoint == "runs/3d_v2_default/best_model.pt"
+    assert args.processed == "data/processed/test1_chemical_sites_final_esm2.pt"
+    assert args.threshold is None
+
+
+def test_default_inference_falls_back_without_chemical_sites(tmp_path):
+    fallback_path = tmp_path / "fallback.pt"
+    primary_path = tmp_path / "primary.pt"
+    torch.save(
+        {
+            "config": {"model": {}, "inference": {"default_threshold": 0.85}},
+            "model_state": {},
+        },
+        fallback_path,
+    )
+    torch.save(
+        {
+            "config": {
+                "model": {"chemical_site_branch": True},
+                "inference": {
+                    "default_threshold": 0.67,
+                    "fallback_checkpoint": str(fallback_path),
+                    "fallback_threshold": 0.85,
+                },
+            },
+            "model_state": {},
+        },
+        primary_path,
+    )
+    checkpoint, selected, threshold, fallback_used = resolve_inference_checkpoint(
+        primary_path,
+        [{"sequence": "AC"}],
+        torch.device("cpu"),
+    )
+    assert checkpoint["config"]["model"] == {}
+    assert selected == str(fallback_path)
+    assert threshold == 0.85
+    assert fallback_used
+
+
+def test_default_inference_uses_v2_when_sites_are_attached(tmp_path):
+    primary_path = tmp_path / "primary.pt"
+    torch.save(
+        {
+            "config": {
+                "model": {"chemical_site_branch": True},
+                "inference": {"default_threshold": 0.677819},
+            },
+            "model_state": {},
+        },
+        primary_path,
+    )
+    checkpoint, selected, threshold, fallback_used = resolve_inference_checkpoint(
+        primary_path,
+        [{"chemical_site_mask": torch.ones(2, 2, dtype=torch.bool)}],
+        torch.device("cpu"),
+    )
+    assert checkpoint["config"]["model"]["chemical_site_branch"]
+    assert selected == str(primary_path)
+    assert threshold == pytest.approx(0.677819)
+    assert not fallback_used
 
 
 def test_esmfold_predict_parser_defaults_to_cuda():

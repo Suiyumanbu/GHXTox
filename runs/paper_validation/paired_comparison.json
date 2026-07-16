@@ -1,0 +1,269 @@
+{
+  "test1": {
+    "protocol": {
+      "paired_samples": 1126,
+      "num_positive": 320,
+      "num_negative": 806,
+      "bootstrap": "class-stratified paired percentile bootstrap",
+      "bootstrap_iterations": 5000,
+      "randomization": "within-sample exchange of the two frozen model outputs",
+      "permutation_iterations": 5000,
+      "seed": 2026,
+      "interpretation": "Existing Test1/Test2 labels were previously viewed; p-values are descriptive retrospective evidence, not independent confirmatory inference."
+    },
+    "metrics": {
+      "balanced_accuracy": {
+        "v1": 0.9179474255583127,
+        "v2": 0.9207738833746898,
+        "delta_v2_minus_v1": 0.002826457816377137,
+        "paired_bootstrap_95_ci": {
+          "lower": -0.002159584367245726,
+          "upper": 0.009076457816377118
+        },
+        "bootstrap_probability_v2_better": 0.838,
+        "paired_randomization_two_sided_p": 0.34073185362927416
+      },
+      "f1": {
+        "v1": 0.8885350318471337,
+        "v2": 0.8895899053627759,
+        "delta_v2_minus_v1": 0.0010548735156422628,
+        "paired_bootstrap_95_ci": {
+          "lower": -0.006512159228224562,
+          "upper": 0.009063365263740127
+        },
+        "bootstrap_probability_v2_better": 0.5958,
+        "paired_randomization_two_sided_p": 0.7192561487702459
+      },
+      "mcc": {
+        "v1": 0.8457502796888533,
+        "v2": 0.8464054346206009,
+        "delta_v2_minus_v1": 0.0006551549317476146,
+        "paired_bootstrap_95_ci": {
+          "lower": -0.00994782158228428,
+          "upper": 0.011570346993595623
+        },
+        "bootstrap_probability_v2_better": 0.581,
+        "paired_randomization_two_sided_p": 0.7192561487702459
+      },
+      "auroc": {
+        "v1": 0.9699499844913152,
+        "v2": 0.9710995657568239,
+        "delta_v2_minus_v1": 0.0011495812655086812,
+        "paired_bootstrap_95_ci": {
+          "lower": -0.00086848635235737,
+          "upper": 0.003254933700372228
+        },
+        "bootstrap_probability_v2_better": 0.8706,
+        "paired_randomization_two_sided_p": 0.39012197560487905
+      },
+      "auprc": {
+        "v1": 0.9426273139865955,
+        "v2": 0.9474191098028549,
+        "delta_v2_minus_v1": 0.0047917958162594365,
+        "paired_bootstrap_95_ci": {
+          "lower": -0.001269172145287231,
+          "upper": 0.011576268942452374
+        },
+        "bootstrap_probability_v2_better": 0.9352,
+        "paired_randomization_two_sided_p": 0.1893621275744851
+      },
+      "brier": {
+        "v1": 0.05958009382434172,
+        "v2": 0.058653626112225354,
+        "delta_v2_minus_v1": -0.0009264677121163661,
+        "paired_bootstrap_95_ci": {
+          "lower": -0.0035824665968019714,
+          "upper": 0.0016573237445376907
+        },
+        "bootstrap_probability_v2_better": 0.2508,
+        "paired_randomization_two_sided_p": 0.4979004199160168
+      }
+    },
+    "thresholds": {
+      "v1": 0.85,
+      "v2": 0.677819
+    },
+    "prediction_files": {
+      "v1": "runs/plm_fusion_esm2_geometry_confidence/test1_predictions.csv",
+      "v2": "runs/3d_v2_default/test1_predictions.csv"
+    }
+  },
+  "test2": {
+    "protocol": {
+      "paired_samples": 582,
+      "num_positive": 46,
+      "num_negative": 536,
+      "bootstrap": "class-stratified paired percentile bootstrap",
+      "bootstrap_iterations": 5000,
+      "randomization": "within-sample exchange of the two frozen model outputs",
+      "permutation_iterations": 5000,
+      "seed": 2027,
+      "interpretation": "Existing Test1/Test2 labels were previously viewed; p-values are descriptive retrospective evidence, not independent confirmatory inference."
+    },
+    "metrics": {
+      "balanced_accuracy": {
+        "v1": 0.8481099935107073,
+        "v2": 0.8453114860480208,
+        "delta_v2_minus_v1": -0.002798507462686506,
+        "paired_bootstrap_95_ci": {
+          "lower": -0.006529850746268662,
+          "upper": 0.0
+        },
+        "bootstrap_probability_v2_better": 0.0,
+        "paired_randomization_two_sided_p": 0.24875024995001
+      },
+      "f1": {
+        "v1": 0.6601941747572816,
+        "v2": 0.6415094339622641,
+        "delta_v2_minus_v1": -0.018684740795017474,
+        "paired_bootstrap_95_ci": {
+          "lower": -0.042813455657492394,
+          "upper": 0.0
+        },
+        "bootstrap_probability_v2_better": 0.0,
+        "paired_randomization_two_sided_p": 0.24875024995001
+      },
+      "mcc": {
+        "v1": 0.6319616407362544,
+        "v2": 0.6127614767248043,
+        "delta_v2_minus_v1": -0.019200164011450083,
+        "paired_bootstrap_95_ci": {
+          "lower": -0.043919110573194975,
+          "upper": 0.0
+        },
+        "bootstrap_probability_v2_better": 0.0,
+        "paired_randomization_two_sided_p": 0.24875024995001
+      },
+      "auroc": {
+        "v1": 0.9316190785204412,
+        "v2": 0.9294695003244646,
+        "delta_v2_minus_v1": -0.002149578195976609,
+        "paired_bootstrap_95_ci": {
+          "lower": -0.008031513627514609,
+          "upper": 0.0029201817001947017
+        },
+        "bootstrap_probability_v2_better": 0.2152,
+        "paired_randomization_two_sided_p": 0.4269146170765847
+      },
+      "auprc": {
+        "v1": 0.6969214430828964,
+        "v2": 0.7240910200421906,
+        "delta_v2_minus_v1": 0.027169576959294228,
+        "paired_bootstrap_95_ci": {
+          "lower": -0.008598531866267311,
+          "upper": 0.06745282097121144
+        },
+        "bootstrap_probability_v2_better": 0.9224,
+        "paired_randomization_two_sided_p": 0.1957608478304339
+      },
+      "brier": {
+        "v1": 0.0656581129472118,
+        "v2": 0.06390215211722017,
+        "delta_v2_minus_v1": -0.0017559608299916318,
+        "paired_bootstrap_95_ci": {
+          "lower": -0.0049286800272379605,
+          "upper": 0.001141520830446457
+        },
+        "bootstrap_probability_v2_better": 0.1256,
+        "paired_randomization_two_sided_p": 0.26394721055788845
+      }
+    },
+    "thresholds": {
+      "v1": 0.85,
+      "v2": 0.677819
+    },
+    "prediction_files": {
+      "v1": "runs/plm_fusion_esm2_geometry_confidence/test2_predictions.csv",
+      "v2": "runs/3d_v2_default/test2_predictions.csv"
+    }
+  },
+  "oof": {
+    "protocol": {
+      "paired_samples": 6387,
+      "num_positive": 1818,
+      "num_negative": 4569,
+      "bootstrap": "class-stratified paired percentile bootstrap",
+      "bootstrap_iterations": 5000,
+      "randomization": "within-sample exchange of the two frozen model outputs",
+      "permutation_iterations": 5000,
+      "seed": 2028,
+      "interpretation": "Training-only group-aware out-of-fold comparison. It supports internal model-selection evidence but is not an independent external validation."
+    },
+    "metrics": {
+      "balanced_accuracy": {
+        "v1": 0.9107085199655882,
+        "v2": 0.9132485966915799,
+        "delta_v2_minus_v1": 0.002540076725991658,
+        "paired_bootstrap_95_ci": {
+          "lower": 6.475696814588208e-05,
+          "upper": 0.005178029293408715
+        },
+        "bootstrap_probability_v2_better": 0.9782,
+        "paired_randomization_two_sided_p": 0.05078984203159368
+      },
+      "f1": {
+        "v1": 0.8809052333804809,
+        "v2": 0.8817264573991032,
+        "delta_v2_minus_v1": 0.0008212240186222797,
+        "paired_bootstrap_95_ci": {
+          "lower": -0.002725170497327087,
+          "upper": 0.004407859166703643
+        },
+        "bootstrap_probability_v2_better": 0.6742,
+        "paired_randomization_two_sided_p": 0.6670665866826635
+      },
+      "mcc": {
+        "v1": 0.8360411201547319,
+        "v2": 0.8362022452360004,
+        "delta_v2_minus_v1": 0.00016112508126853164,
+        "paired_bootstrap_95_ci": {
+          "lower": -0.004736697690422659,
+          "upper": 0.005113359117711428
+        },
+        "bootstrap_probability_v2_better": 0.5252,
+        "paired_randomization_two_sided_p": 0.997000599880024
+      },
+      "auroc": {
+        "v1": 0.9584715694156415,
+        "v2": 0.9605914301213444,
+        "delta_v2_minus_v1": 0.002119860705702914,
+        "paired_bootstrap_95_ci": {
+          "lower": 0.0013919738439153145,
+          "upper": 0.002853222234020225
+        },
+        "bootstrap_probability_v2_better": 1.0,
+        "paired_randomization_two_sided_p": 0.0001999600079984003
+      },
+      "auprc": {
+        "v1": 0.9249919231058786,
+        "v2": 0.9280011612594266,
+        "delta_v2_minus_v1": 0.003009238153547922,
+        "paired_bootstrap_95_ci": {
+          "lower": 0.0017741212033412584,
+          "upper": 0.004545850535237938
+        },
+        "bootstrap_probability_v2_better": 1.0,
+        "paired_randomization_two_sided_p": 0.0001999600079984003
+      },
+      "brier": {
+        "v1": 0.05964099838657321,
+        "v2": 0.05952945358642396,
+        "delta_v2_minus_v1": -0.00011154480014925056,
+        "paired_bootstrap_95_ci": {
+          "lower": -0.0010080991115746338,
+          "upper": 0.0007851730304894105
+        },
+        "bootstrap_probability_v2_better": 0.4036,
+        "paired_randomization_two_sided_p": 0.8004399120175965
+      }
+    },
+    "thresholds": {
+      "v1": 0.72987,
+      "v2": 0.677819
+    },
+    "prediction_files": {
+      "v1": "runs/3d_v1_control_oof/predictions.csv",
+      "v2": "runs/3d_v2_default/oof_predictions.csv"
+    }
+  }
+}

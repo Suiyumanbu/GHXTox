@@ -1,0 +1,104 @@
+{
+  "protocol": {
+    "folds": [
+      0
+    ],
+    "control_pattern": "runs/chemical_site_final_control_fold{fold}/best_model.pt",
+    "candidate_pattern": "runs/chemical_site_interaction_ranknet_fold{fold}/best_model.pt",
+    "metrics": [
+      "balanced_accuracy",
+      "f1",
+      "mcc",
+      "auroc",
+      "auprc"
+    ],
+    "external_sets_used_for_selection": false
+  },
+  "fold_results": [
+    {
+      "fold": 0,
+      "control_checkpoint": "runs/chemical_site_final_control_fold0/best_model.pt",
+      "candidate_checkpoint": "runs/chemical_site_interaction_ranknet_fold0/best_model.pt",
+      "control_epoch": 20,
+      "candidate_epoch": 8,
+      "control": {
+        "balanced_accuracy": 0.9182814720735433,
+        "f1": 0.8981348637015782,
+        "mcc": 0.8616032263033445,
+        "auroc": 0.9734963258641024,
+        "auprc": 0.9529280615950917
+      },
+      "candidate": {
+        "balanced_accuracy": 0.9256630076506698,
+        "f1": 0.9039548022598869,
+        "mcc": 0.8677315492423683,
+        "auroc": 0.9736883486044332,
+        "auprc": 0.9550646283711693
+      },
+      "candidate_minus_control": {
+        "balanced_accuracy": 0.007381535577126508,
+        "f1": 0.005819938558308646,
+        "mcc": 0.006128322939023767,
+        "auroc": 0.00019202274033081057,
+        "auprc": 0.002136566776077653
+      }
+    }
+  ],
+  "unweighted_fold_mean": {
+    "control": {
+      "balanced_accuracy": 0.9182814720735433,
+      "f1": 0.8981348637015782,
+      "mcc": 0.8616032263033445,
+      "auroc": 0.9734963258641024,
+      "auprc": 0.9529280615950917
+    },
+    "candidate": {
+      "balanced_accuracy": 0.9256630076506698,
+      "f1": 0.9039548022598869,
+      "mcc": 0.8677315492423683,
+      "auroc": 0.9736883486044332,
+      "auprc": 0.9550646283711693
+    },
+    "candidate_minus_control": {
+      "balanced_accuracy": 0.007381535577126508,
+      "f1": 0.005819938558308646,
+      "mcc": 0.006128322939023767,
+      "auroc": 0.00019202274033081057,
+      "auprc": 0.002136566776077653
+    }
+  },
+  "positive_delta_folds": {
+    "balanced_accuracy": 1,
+    "f1": 1,
+    "mcc": 1,
+    "auroc": 1,
+    "auprc": 1
+  },
+  "frozen_base_audit": {
+    "all_nonchemical_tensors_unchanged": true,
+    "folds": [
+      {
+        "shared_nonchemical_tensors": 114,
+        "changed_nonchemical_tensors": 0,
+        "max_abs_difference": 0.0,
+        "changed_tensor_names": [],
+        "fold": 0
+      }
+    ]
+  },
+  "comparison_to_pareto_without_ranknet": {
+    "reference_checkpoint": "runs/chemical_site_interaction_pareto_fold0/best_model.pt",
+    "candidate_minus_reference": {
+      "balanced_accuracy": 0.0,
+      "f1": 0.0,
+      "mcc": 0.0,
+      "auroc": -0.0000120959,
+      "auprc": -0.0000021348
+    }
+  },
+  "decision": {
+    "advance_to_five_folds": false,
+    "retain_rank_loss_code_or_checkpoints": false,
+    "reason": "RankNet did not improve the fold-0 Pareto-selected model; only this compact negative-result summary is retained to prevent repetition"
+  }
+}

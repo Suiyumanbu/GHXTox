@@ -336,12 +336,14 @@ def train(config: dict, args: argparse.Namespace) -> Path:
 
     model = GHXToxModel(config).to(device)
     initial_checkpoint = train_cfg.get("initial_checkpoint")
+    initial_checkpoint_metrics: dict[str, Any] = {}
     if initial_checkpoint:
         initial_checkpoint = str(initial_checkpoint).format(
             fold=args.fold,
             outer_fold=args.outer_fold,
         )
         checkpoint = torch.load(initial_checkpoint, map_location="cpu", weights_only=False)
+        initial_checkpoint_metrics = dict(checkpoint.get("val_metrics", {}))
         state = checkpoint.get("model_state", checkpoint)
         incompatible = model.load_state_dict(state, strict=False)
         unexpected = list(incompatible.unexpected_keys)
@@ -482,6 +484,28 @@ def train(config: dict, args: argparse.Namespace) -> Path:
     atom_residual_l1 = float(train_cfg.get("atom_residual_l1", 0.0))
     residual_base_aux_weight = float(train_cfg.get("residual_base_aux_weight", 0.0))
     residual_delta_l1 = float(train_cfg.get("residual_delta_l1", 0.0))
+    selection_mode = str(train_cfg.get("selection_mode", "monitor")).lower()
+    if selection_mode not in {"monitor", "pareto"}:
+        raise ValueError("train.selection_mode must be 'monitor' or 'pareto'.")
+    pareto_metric = str(train_cfg.get("pareto_metric", "auprc"))
+    pareto_constraint_metric = str(train_cfg.get("pareto_constraint_metric", "mcc"))
+    pareto_constraint_margin = float(train_cfg.get("pareto_constraint_margin", 0.0))
+    pareto_constraint_value = train_cfg.get("pareto_constraint_value")
+    if pareto_constraint_value is None:
+        pareto_constraint_value = initial_checkpoint_metrics.get(pareto_constraint_metric)
+    if selection_mode == "pareto" and pareto_constraint_value is None:
+        raise ValueError(
+            "Pareto selection requires a constraint value from the initial checkpoint "
+            "or train.pareto_constraint_value."
+        )
+    if pareto_metric not in monitor_modes or pareto_constraint_metric not in monitor_modes:
+        raise ValueError("Pareto metric names must be supported validation metrics.")
+    if selection_mode == "pareto":
+        if monitor_modes[pareto_metric] != "max":
+            raise ValueError("Pareto target metric must be maximized.")
+        best_score = -float("inf")
+    auxiliary_best: dict[str, float] = {"mcc": -float("inf"), "auprc": -float("inf")}
+    save_auxiliary = bool(train_cfg.get("save_auxiliary_checkpoints", False))
 
     for epoch in range(1, epochs + 1):
         train_metrics = _run_epoch(
@@ -512,8 +536,49 @@ def train(config: dict, args: argparse.Namespace) -> Path:
             f"gate={val_metrics['mean_global_gate']:.3f}"
         )
 
-        current_score = float(val_metrics[monitor])
-        improved = current_score < best_score if monitor_mode == "min" else current_score > best_score
+        if save_auxiliary:
+            for metric_name in ("mcc", "auprc"):
+                metric_value = float(val_metrics[metric_name])
+                if metric_value > auxiliary_best[metric_name]:
+                    auxiliary_best[metric_name] = metric_value
+                    torch.save(
+                        {
+                            "model_state": model.state_dict(),
+                            "config": config,
+                            "epoch": epoch,
+                            "val_metrics": val_metrics,
+                            "monitor": metric_name,
+                            "monitor_mode": "max",
+                            "monitor_value": metric_value,
+                        },
+                        output_dir / f"best_{metric_name}_model.pt",
+                    )
+        if selection_mode == "pareto":
+            constraint_threshold = float(pareto_constraint_value) + pareto_constraint_margin
+            feasible = float(val_metrics[pareto_constraint_metric]) >= constraint_threshold
+            current_score = float(val_metrics[pareto_metric])
+            improved = feasible and current_score > best_score
+            row["selection"] = {
+                "mode": "pareto",
+                "target_metric": pareto_metric,
+                "target_value": current_score,
+                "constraint_metric": pareto_constraint_metric,
+                "constraint_threshold": constraint_threshold,
+                "constraint_value": float(val_metrics[pareto_constraint_metric]),
+                "feasible": feasible,
+            }
+        else:
+            current_score = float(val_metrics[monitor])
+            improved = (
+                current_score < best_score
+                if monitor_mode == "min"
+                else current_score > best_score
+            )
+            row["selection"] = {
+                "mode": "monitor",
+                "metric": monitor,
+                "value": current_score,
+            }
         if improved:
             best_score = current_score
             stale_epochs = 0
@@ -523,20 +588,44 @@ def train(config: dict, args: argparse.Namespace) -> Path:
                     "config": config,
                     "epoch": epoch,
                     "val_metrics": val_metrics,
-                    "monitor": monitor,
-                    "monitor_mode": monitor_mode,
+                    "monitor": pareto_metric if selection_mode == "pareto" else monitor,
+                    "monitor_mode": (
+                        monitor_modes[pareto_metric]
+                        if selection_mode == "pareto"
+                        else monitor_mode
+                    ),
                     "monitor_value": current_score,
+                    "selection_mode": selection_mode,
+                    "pareto_constraint": (
+                        {
+                            "metric": pareto_constraint_metric,
+                            "threshold": float(pareto_constraint_value)
+                            + pareto_constraint_margin,
+                            "observed": float(val_metrics[pareto_constraint_metric]),
+                        }
+                        if selection_mode == "pareto"
+                        else None
+                    ),
                 },
                 best_path,
             )
         else:
-            stale_epochs += 1
-            if stale_epochs >= patience:
-                print(f"Early stopping after {epoch} epochs.")
-                break
+            # Do not stop a Pareto run before it has produced at least one
+            # checkpoint satisfying the control-MCC constraint.
+            if selection_mode != "pareto" or best_score > -float("inf"):
+                stale_epochs += 1
+                if stale_epochs >= patience:
+                    print(f"Early stopping after {epoch} epochs.")
+                    break
 
     save_json({"history": history}, output_dir / "history.json")
-    print(f"Best checkpoint saved to {best_path} ({monitor}={best_score:.6f})")
+    if selection_mode == "pareto" and best_score == -float("inf"):
+        raise RuntimeError(
+            "No validation epoch satisfied the Pareto constraint; "
+            "auxiliary checkpoints and history were retained for diagnosis."
+        )
+    selected_metric = pareto_metric if selection_mode == "pareto" else monitor
+    print(f"Best checkpoint saved to {best_path} ({selected_metric}={best_score:.6f})")
     return best_path
 
 

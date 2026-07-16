@@ -1,0 +1,98 @@
+{
+  "protocol": {
+    "processed": "data/processed/train_chemical_sites_final_esm2.pt",
+    "fold_manifest": "data/folds/train_cdhit080_fallback_folds.csv",
+    "num_folds": 5,
+    "num_samples": 6387,
+    "threshold_selection": "all OOF predictions maximize mcc",
+    "mc_dropout_samples": 0
+  },
+  "fold_metrics_at_0.5": [
+    {
+      "fold": 0,
+      "checkpoint": "runs/chemical_site_ablation_include_same_residue_fold0/best_model.pt",
+      "checkpoint_epoch": 8,
+      "accuracy": 0.946498819826908,
+      "balanced_accuracy": 0.9256630076506698,
+      "precision": 0.9329446064139941,
+      "recall": 0.8767123287671232,
+      "f1": 0.9039548022598869,
+      "mcc": 0.8677315492423683,
+      "auroc": 0.9737579001481751,
+      "auprc": 0.9553630904293998
+    },
+    {
+      "fold": 1,
+      "checkpoint": "runs/chemical_site_ablation_include_same_residue_fold1/best_model.pt",
+      "checkpoint_epoch": 8,
+      "accuracy": 0.9104963384865744,
+      "balanced_accuracy": 0.9025412351361719,
+      "precision": 0.8238341968911918,
+      "recall": 0.8833333333333333,
+      "f1": 0.8525469168900803,
+      "mcc": 0.789394451413845,
+      "auroc": 0.9620189234113284,
+      "auprc": 0.9261700273198997
+    },
+    {
+      "fold": 2,
+      "checkpoint": "runs/chemical_site_ablation_include_same_residue_fold2/best_model.pt",
+      "checkpoint_epoch": 14,
+      "accuracy": 0.9347996857816182,
+      "balanced_accuracy": 0.916937252643574,
+      "precision": 0.8888888888888888,
+      "recall": 0.8764044943820225,
+      "f1": 0.8826025459688827,
+      "mcc": 0.8375125894813064,
+      "auroc": 0.9752398514942472,
+      "auprc": 0.946376165325953
+    },
+    {
+      "fold": 3,
+      "checkpoint": "runs/chemical_site_ablation_include_same_residue_fold3/best_model.pt",
+      "checkpoint_epoch": 2,
+      "accuracy": 0.9388071262587142,
+      "balanced_accuracy": 0.9278676317278766,
+      "precision": 0.8810810810810811,
+      "recall": 0.9030470914127424,
+      "f1": 0.8919288645690834,
+      "mcc": 0.8493835133550052,
+      "auroc": 0.9689810264200399,
+      "auprc": 0.9415885858075503
+    },
+    {
+      "fold": 4,
+      "checkpoint": "runs/chemical_site_ablation_include_same_residue_fold4/best_model.pt",
+      "checkpoint_epoch": 4,
+      "accuracy": 0.9297052154195011,
+      "balanced_accuracy": 0.912410973061628,
+      "precision": 0.8793565683646113,
+      "recall": 0.8723404255319149,
+      "f1": 0.8758344459279038,
+      "mcc": 0.8268236704006815,
+      "auroc": 0.9658804960794446,
+      "auprc": 0.9311572701728829
+    }
+  ],
+  "aggregate_at_0.5": {
+    "accuracy": 0.932206043525912,
+    "balanced_accuracy": 0.9171782575499835,
+    "precision": 0.8798683488754799,
+    "recall": 0.8822882288228823,
+    "f1": 0.8810766273001922,
+    "mcc": 0.8336678006762143,
+    "auroc": 0.9605914301213444,
+    "auprc": 0.9280011612594266
+  },
+  "oof_threshold": 0.677819,
+  "aggregate_at_oof_threshold": {
+    "accuracy": 0.9339282918428057,
+    "balanced_accuracy": 0.9132485966915799,
+    "precision": 0.8988571428571429,
+    "recall": 0.8652365236523653,
+    "f1": 0.8817264573991032,
+    "mcc": 0.8362022452360004,
+    "auroc": 0.9605914301213444,
+    "auprc": 0.9280011612594266
+  }
+}

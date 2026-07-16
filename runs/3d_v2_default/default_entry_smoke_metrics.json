@@ -1,0 +1,16 @@
+{
+  "accuracy": 0.9378330373001776,
+  "balanced_accuracy": 0.9207738833746898,
+  "precision": 0.8980891719745223,
+  "recall": 0.88125,
+  "f1": 0.8895899053627759,
+  "mcc": 0.8464054346206009,
+  "auroc": 0.9710995657568239,
+  "auprc": 0.9474191098028549,
+  "threshold": 0.677819,
+  "mean_global_gate": 0.36560769453247743,
+  "num_samples": 1126.0,
+  "checkpoint_epoch": 8.0,
+  "model_checkpoint": "runs/3d_v2_default/best_model.pt",
+  "fallback_used": false
+}

@@ -24,6 +24,7 @@ from ghxtox.utils import (
     DEFAULT_TEST_PROCESSED,
     DEFAULT_THRESHOLD,
     move_batch_to_device,
+    resolve_inference_checkpoint,
     resolve_device,
     save_json,
 )
@@ -51,6 +52,8 @@ def _write_predictions(
     rows: list[dict[str, Any]],
     output_path: str | Path,
     threshold: float,
+    model_checkpoint: str = "",
+    fallback_used: bool = False,
 ) -> None:
     output_path = Path(output_path)
     output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -64,6 +67,9 @@ def _write_predictions(
                 "toxicity_probability",
                 "prediction",
                 "global_3d_gate",
+                "model_checkpoint",
+                "fallback_used",
+                "decision_threshold",
             ],
         )
         writer.writeheader()
@@ -77,25 +83,32 @@ def _write_predictions(
                     "toxicity_probability": f"{prob:.9g}",
                     "prediction": int(prob >= threshold),
                     "global_3d_gate": f"{float(row['global_3d_gate']):.9g}",
+                    "model_checkpoint": model_checkpoint,
+                    "fallback_used": int(fallback_used),
+                    "decision_threshold": f"{threshold:.9g}",
                 }
             )
 
 
 def evaluate(args: argparse.Namespace) -> dict[str, float]:
     device = resolve_device(args.device)
-    checkpoint = torch.load(args.checkpoint, map_location=device, weights_only=False)
-    config = checkpoint["config"]
-    model = GHXToxModel(config).to(device)
-    model.load_state_dict(checkpoint["model_state"])
-    model.eval()
-
     processed_path = _prepare_input(args)
     dataset = PeptideTensorDataset(processed_path, require_labels=True)
     if args.nested_manifest:
         roles = load_nested_indices(args.nested_manifest, args.outer_fold, len(dataset))
         dataset = Subset(dataset, roles[args.nested_role])
-    required_plm_dim = int(config.get("model", {}).get("plm_embedding_dim", 0))
     records = dataset.dataset.records if isinstance(dataset, Subset) else dataset.records
+    checkpoint, selected_checkpoint, threshold, fallback_used = resolve_inference_checkpoint(
+        args.checkpoint,
+        records,
+        device,
+        requested_threshold=args.threshold,
+    )
+    config = checkpoint["config"]
+    model = GHXToxModel(config).to(device)
+    model.load_state_dict(checkpoint["model_state"])
+    model.eval()
+    required_plm_dim = int(config.get("model", {}).get("plm_embedding_dim", 0))
     validate_plm_feature_dim(records, required_plm_dim, processed_path)
     modality = str(config.get("model", {}).get("modality", "fusion")).lower()
     include_structure = modality not in {"sequence_only", "atom_only", "sequence_atom"}
@@ -148,19 +161,32 @@ def evaluate(args: argparse.Namespace) -> dict[str, float]:
 
     logits_cat = torch.cat(logits_all)
     labels_cat = torch.cat(labels_all)
-    metrics = binary_metrics(logits_cat, labels_cat, threshold=args.threshold)
-    metrics["threshold"] = float(args.threshold)
+    metrics = binary_metrics(logits_cat, labels_cat, threshold=threshold)
+    metrics["threshold"] = float(threshold)
     metrics["mean_global_gate"] = float(
         sum(float(row["global_3d_gate"]) for row in rows) / max(len(rows), 1)
     )
     metrics["num_samples"] = float(len(rows))
     metrics["checkpoint_epoch"] = float(checkpoint.get("epoch", -1))
+    metrics["model_checkpoint"] = selected_checkpoint
+    metrics["fallback_used"] = bool(fallback_used)
 
     output_path = Path(args.output)
     save_json(metrics, output_path)
     if args.predictions:
-        _write_predictions(rows, args.predictions, args.threshold)
+        _write_predictions(
+            rows,
+            args.predictions,
+            threshold,
+            model_checkpoint=selected_checkpoint,
+            fallback_used=fallback_used,
+        )
 
+    if fallback_used:
+        print(
+            "Chemical-site tensors were unavailable; "
+            f"used fallback checkpoint {selected_checkpoint}."
+        )
     print(f"Evaluation metrics saved to {output_path}")
     for key in [
         "accuracy",
@@ -187,7 +213,12 @@ def build_arg_parser() -> argparse.ArgumentParser:
     parser.add_argument("--predictions", default=None, help="Optional labeled prediction CSV output.")
     parser.add_argument("--device", default=DEFAULT_DEVICE)
     parser.add_argument("--batch-size", type=int, default=64)
-    parser.add_argument("--threshold", type=float, default=DEFAULT_THRESHOLD)
+    parser.add_argument(
+        "--threshold",
+        type=float,
+        default=None,
+        help=f"Decision threshold. Defaults to checkpoint metadata ({DEFAULT_THRESHOLD} for 3D-v2).",
+    )
     parser.add_argument("--temp-processed", default="runs/ghxtox/eval_input.pt")
     parser.add_argument("--structure-mode", default="heuristic", choices=["heuristic", "cached"])
     parser.add_argument("--structure-cache-dir", default=DEFAULT_STRUCTURE_CACHE_DIR)
