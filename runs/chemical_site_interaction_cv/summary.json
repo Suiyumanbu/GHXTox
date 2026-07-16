@@ -1,0 +1,49 @@
+{
+  "protocol": {
+    "seed": 42,
+    "fold_manifest": "data/folds/train_cdhit080_fallback_folds.csv",
+    "folds": 5,
+    "monitor": "mcc",
+    "external_sets_used_for_selection": false,
+    "candidate_training": "each fold initialized from and froze its own best control checkpoint; chemical_site_branch only"
+  },
+  "fold_results": [
+    {
+      "fold": 0,
+      "control": {"balanced_accuracy": 0.9182814721, "f1": 0.8981348637, "mcc": 0.8616032263, "auroc": 0.9734963259, "auprc": 0.9529280616},
+      "candidate": {"balanced_accuracy": 0.9256630077, "f1": 0.9039548023, "mcc": 0.8677315492, "auroc": 0.9737004445, "auprc": 0.9550667632}
+    },
+    {
+      "fold": 1,
+      "control": {"balanced_accuracy": 0.9017275295, "f1": 0.8521505376, "mcc": 0.7889126314, "auroc": 0.9620574418, "auprc": 0.9257997836},
+      "candidate": {"balanced_accuracy": 0.9025411119, "f1": 0.8525469169, "mcc": 0.7893944514, "auroc": 0.9619998773, "auprc": 0.9261072827}
+    },
+    {
+      "fold": 2,
+      "control": {"balanced_accuracy": 0.9187382390, "f1": 0.8802232855, "mcc": 0.8332376637, "auroc": 0.9746946628, "auprc": 0.9453229932},
+      "candidate": {"balanced_accuracy": 0.9197464721, "f1": 0.8857545839, "mcc": 0.8416765202, "auroc": 0.9750988472, "auprc": 0.9460609340}
+    },
+    {
+      "fold": 3,
+      "control": {"balanced_accuracy": 0.9259452621, "f1": 0.8891928865, "mcc": 0.8455674742, "auroc": 0.9686295284, "auprc": 0.9392476039},
+      "candidate": {"balanced_accuracy": 0.9287150389, "f1": 0.8922237381, "mcc": 0.8496979366, "auroc": 0.9681053227, "auprc": 0.9337039250}
+    },
+    {
+      "fold": 4,
+      "control": {"balanced_accuracy": 0.9116092506, "f1": 0.8755015638, "mcc": 0.8265674405, "auroc": 0.9647120004, "auprc": 0.9306407155},
+      "candidate": {"balanced_accuracy": 0.9137406528, "f1": 0.8773333333, "mcc": 0.8288163475, "auroc": 0.9644060376, "auprc": 0.9300482627}
+    }
+  ],
+  "unweighted_fold_mean": {
+    "control": {"balanced_accuracy": 0.9152603507, "f1": 0.8790406274, "mcc": 0.8311776872, "auroc": 0.9687179899, "auprc": 0.9387878314},
+    "candidate": {"balanced_accuracy": 0.9180812567, "f1": 0.8823626749, "mcc": 0.8354633610, "auroc": 0.9686621059, "auprc": 0.9381974335},
+    "candidate_minus_control": {"balanced_accuracy": 0.0028209060, "f1": 0.0033220475, "mcc": 0.0042856738, "auroc": -0.0000558840, "auprc": -0.0005903978}
+  },
+  "positive_delta_folds": {"balanced_accuracy": 5, "f1": 5, "mcc": 5, "auroc": 2, "auprc": 3},
+  "decision": {
+    "retain_experimental_candidate": true,
+    "replace_default_model": false,
+    "advance_to_sidechain_uncertainty_optimization": false,
+    "reason": "Thresholded classification metrics improved in all five folds, but mean AUROC and AUPRC did not improve; the preregistered MCC/AUPRC joint promotion condition was not met."
+  }
+}

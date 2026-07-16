@@ -34,7 +34,9 @@
   "decision": {
     "retain_experimental_candidate": true,
     "replace_default_model": false,
-    "advance_to_multifold_validation": false,
-    "reason": "All five metrics improved on fold 0, but delta MCC did not reach the preregistered approximate +0.01 promotion threshold."
+    "initial_advance_to_multifold_validation": false,
+    "subsequent_user_authorized_multifold_validation": true,
+    "superseded_by": "runs/chemical_site_interaction_cv/summary.json",
+    "reason": "All five metrics improved on fold 0, but delta MCC did not reach the initial approximate +0.01 promotion threshold. A later explicitly requested stepwise study completed all five folds without changing the candidate design."
   }
 }
