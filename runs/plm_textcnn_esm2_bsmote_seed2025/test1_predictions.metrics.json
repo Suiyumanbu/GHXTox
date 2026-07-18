@@ -1,0 +1,38 @@
+{
+  "protocol": {
+    "features": "data\\processed\\test1_esm2_mean.pt",
+    "checkpoint_dir": "runs\\plm_textcnn_esm2_bsmote_seed2025",
+    "checkpoints": [
+      "runs\\plm_textcnn_esm2_bsmote_seed2025\\fold0_best_model.pt",
+      "runs\\plm_textcnn_esm2_bsmote_seed2025\\fold1_best_model.pt",
+      "runs\\plm_textcnn_esm2_bsmote_seed2025\\fold2_best_model.pt",
+      "runs\\plm_textcnn_esm2_bsmote_seed2025\\fold3_best_model.pt",
+      "runs\\plm_textcnn_esm2_bsmote_seed2025\\fold4_best_model.pt"
+    ],
+    "ensemble": "arithmetic mean of five fixed-fold probabilities",
+    "threshold": 0.6,
+    "feature_metadata": {
+      "processed": "data\\processed\\test1_chemical_sites_final_esm2.pt",
+      "source_model": "ESM2-650M",
+      "pooling": "mean over valid residue embeddings",
+      "num_samples": 1126,
+      "feature_dim": 1280
+    }
+  },
+  "metrics": {
+    "accuracy": 0.9387211367673179,
+    "balanced_accuracy": 0.9204520781637717,
+    "precision": 0.9035369774919614,
+    "recall": 0.878125,
+    "specificity": 0.9627791563275434,
+    "f1": 0.890649762282092,
+    "mcc": 0.8482619963040908,
+    "auroc": 0.9794897642679901,
+    "auprc": 0.9555688501128117,
+    "tp": 281.0,
+    "tn": 776.0,
+    "fp": 30.0,
+    "fn": 39.0,
+    "threshold": 0.6
+  }
+}

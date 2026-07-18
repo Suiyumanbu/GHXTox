@@ -1,0 +1,209 @@
+{
+  "protocol": {
+    "features": "data\\processed\\train_esm2_mean.pt",
+    "fold_manifest": "data\\folds\\train_cdhit080_fallback_folds.csv",
+    "augmentation": "borderline_smote",
+    "augmentation_scope": "training partition of each fold only",
+    "checkpoint_selection": "validation balanced_accuracy at threshold 0.5; MCC tie-break",
+    "seed": 2025,
+    "epochs": 150,
+    "patience": 20,
+    "batch_size": 32,
+    "learning_rate": 0.0005,
+    "weight_decay": 0.0,
+    "neighbor_backend": "sklearn",
+    "smote_target_ratio": 1.0,
+    "feature_metadata": {
+      "processed": "data\\processed\\train_chemical_sites_final_esm2.pt",
+      "source_model": "ESM2-650M",
+      "pooling": "mean over valid residue embeddings",
+      "num_samples": 6387,
+      "feature_dim": 1280
+    }
+  },
+  "folds": [
+    {
+      "fold": 0,
+      "num_train": 5116,
+      "num_validation": 1271,
+      "best_epoch": 32,
+      "metrics_at_0_5": {
+        "accuracy": 0.9370574350904799,
+        "balanced_accuracy": 0.9255843841664398,
+        "precision": 0.8840970350404312,
+        "recall": 0.8986301369863013,
+        "specificity": 0.9525386313465783,
+        "f1": 0.8913043478260869,
+        "mcc": 0.8470674651955854,
+        "auroc": 0.9715942423417703,
+        "auprc": 0.9397247613370963,
+        "tp": 328.0,
+        "tn": 863.0,
+        "fp": 43.0,
+        "fn": 37.0,
+        "threshold": 0.5
+      },
+      "smote_report": {
+        "original_positive": 1453,
+        "original_negative": 3663,
+        "danger_positive": 249,
+        "synthetic_positive": 2210,
+        "output_positive": 3663,
+        "output_negative": 3663
+      }
+    },
+    {
+      "fold": 1,
+      "num_train": 5158,
+      "num_validation": 1229,
+      "best_epoch": 11,
+      "metrics_at_0_5": {
+        "accuracy": 0.9243287225386493,
+        "balanced_accuracy": 0.9098820483314154,
+        "precision": 0.8677685950413223,
+        "recall": 0.875,
+        "specificity": 0.9447640966628308,
+        "f1": 0.871369294605809,
+        "mcc": 0.8177824263909813,
+        "auroc": 0.9609400971742744,
+        "auprc": 0.9262720243619531,
+        "tp": 315.0,
+        "tn": 821.0,
+        "fp": 48.0,
+        "fn": 45.0,
+        "threshold": 0.5
+      },
+      "smote_report": {
+        "original_positive": 1458,
+        "original_negative": 3700,
+        "danger_positive": 216,
+        "synthetic_positive": 2242,
+        "output_positive": 3700,
+        "output_negative": 3700
+      }
+    },
+    {
+      "fold": 2,
+      "num_train": 5114,
+      "num_validation": 1273,
+      "best_epoch": 2,
+      "metrics_at_0_5": {
+        "accuracy": 0.9238020424194815,
+        "balanced_accuracy": 0.9135998554151912,
+        "precision": 0.8453333333333334,
+        "recall": 0.8904494382022472,
+        "specificity": 0.9367502726281353,
+        "f1": 0.8673050615595075,
+        "mcc": 0.8144533960941818,
+        "auroc": 0.9630083442588804,
+        "auprc": 0.9091737018157121,
+        "tp": 317.0,
+        "tn": 859.0,
+        "fp": 58.0,
+        "fn": 39.0,
+        "threshold": 0.5
+      },
+      "smote_report": {
+        "original_positive": 1462,
+        "original_negative": 3652,
+        "danger_positive": 242,
+        "synthetic_positive": 2190,
+        "output_positive": 3652,
+        "output_negative": 3652
+      }
+    },
+    {
+      "fold": 3,
+      "num_train": 5096,
+      "num_validation": 1291,
+      "best_epoch": 12,
+      "metrics_at_0_5": {
+        "accuracy": 0.9333849728892332,
+        "balanced_accuracy": 0.9190197480117952,
+        "precision": 0.8767123287671232,
+        "recall": 0.8864265927977839,
+        "specificity": 0.9516129032258065,
+        "f1": 0.8815426997245178,
+        "mcc": 0.8352329840873023,
+        "auroc": 0.9646561224793733,
+        "auprc": 0.9404620213460968,
+        "tp": 320.0,
+        "tn": 885.0,
+        "fp": 45.0,
+        "fn": 41.0,
+        "threshold": 0.5
+      },
+      "smote_report": {
+        "original_positive": 1457,
+        "original_negative": 3639,
+        "danger_positive": 244,
+        "synthetic_positive": 2182,
+        "output_positive": 3639,
+        "output_negative": 3639
+      }
+    },
+    {
+      "fold": 4,
+      "num_train": 5064,
+      "num_validation": 1323,
+      "best_epoch": 2,
+      "metrics_at_0_5": {
+        "accuracy": 0.9160997732426304,
+        "balanced_accuracy": 0.9109253184749152,
+        "precision": 0.8223844282238443,
+        "recall": 0.898936170212766,
+        "specificity": 0.9229144667370645,
+        "f1": 0.8589580686149936,
+        "mcc": 0.8010202179806777,
+        "auroc": 0.9538660720303759,
+        "auprc": 0.8923812712514024,
+        "tp": 338.0,
+        "tn": 874.0,
+        "fp": 73.0,
+        "fn": 38.0,
+        "threshold": 0.5
+      },
+      "smote_report": {
+        "original_positive": 1442,
+        "original_negative": 3622,
+        "danger_positive": 242,
+        "synthetic_positive": 2180,
+        "output_positive": 3622,
+        "output_negative": 3622
+      }
+    }
+  ],
+  "oof_at_0_5": {
+    "accuracy": 0.9268827305464225,
+    "balanced_accuracy": 0.9157758520435104,
+    "precision": 0.8583554376657825,
+    "recall": 0.88998899889989,
+    "specificity": 0.9415627051871307,
+    "f1": 0.8738860383472861,
+    "mcc": 0.8226940450762743,
+    "auroc": 0.9584730140775075,
+    "auprc": 0.9151519726849664,
+    "tp": 1618.0,
+    "tn": 4302.0,
+    "fp": 267.0,
+    "fn": 200.0,
+    "threshold": 0.5
+  },
+  "oof_bacc_threshold": 0.4670373797416687,
+  "oof_at_bacc_threshold": {
+    "accuracy": 0.9257867543447628,
+    "balanced_accuracy": 0.9158377919210174,
+    "precision": 0.8533123028391167,
+    "recall": 0.8927392739273927,
+    "specificity": 0.9389363099146422,
+    "f1": 0.8725806451612903,
+    "mcc": 0.8206821550820889,
+    "auroc": 0.9584730140775075,
+    "auprc": 0.9151519726849664,
+    "tp": 1623.0,
+    "tn": 4290.0,
+    "fp": 279.0,
+    "fn": 195.0,
+    "threshold": 0.4670373797416687
+  }
+}

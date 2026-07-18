@@ -1,0 +1,28 @@
+{
+  "protocol": {
+    "inputs": [
+      "runs\\plm_textcnn_esm2_bsmote\\oof_predictions.csv",
+      "runs\\plm_textcnn_esm2_bsmote_seed123\\oof_predictions.csv",
+      "runs\\plm_textcnn_esm2_bsmote_seed2025\\oof_predictions.csv"
+    ],
+    "ensemble": "unweighted arithmetic mean of aligned probabilities",
+    "threshold": 0.6,
+    "threshold_selected_from_test_labels": false
+  },
+  "metrics": {
+    "accuracy": 0.9381556286206356,
+    "balanced_accuracy": 0.9208399336322339,
+    "precision": 0.8999437886453063,
+    "recall": 0.8806380638063807,
+    "specificity": 0.9610418034580871,
+    "f1": 0.8901862663330554,
+    "mcc": 0.84724740694395,
+    "auroc": 0.9697999456325584,
+    "auprc": 0.9407886575664053,
+    "tp": 1601.0,
+    "tn": 4391.0,
+    "fp": 178.0,
+    "fn": 217.0,
+    "threshold": 0.6
+  }
+}

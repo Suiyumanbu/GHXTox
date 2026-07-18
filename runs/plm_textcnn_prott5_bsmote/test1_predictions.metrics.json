@@ -1,0 +1,39 @@
+{
+  "protocol": {
+    "features": "data\\processed\\test1_prott5_official_mean.pt",
+    "checkpoint_dir": "runs\\plm_textcnn_prott5_bsmote",
+    "checkpoints": [
+      "runs\\plm_textcnn_prott5_bsmote\\fold0_best_model.pt",
+      "runs\\plm_textcnn_prott5_bsmote\\fold1_best_model.pt",
+      "runs\\plm_textcnn_prott5_bsmote\\fold2_best_model.pt",
+      "runs\\plm_textcnn_prott5_bsmote\\fold3_best_model.pt",
+      "runs\\plm_textcnn_prott5_bsmote\\fold4_best_model.pt"
+    ],
+    "ensemble": "arithmetic mean of five fixed-fold probabilities",
+    "threshold": 0.45,
+    "feature_metadata": {
+      "source_csv": "external\\ToxPLTC\\Codes\\Prott5_Indtest1_features.csv",
+      "source_fasta": "data\\cdhit\\input\\test1.fasta",
+      "source_model": "Rostlab/prot_t5_xl_half_uniref50-enc",
+      "pooling": "official ToxPLTC per-protein embedding",
+      "num_samples": 1126,
+      "feature_dim": 1024
+    }
+  },
+  "metrics": {
+    "accuracy": 0.9360568383658969,
+    "balanced_accuracy": 0.9270704094292803,
+    "precision": 0.8734939759036144,
+    "recall": 0.90625,
+    "specificity": 0.9478908188585607,
+    "f1": 0.8895705521472392,
+    "mcc": 0.8448754563340428,
+    "auroc": 0.9759382754342432,
+    "auprc": 0.9527967825823284,
+    "tp": 290.0,
+    "tn": 764.0,
+    "fp": 42.0,
+    "fn": 30.0,
+    "threshold": 0.45
+  }
+}

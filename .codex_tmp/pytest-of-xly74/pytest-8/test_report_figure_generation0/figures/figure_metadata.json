@@ -1,0 +1,44 @@
+{
+  "protocol": {
+    "checkpoint": "runs/plm_fusion_esm2_geometry_confidence/best_model.pt",
+    "threshold": 0.5,
+    "test1_predictions": "D:\\code\\Python\\26\u5927\u521b\\GHXTox\\.codex_tmp\\pytest-of-xly74\\pytest-8\\test_report_figure_generation0\\test1.csv",
+    "test2_predictions": "D:\\code\\Python\\26\u5927\u521b\\GHXTox\\.codex_tmp\\pytest-of-xly74\\pytest-8\\test_report_figure_generation0\\test2.csv"
+  },
+  "test1": {
+    "confusion_matrix": [
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "auroc": 1.0,
+    "auprc": 1.0,
+    "prevalence": 0.5,
+    "num_samples": 2,
+    "num_positive": 1,
+    "num_negative": 1
+  },
+  "test2": {
+    "confusion_matrix": [
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "auroc": 1.0,
+    "auprc": 1.0,
+    "prevalence": 0.5,
+    "num_samples": 2,
+    "num_positive": 1,
+    "num_negative": 1
+  }
+}

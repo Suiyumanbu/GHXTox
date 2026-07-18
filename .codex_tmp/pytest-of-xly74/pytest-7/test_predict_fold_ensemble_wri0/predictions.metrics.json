@@ -1,0 +1,34 @@
+{
+  "protocol": {
+    "features": "D:\\code\\Python\\26大创\\GHXTox\\.codex_tmp\\pytest-of-xly74\\pytest-7\\test_predict_fold_ensemble_wri0\\features.pt",
+    "checkpoint_dir": "D:\\code\\Python\\26大创\\GHXTox\\.codex_tmp\\pytest-of-xly74\\pytest-7\\test_predict_fold_ensemble_wri0\\checkpoints",
+    "checkpoints": [
+      "D:\\code\\Python\\26大创\\GHXTox\\.codex_tmp\\pytest-of-xly74\\pytest-7\\test_predict_fold_ensemble_wri0\\checkpoints\\fold0_best_model.pt",
+      "D:\\code\\Python\\26大创\\GHXTox\\.codex_tmp\\pytest-of-xly74\\pytest-7\\test_predict_fold_ensemble_wri0\\checkpoints\\fold1_best_model.pt",
+      "D:\\code\\Python\\26大创\\GHXTox\\.codex_tmp\\pytest-of-xly74\\pytest-7\\test_predict_fold_ensemble_wri0\\checkpoints\\fold2_best_model.pt",
+      "D:\\code\\Python\\26大创\\GHXTox\\.codex_tmp\\pytest-of-xly74\\pytest-7\\test_predict_fold_ensemble_wri0\\checkpoints\\fold3_best_model.pt",
+      "D:\\code\\Python\\26大创\\GHXTox\\.codex_tmp\\pytest-of-xly74\\pytest-7\\test_predict_fold_ensemble_wri0\\checkpoints\\fold4_best_model.pt"
+    ],
+    "ensemble": "arithmetic mean of five fixed-fold probabilities",
+    "threshold": 0.5,
+    "feature_metadata": {
+      "source_model": "test"
+    }
+  },
+  "metrics": {
+    "accuracy": 0.75,
+    "balanced_accuracy": 0.75,
+    "precision": 0.6666666666666666,
+    "recall": 1.0,
+    "specificity": 0.5,
+    "f1": 0.8,
+    "mcc": 0.5773502691896258,
+    "auroc": 0.5,
+    "auprc": 0.5833333333333333,
+    "tp": 2.0,
+    "tn": 1.0,
+    "fp": 1.0,
+    "fn": 0.0,
+    "threshold": 0.5
+  }
+}

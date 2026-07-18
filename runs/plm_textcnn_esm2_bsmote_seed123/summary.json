@@ -1,0 +1,209 @@
+{
+  "protocol": {
+    "features": "data\\processed\\train_esm2_mean.pt",
+    "fold_manifest": "data\\folds\\train_cdhit080_fallback_folds.csv",
+    "augmentation": "borderline_smote",
+    "augmentation_scope": "training partition of each fold only",
+    "checkpoint_selection": "validation balanced_accuracy at threshold 0.5; MCC tie-break",
+    "seed": 123,
+    "epochs": 150,
+    "patience": 20,
+    "batch_size": 32,
+    "learning_rate": 0.0005,
+    "weight_decay": 0.0,
+    "neighbor_backend": "sklearn",
+    "smote_target_ratio": 1.0,
+    "feature_metadata": {
+      "processed": "data\\processed\\train_chemical_sites_final_esm2.pt",
+      "source_model": "ESM2-650M",
+      "pooling": "mean over valid residue embeddings",
+      "num_samples": 6387,
+      "feature_dim": 1280
+    }
+  },
+  "folds": [
+    {
+      "fold": 0,
+      "num_train": 5116,
+      "num_validation": 1271,
+      "best_epoch": 37,
+      "metrics_at_0_5": {
+        "accuracy": 0.943351691581432,
+        "balanced_accuracy": 0.9316353684719828,
+        "precision": 0.8991825613079019,
+        "recall": 0.9041095890410958,
+        "specificity": 0.9591611479028698,
+        "f1": 0.9016393442622951,
+        "mcc": 0.8618671009245106,
+        "auroc": 0.9721491427016239,
+        "auprc": 0.9491324356061054,
+        "tp": 330.0,
+        "tn": 869.0,
+        "fp": 37.0,
+        "fn": 35.0,
+        "threshold": 0.5
+      },
+      "smote_report": {
+        "original_positive": 1453,
+        "original_negative": 3663,
+        "danger_positive": 249,
+        "synthetic_positive": 2210,
+        "output_positive": 3663,
+        "output_negative": 3663
+      }
+    },
+    {
+      "fold": 1,
+      "num_train": 5158,
+      "num_validation": 1229,
+      "best_epoch": 19,
+      "metrics_at_0_5": {
+        "accuracy": 0.9153783563873068,
+        "balanced_accuracy": 0.9027394195115714,
+        "precision": 0.8440860215053764,
+        "recall": 0.8722222222222222,
+        "specificity": 0.9332566168009206,
+        "f1": 0.8579234972677596,
+        "mcc": 0.7979090540376255,
+        "auroc": 0.9583141542002301,
+        "auprc": 0.9185753721862031,
+        "tp": 314.0,
+        "tn": 811.0,
+        "fp": 58.0,
+        "fn": 46.0,
+        "threshold": 0.5
+      },
+      "smote_report": {
+        "original_positive": 1458,
+        "original_negative": 3700,
+        "danger_positive": 216,
+        "synthetic_positive": 2242,
+        "output_positive": 3700,
+        "output_negative": 3700
+      }
+    },
+    {
+      "fold": 2,
+      "num_train": 5114,
+      "num_validation": 1273,
+      "best_epoch": 3,
+      "metrics_at_0_5": {
+        "accuracy": 0.9238020424194815,
+        "balanced_accuracy": 0.9093036648573144,
+        "precision": 0.8547945205479452,
+        "recall": 0.8764044943820225,
+        "specificity": 0.9422028353326063,
+        "f1": 0.8654646324549239,
+        "mcc": 0.8124486835033637,
+        "auroc": 0.9588362148187176,
+        "auprc": 0.9144892359383673,
+        "tp": 312.0,
+        "tn": 864.0,
+        "fp": 53.0,
+        "fn": 44.0,
+        "threshold": 0.5
+      },
+      "smote_report": {
+        "original_positive": 1462,
+        "original_negative": 3652,
+        "danger_positive": 242,
+        "synthetic_positive": 2190,
+        "output_positive": 3652,
+        "output_negative": 3652
+      }
+    },
+    {
+      "fold": 3,
+      "num_train": 5096,
+      "num_validation": 1291,
+      "best_epoch": 11,
+      "metrics_at_0_5": {
+        "accuracy": 0.9349341595662277,
+        "balanced_accuracy": 0.9217898311142882,
+        "precision": 0.8773841961852861,
+        "recall": 0.8919667590027701,
+        "specificity": 0.9516129032258065,
+        "f1": 0.8846153846153846,
+        "mcc": 0.8393675171035697,
+        "auroc": 0.967590027700831,
+        "auprc": 0.936411599887341,
+        "tp": 322.0,
+        "tn": 885.0,
+        "fp": 45.0,
+        "fn": 39.0,
+        "threshold": 0.5
+      },
+      "smote_report": {
+        "original_positive": 1457,
+        "original_negative": 3639,
+        "danger_positive": 244,
+        "synthetic_positive": 2182,
+        "output_positive": 3639,
+        "output_negative": 3639
+      }
+    },
+    {
+      "fold": 4,
+      "num_train": 5064,
+      "num_validation": 1323,
+      "best_epoch": 21,
+      "metrics_at_0_5": {
+        "accuracy": 0.9259259259259259,
+        "balanced_accuracy": 0.915383686445438,
+        "precision": 0.8545918367346939,
+        "recall": 0.8909574468085106,
+        "specificity": 0.9398099260823654,
+        "f1": 0.8723958333333334,
+        "mcc": 0.8205980297904701,
+        "auroc": 0.9606090902963446,
+        "auprc": 0.9089399328214568,
+        "tp": 335.0,
+        "tn": 890.0,
+        "fp": 57.0,
+        "fn": 41.0,
+        "threshold": 0.5
+      },
+      "smote_report": {
+        "original_positive": 1442,
+        "original_negative": 3622,
+        "danger_positive": 242,
+        "synthetic_positive": 2180,
+        "output_positive": 3622,
+        "output_negative": 3622
+      }
+    }
+  ],
+  "oof_at_0_5": {
+    "accuracy": 0.9287615468921246,
+    "balanced_accuracy": 0.9162610778477717,
+    "precision": 0.8658078368223295,
+    "recall": 0.8872387238723872,
+    "specificity": 0.9452834318231561,
+    "f1": 0.8763922847052431,
+    "mcc": 0.8264861743567223,
+    "auroc": 0.9617229615279321,
+    "auprc": 0.9212014858357958,
+    "tp": 1613.0,
+    "tn": 4319.0,
+    "fp": 250.0,
+    "fn": 205.0,
+    "threshold": 0.5
+  },
+  "oof_bacc_threshold": 0.41000000000000003,
+  "oof_at_bacc_threshold": {
+    "accuracy": 0.9268827305464225,
+    "balanced_accuracy": 0.9172662013410796,
+    "precision": 0.8549658434051498,
+    "recall": 0.894939493949395,
+    "specificity": 0.9395929087327642,
+    "f1": 0.874496103198065,
+    "mcc": 0.8233766110596281,
+    "auroc": 0.9617229615279321,
+    "auprc": 0.9212014858357958,
+    "tp": 1627.0,
+    "tn": 4293.0,
+    "fp": 276.0,
+    "fn": 191.0,
+    "threshold": 0.41000000000000003
+  }
+}

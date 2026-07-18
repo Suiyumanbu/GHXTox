@@ -1,0 +1,131 @@
+{
+  "protocol": {
+    "baseline_predictions": "runs\\plm_textcnn_esm2_bsmote_multiseed\\oof_predictions.csv",
+    "expert_predictions": "runs\\plm_textcnn_prott5_bsmote_multiseed\\oof_predictions.csv",
+    "selection": "leave-one-fold-out weight and threshold selection; balanced_accuracy primary",
+    "weight_step": 0.01,
+    "threshold_step": 0.005,
+    "num_samples": 6387,
+    "num_folds": 5,
+    "fold_manifest": "data\\folds\\train_cdhit080_fallback_folds.csv",
+    "alignment": "rowwise source_index (when present), sequence and label; sample_id aliases permitted"
+  },
+  "baseline_at_declared_oof_threshold": {
+    "accuracy": 0.9290746829497417,
+    "balanced_accuracy": 0.9239316906083255,
+    "precision": 0.849820604818042,
+    "recall": 0.911991199119912,
+    "specificity": 0.935872182096739,
+    "f1": 0.8798089678959936,
+    "mcc": 0.8306326416963448,
+    "auroc": 0.9697999456325584,
+    "auprc": 0.9407886575664053,
+    "tp": 1658.0,
+    "tn": 4276.0,
+    "fp": 293.0,
+    "fn": 160.0,
+    "threshold": 0.36
+  },
+  "expert_at_declared_oof_threshold": {
+    "accuracy": 0.9420698293408486,
+    "balanced_accuracy": 0.9316898859945089,
+    "precision": 0.8909287257019438,
+    "recall": 0.9075907590759076,
+    "specificity": 0.9557890129131101,
+    "f1": 0.8991825613079019,
+    "mcc": 0.8586185184928503,
+    "auroc": 0.9724224282791597,
+    "auprc": 0.9436250355128133,
+    "tp": 1650.0,
+    "tn": 4367.0,
+    "fp": 202.0,
+    "fn": 168.0,
+    "threshold": 0.45
+  },
+  "crossfit_fold_selection": [
+    {
+      "heldout_fold": 0,
+      "expert_weight": 0.63,
+      "baseline_weight": 0.37,
+      "threshold": 0.305,
+      "selection_objective": "balanced_accuracy",
+      "training_primary_metric": 0.9326150589054925,
+      "training_secondary_metric": 0.8439077180616036
+    },
+    {
+      "heldout_fold": 1,
+      "expert_weight": 0.65,
+      "baseline_weight": 0.35,
+      "threshold": 0.305,
+      "selection_objective": "balanced_accuracy",
+      "training_primary_metric": 0.9361947132317503,
+      "training_secondary_metric": 0.8511510294477234
+    },
+    {
+      "heldout_fold": 2,
+      "expert_weight": 0.66,
+      "baseline_weight": 0.33999999999999997,
+      "threshold": 0.31,
+      "selection_objective": "balanced_accuracy",
+      "training_primary_metric": 0.9370477807261879,
+      "training_secondary_metric": 0.8538510286704895
+    },
+    {
+      "heldout_fold": 3,
+      "expert_weight": 0.66,
+      "baseline_weight": 0.33999999999999997,
+      "threshold": 0.34,
+      "selection_objective": "balanced_accuracy",
+      "training_primary_metric": 0.936074777495307,
+      "training_secondary_metric": 0.8558223167978147
+    },
+    {
+      "heldout_fold": 4,
+      "expert_weight": 0.64,
+      "baseline_weight": 0.36,
+      "threshold": 0.375,
+      "selection_objective": "balanced_accuracy",
+      "training_primary_metric": 0.9358321124335718,
+      "training_secondary_metric": 0.8599216628675056
+    }
+  ],
+  "crossfit_metrics": {
+    "accuracy": 0.9358071081885079,
+    "balanced_accuracy": 0.9324459858986556,
+    "precision": 0.8602865916069601,
+    "recall": 0.9246424642464246,
+    "specificity": 0.9402495075508864,
+    "f1": 0.8913043478260869,
+    "mcc": 0.8469509100323275,
+    "auroc": 0.9767121711076776,
+    "auprc": 0.9534968245896754,
+    "tp": 1681.0,
+    "tn": 4296.0,
+    "fp": 273.0,
+    "fn": 137.0
+  },
+  "frozen_parameters_from_all_oof": {
+    "expert_weight": 0.64,
+    "baseline_weight": 0.36,
+    "threshold": 0.305,
+    "selection_objective": "balanced_accuracy",
+    "training_primary_metric": 0.9353114727099762,
+    "training_secondary_metric": 0.8497966172114677
+  },
+  "frozen_oof_metrics": {
+    "accuracy": 0.9365899483325505,
+    "balanced_accuracy": 0.9353114727099762,
+    "precision": 0.8573596358118362,
+    "recall": 0.9323432343234324,
+    "specificity": 0.93827971109652,
+    "f1": 0.8932806324110673,
+    "mcc": 0.8497966172114677,
+    "auroc": 0.9767232468486508,
+    "auprc": 0.9535133233034903,
+    "tp": 1695.0,
+    "tn": 4287.0,
+    "fp": 282.0,
+    "fn": 123.0,
+    "threshold": 0.305
+  }
+}

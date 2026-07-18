@@ -15,6 +15,12 @@ env/
 Scripts/
 Lib/
 
+# Keep the project-level AutoDL launcher while still ignoring environment Scripts/.
+!/scripts/
+/scripts/*
+!/scripts/generate_prott5_pooled_autodl.sh
+!/scripts/generate_prott5_tokens_autodl.sh
+
 # =========================
 # 3. 深度学习模型权重
 # =========================

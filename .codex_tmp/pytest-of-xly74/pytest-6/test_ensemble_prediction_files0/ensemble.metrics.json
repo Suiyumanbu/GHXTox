@@ -1,0 +1,27 @@
+{
+  "protocol": {
+    "inputs": [
+      "D:\\code\\Python\\26大创\\GHXTox\\.codex_tmp\\pytest-of-xly74\\pytest-6\\test_ensemble_prediction_files0\\member0.csv",
+      "D:\\code\\Python\\26大创\\GHXTox\\.codex_tmp\\pytest-of-xly74\\pytest-6\\test_ensemble_prediction_files0\\member1.csv"
+    ],
+    "ensemble": "unweighted arithmetic mean of aligned probabilities",
+    "threshold": 0.5,
+    "threshold_selected_from_test_labels": false
+  },
+  "metrics": {
+    "accuracy": 1.0,
+    "balanced_accuracy": 1.0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "specificity": 1.0,
+    "f1": 1.0,
+    "mcc": 1.0,
+    "auroc": 1.0,
+    "auprc": 1.0,
+    "tp": 1.0,
+    "tn": 1.0,
+    "fp": 0.0,
+    "fn": 0.0,
+    "threshold": 0.5
+  }
+}

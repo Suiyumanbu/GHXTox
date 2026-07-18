@@ -1,0 +1,26 @@
+{
+  "protocol": {
+    "baseline_predictions": "runs\\3d_v2_default\\test2_predictions.csv",
+    "expert_predictions": "runs\\plm_textcnn_esm2_bsmote\\test2_predictions.csv",
+    "expert_weight": 0.44,
+    "baseline_weight": 0.56,
+    "threshold": 0.555,
+    "parameters_selected_from_test_labels": false
+  },
+  "metrics": {
+    "accuracy": 0.929553264604811,
+    "balanced_accuracy": 0.8325762491888384,
+    "precision": 0.5409836065573771,
+    "recall": 0.717391304347826,
+    "specificity": 0.9477611940298507,
+    "f1": 0.6168224299065421,
+    "mcc": 0.5858666248644069,
+    "auroc": 0.9438270603504219,
+    "auprc": 0.7518637010870755,
+    "tp": 33.0,
+    "tn": 508.0,
+    "fp": 28.0,
+    "fn": 13.0,
+    "threshold": 0.555
+  }
+}

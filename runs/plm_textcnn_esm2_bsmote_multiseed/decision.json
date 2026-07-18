@@ -1,0 +1,33 @@
+{
+  "candidate": "three-seed pooled ESM2 + fold-local 1:1 Borderline-SMOTE + TextCNN",
+  "seeds": [42, 123, 2025],
+  "fold_manifest": "data/folds/train_cdhit080_fallback_folds.csv",
+  "probability_ensemble": "unweighted arithmetic mean",
+  "threshold_selection": {
+    "source": "training OOF predictions only",
+    "maximum_bacc_threshold": 0.35,
+    "maximum_bacc": 0.9243190405711614,
+    "plateau_tolerance": 0.0005,
+    "rule": "choose the largest threshold whose OOF BACC is within tolerance of the maximum",
+    "selected_threshold": 0.36
+  },
+  "oof_at_selected_threshold": {
+    "accuracy": 0.9290746829497417,
+    "balanced_accuracy": 0.9239316906083255,
+    "precision": 0.849820604818042,
+    "recall": 0.911991199119912,
+    "specificity": 0.935872182096739,
+    "f1": 0.8798089678959936,
+    "mcc": 0.8306326416963448,
+    "auroc": 0.9697999456325584,
+    "auprc": 0.9407886575664053
+  },
+  "historical_test_outputs": {
+    "test1": "runs/plm_textcnn_esm2_bsmote_multiseed_plateau/test1_predictions.metrics.json",
+    "test2": "runs/plm_textcnn_esm2_bsmote_multiseed_plateau/test2_predictions.metrics.json"
+  },
+  "adopt_as_same_data_performance_candidate": true,
+  "replace_3d_structure_innovation_default": false,
+  "replace_default_reason": "No new pre-frozen external set has validated this candidate, and the ProtT5 training features required for the intended ToxPLTC comparison are still missing.",
+  "next_required_file": "data/processed/train_prott5_official_mean.pt"
+}

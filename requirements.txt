@@ -3,3 +3,6 @@ torch>=2.0
 networkx>=2.8
 # Optional, used only for richer validation metrics when installed.
 scikit-learn>=1.2
+# Required for the optional ProtT5 pooled-feature extraction route.
+transformers>=4.30
+sentencepiece>=0.1.99

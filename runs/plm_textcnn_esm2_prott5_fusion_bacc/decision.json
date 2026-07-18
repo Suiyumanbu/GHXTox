@@ -1,0 +1,35 @@
+{
+  "candidate": "BACC-priority convex fusion of three-seed pooled ESM2 and ProtT5 TextCNN experts",
+  "selection_source": "training OOF predictions only",
+  "fold_manifest": "data/folds/train_cdhit080_fallback_folds.csv",
+  "frozen_parameters": {
+    "prott5_weight": 0.64,
+    "esm2_weight": 0.36,
+    "threshold": 0.305,
+    "objective": "balanced_accuracy"
+  },
+  "crossfit_oof": {
+    "balanced_accuracy": 0.9324459858986556,
+    "mcc": 0.8469509100323275,
+    "auroc": 0.9767121711076776,
+    "auprc": 0.9534968245896754
+  },
+  "historical_test_results": {
+    "test1": {
+      "balanced_accuracy": 0.9420983250620347,
+      "mcc": 0.861641270563792,
+      "auroc": 0.982552729528536,
+      "auprc": 0.9648181832812636
+    },
+    "test2": {
+      "balanced_accuracy": 0.8993348475016223,
+      "mcc": 0.6325078892837654,
+      "auroc": 0.9558728098637248,
+      "auprc": 0.7633532632478166
+    }
+  },
+  "adopt_as_bacc_auxiliary": true,
+  "replace_comprehensive_prott5_candidate": false,
+  "replace_3d_structure_innovation_default": false,
+  "reason": "BACC and recall improve, but Test2 MCC falls from 0.6526 to 0.6325."
+}

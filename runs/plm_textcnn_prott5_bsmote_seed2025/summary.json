@@ -1,0 +1,210 @@
+{
+  "protocol": {
+    "features": "data\\processed\\train_prott5_official_mean.pt",
+    "fold_manifest": "data\\folds\\train_cdhit080_fallback_folds.csv",
+    "augmentation": "borderline_smote",
+    "augmentation_scope": "training partition of each fold only",
+    "checkpoint_selection": "validation balanced_accuracy at threshold 0.5; MCC tie-break",
+    "seed": 2025,
+    "epochs": 150,
+    "patience": 20,
+    "batch_size": 32,
+    "learning_rate": 0.0005,
+    "weight_decay": 0.0,
+    "neighbor_backend": "auto",
+    "smote_target_ratio": 1.0,
+    "feature_metadata": {
+      "source_fasta": "data/cdhit/input/train.fasta",
+      "source_model": "/root/autodl-tmp/models/prot_t5_xl_half_uniref50-enc",
+      "pooling": "official_with_eos",
+      "includes_eos": true,
+      "num_samples": 6387,
+      "feature_dim": 1024
+    }
+  },
+  "folds": [
+    {
+      "fold": 0,
+      "num_train": 5116,
+      "num_validation": 1271,
+      "best_epoch": 2,
+      "metrics_at_0_5": {
+        "accuracy": 0.9441384736428009,
+        "balanced_accuracy": 0.9338232181196892,
+        "precision": 0.8972972972972973,
+        "recall": 0.9095890410958904,
+        "specificity": 0.9580573951434879,
+        "f1": 0.9034013605442178,
+        "mcc": 0.864151843665825,
+        "auroc": 0.9704708337113308,
+        "auprc": 0.9400119124969222,
+        "tp": 332.0,
+        "tn": 868.0,
+        "fp": 38.0,
+        "fn": 33.0,
+        "threshold": 0.5
+      },
+      "smote_report": {
+        "original_positive": 1453,
+        "original_negative": 3663,
+        "danger_positive": 208,
+        "synthetic_positive": 2210,
+        "output_positive": 3663,
+        "output_negative": 3663
+      }
+    },
+    {
+      "fold": 1,
+      "num_train": 5158,
+      "num_validation": 1229,
+      "best_epoch": 92,
+      "metrics_at_0_5": {
+        "accuracy": 0.9373474369406021,
+        "balanced_accuracy": 0.9207150620125304,
+        "precision": 0.9031339031339032,
+        "recall": 0.8805555555555555,
+        "specificity": 0.9608745684695051,
+        "f1": 0.8917018284106892,
+        "mcc": 0.8477706527820499,
+        "auroc": 0.9593466308656182,
+        "auprc": 0.9233444082917859,
+        "tp": 317.0,
+        "tn": 835.0,
+        "fp": 34.0,
+        "fn": 43.0,
+        "threshold": 0.5
+      },
+      "smote_report": {
+        "original_positive": 1458,
+        "original_negative": 3700,
+        "danger_positive": 192,
+        "synthetic_positive": 2242,
+        "output_positive": 3700,
+        "output_negative": 3700
+      }
+    },
+    {
+      "fold": 2,
+      "num_train": 5114,
+      "num_validation": 1273,
+      "best_epoch": 26,
+      "metrics_at_0_5": {
+        "accuracy": 0.9269442262372348,
+        "balanced_accuracy": 0.9140624042738289,
+        "precision": 0.8583106267029973,
+        "recall": 0.8848314606741573,
+        "specificity": 0.9432933478735005,
+        "f1": 0.8713692946058091,
+        "mcc": 0.8205561995795349,
+        "auroc": 0.9577656133214071,
+        "auprc": 0.9117193025784517,
+        "tp": 315.0,
+        "tn": 865.0,
+        "fp": 52.0,
+        "fn": 41.0,
+        "threshold": 0.5
+      },
+      "smote_report": {
+        "original_positive": 1462,
+        "original_negative": 3652,
+        "danger_positive": 197,
+        "synthetic_positive": 2190,
+        "output_positive": 3652,
+        "output_negative": 3652
+      }
+    },
+    {
+      "fold": 3,
+      "num_train": 5096,
+      "num_validation": 1291,
+      "best_epoch": 17,
+      "metrics_at_0_5": {
+        "accuracy": 0.9318357862122386,
+        "balanced_accuracy": 0.9213341077651684,
+        "precision": 0.864,
+        "recall": 0.8975069252077562,
+        "specificity": 0.9451612903225807,
+        "f1": 0.8804347826086956,
+        "mcc": 0.8330830870621324,
+        "auroc": 0.9675453489411134,
+        "auprc": 0.9328078314597165,
+        "tp": 324.0,
+        "tn": 879.0,
+        "fp": 51.0,
+        "fn": 37.0,
+        "threshold": 0.5
+      },
+      "smote_report": {
+        "original_positive": 1457,
+        "original_negative": 3639,
+        "danger_positive": 206,
+        "synthetic_positive": 2182,
+        "output_positive": 3639,
+        "output_negative": 3639
+      }
+    },
+    {
+      "fold": 4,
+      "num_train": 5064,
+      "num_validation": 1323,
+      "best_epoch": 13,
+      "metrics_at_0_5": {
+        "accuracy": 0.9229024943310657,
+        "balanced_accuracy": 0.9172807746747849,
+        "precision": 0.8374384236453202,
+        "recall": 0.9042553191489362,
+        "specificity": 0.9303062302006336,
+        "f1": 0.8695652173913042,
+        "mcc": 0.8161680673958045,
+        "auroc": 0.9631198184636816,
+        "auprc": 0.9189719905682228,
+        "tp": 340.0,
+        "tn": 881.0,
+        "fp": 66.0,
+        "fn": 36.0,
+        "threshold": 0.5
+      },
+      "smote_report": {
+        "original_positive": 1442,
+        "original_negative": 3622,
+        "danger_positive": 206,
+        "synthetic_positive": 2180,
+        "output_positive": 3622,
+        "output_negative": 3622
+      }
+    }
+  ],
+  "oof_at_0_5": {
+    "accuracy": 0.932519179583529,
+    "balanced_accuracy": 0.9213713886162089,
+    "precision": 0.8710540395933655,
+    "recall": 0.8954895489548955,
+    "specificity": 0.9472532282775225,
+    "f1": 0.8831027935991321,
+    "mcc": 0.8358431614064062,
+    "auroc": 0.9578840133958679,
+    "auprc": 0.9131731060292912,
+    "tp": 1628.0,
+    "tn": 4328.0,
+    "fp": 241.0,
+    "fn": 190.0,
+    "threshold": 0.5
+  },
+  "oof_bacc_threshold": 0.5,
+  "oof_at_bacc_threshold": {
+    "accuracy": 0.932519179583529,
+    "balanced_accuracy": 0.9213713886162089,
+    "precision": 0.8710540395933655,
+    "recall": 0.8954895489548955,
+    "specificity": 0.9472532282775225,
+    "f1": 0.8831027935991321,
+    "mcc": 0.8358431614064062,
+    "auroc": 0.9578840133958679,
+    "auprc": 0.9131731060292912,
+    "tp": 1628.0,
+    "tn": 4328.0,
+    "fp": 241.0,
+    "fn": 190.0,
+    "threshold": 0.5
+  }
+}

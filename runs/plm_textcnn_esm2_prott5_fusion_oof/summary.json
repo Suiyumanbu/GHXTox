@@ -1,0 +1,131 @@
+{
+  "protocol": {
+    "baseline_predictions": "runs\\plm_textcnn_esm2_bsmote_multiseed\\oof_predictions.csv",
+    "expert_predictions": "runs\\plm_textcnn_prott5_bsmote_multiseed\\oof_predictions.csv",
+    "selection": "leave-one-fold-out weight and threshold selection; mcc primary",
+    "weight_step": 0.01,
+    "threshold_step": 0.005,
+    "num_samples": 6387,
+    "num_folds": 5,
+    "fold_manifest": "data\\folds\\train_cdhit080_fallback_folds.csv",
+    "alignment": "rowwise source_index (when present), sequence and label; sample_id aliases permitted"
+  },
+  "baseline_at_declared_oof_threshold": {
+    "accuracy": 0.9290746829497417,
+    "balanced_accuracy": 0.9239316906083255,
+    "precision": 0.849820604818042,
+    "recall": 0.911991199119912,
+    "specificity": 0.935872182096739,
+    "f1": 0.8798089678959936,
+    "mcc": 0.8306326416963448,
+    "auroc": 0.9697999456325584,
+    "auprc": 0.9407886575664053,
+    "tp": 1658.0,
+    "tn": 4276.0,
+    "fp": 293.0,
+    "fn": 160.0,
+    "threshold": 0.36
+  },
+  "expert_at_declared_oof_threshold": {
+    "accuracy": 0.9420698293408486,
+    "balanced_accuracy": 0.9316898859945089,
+    "precision": 0.8909287257019438,
+    "recall": 0.9075907590759076,
+    "specificity": 0.9557890129131101,
+    "f1": 0.8991825613079019,
+    "mcc": 0.8586185184928503,
+    "auroc": 0.9724224282791597,
+    "auprc": 0.9436250355128133,
+    "tp": 1650.0,
+    "tn": 4367.0,
+    "fp": 202.0,
+    "fn": 168.0,
+    "threshold": 0.45
+  },
+  "crossfit_fold_selection": [
+    {
+      "heldout_fold": 0,
+      "expert_weight": 0.43,
+      "baseline_weight": 0.5700000000000001,
+      "threshold": 0.59,
+      "selection_objective": "mcc",
+      "training_primary_metric": 0.8574305276454306,
+      "training_secondary_metric": 0.9239514807305584
+    },
+    {
+      "heldout_fold": 1,
+      "expert_weight": 0.45,
+      "baseline_weight": 0.55,
+      "threshold": 0.59,
+      "selection_objective": "mcc",
+      "training_primary_metric": 0.8702525370607923,
+      "training_secondary_metric": 0.9301927853779706
+    },
+    {
+      "heldout_fold": 2,
+      "expert_weight": 0.67,
+      "baseline_weight": 0.32999999999999996,
+      "threshold": 0.635,
+      "selection_objective": "mcc",
+      "training_primary_metric": 0.8649526258801149,
+      "training_secondary_metric": 0.926116791503784
+    },
+    {
+      "heldout_fold": 3,
+      "expert_weight": 0.85,
+      "baseline_weight": 0.15000000000000002,
+      "threshold": 0.435,
+      "selection_objective": "mcc",
+      "training_primary_metric": 0.8646488580759294,
+      "training_secondary_metric": 0.9354627469552659
+    },
+    {
+      "heldout_fold": 4,
+      "expert_weight": 0.52,
+      "baseline_weight": 0.48,
+      "threshold": 0.61,
+      "selection_objective": "mcc",
+      "training_primary_metric": 0.8686409513223486,
+      "training_secondary_metric": 0.9275256542120851
+    }
+  ],
+  "crossfit_metrics": {
+    "accuracy": 0.9411304211679975,
+    "balanced_accuracy": 0.9234159463221436,
+    "precision": 0.9082672706681767,
+    "recall": 0.8822882288228823,
+    "specificity": 0.9645436638214051,
+    "f1": 0.8950892857142856,
+    "mcc": 0.8543609505619323,
+    "auroc": 0.9765630097700074,
+    "auprc": 0.9531092692375094,
+    "tp": 1604.0,
+    "tn": 4407.0,
+    "fp": 162.0,
+    "fn": 214.0
+  },
+  "frozen_parameters_from_all_oof": {
+    "expert_weight": 0.43,
+    "baseline_weight": 0.5700000000000001,
+    "threshold": 0.59,
+    "selection_objective": "mcc",
+    "training_primary_metric": 0.8638904744349427,
+    "training_secondary_metric": 0.927310935295762
+  },
+  "frozen_oof_metrics": {
+    "accuracy": 0.9450446218882105,
+    "balanced_accuracy": 0.927310935295762,
+    "precision": 0.9179487179487179,
+    "recall": 0.8861386138613861,
+    "specificity": 0.9684832567301379,
+    "f1": 0.9017632241813602,
+    "mcc": 0.8638904744349427,
+    "auroc": 0.976535079640597,
+    "auprc": 0.953187244978344,
+    "tp": 1611.0,
+    "tn": 4425.0,
+    "fp": 144.0,
+    "fn": 207.0,
+    "threshold": 0.59
+  }
+}

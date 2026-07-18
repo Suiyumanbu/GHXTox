@@ -1,0 +1,38 @@
+{
+  "protocol": {
+    "features": "data\\processed\\test1_esm2_mean.pt",
+    "checkpoint_dir": "runs\\plm_textcnn_esm2_bsmote",
+    "checkpoints": [
+      "runs\\plm_textcnn_esm2_bsmote\\fold0_best_model.pt",
+      "runs\\plm_textcnn_esm2_bsmote\\fold1_best_model.pt",
+      "runs\\plm_textcnn_esm2_bsmote\\fold2_best_model.pt",
+      "runs\\plm_textcnn_esm2_bsmote\\fold3_best_model.pt",
+      "runs\\plm_textcnn_esm2_bsmote\\fold4_best_model.pt"
+    ],
+    "ensemble": "arithmetic mean of five fixed-fold probabilities",
+    "threshold": 0.35,
+    "feature_metadata": {
+      "processed": "data\\processed\\test1_chemical_sites_final_esm2.pt",
+      "source_model": "ESM2-650M",
+      "pooling": "mean over valid residue embeddings",
+      "num_samples": 1126,
+      "feature_dim": 1280
+    }
+  },
+  "metrics": {
+    "accuracy": 0.9342806394316163,
+    "balanced_accuracy": 0.9314826302729529,
+    "precision": 0.8554913294797688,
+    "recall": 0.925,
+    "specificity": 0.9379652605459057,
+    "f1": 0.888888888888889,
+    "mcc": 0.8436270033561667,
+    "auroc": 0.9787724875930521,
+    "auprc": 0.9586217080773872,
+    "tp": 296.0,
+    "tn": 756.0,
+    "fp": 50.0,
+    "fn": 24.0,
+    "threshold": 0.35
+  }
+}

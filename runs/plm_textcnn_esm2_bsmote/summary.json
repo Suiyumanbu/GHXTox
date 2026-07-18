@@ -1,0 +1,208 @@
+{
+  "protocol": {
+    "features": "data\\processed\\train_esm2_mean.pt",
+    "fold_manifest": "data\\folds\\train_cdhit080_fallback_folds.csv",
+    "augmentation": "borderline_smote",
+    "augmentation_scope": "training partition of each fold only",
+    "checkpoint_selection": "validation balanced_accuracy at threshold 0.5; MCC tie-break",
+    "seed": 42,
+    "epochs": 150,
+    "patience": 20,
+    "batch_size": 32,
+    "learning_rate": 0.0005,
+    "weight_decay": 0.0,
+    "neighbor_backend": "sklearn",
+    "feature_metadata": {
+      "processed": "data\\processed\\train_chemical_sites_final_esm2.pt",
+      "source_model": "ESM2-650M",
+      "pooling": "mean over valid residue embeddings",
+      "num_samples": 6387,
+      "feature_dim": 1280
+    }
+  },
+  "folds": [
+    {
+      "fold": 0,
+      "num_train": 5116,
+      "num_validation": 1271,
+      "best_epoch": 17,
+      "metrics_at_0_5": {
+        "accuracy": 0.9331235247836349,
+        "balanced_accuracy": 0.9220070156339775,
+        "precision": 0.8743315508021391,
+        "recall": 0.8958904109589041,
+        "specificity": 0.9481236203090507,
+        "f1": 0.884979702300406,
+        "mcc": 0.837969429292608,
+        "auroc": 0.9714294354229036,
+        "auprc": 0.9464332622478532,
+        "tp": 327.0,
+        "tn": 859.0,
+        "fp": 47.0,
+        "fn": 38.0,
+        "threshold": 0.5
+      },
+      "smote_report": {
+        "original_positive": 1453,
+        "original_negative": 3663,
+        "danger_positive": 249,
+        "synthetic_positive": 2210,
+        "output_positive": 3663,
+        "output_negative": 3663
+      }
+    },
+    {
+      "fold": 1,
+      "num_train": 5158,
+      "num_validation": 1229,
+      "best_epoch": 12,
+      "metrics_at_0_5": {
+        "accuracy": 0.9202603742880391,
+        "balanced_accuracy": 0.9086322081575247,
+        "precision": 0.8521505376344086,
+        "recall": 0.8805555555555555,
+        "specificity": 0.9367088607594937,
+        "f1": 0.8661202185792349,
+        "mcc": 0.8095838720125793,
+        "auroc": 0.9536472318117888,
+        "auprc": 0.9165691328909116,
+        "tp": 317.0,
+        "tn": 814.0,
+        "fp": 55.0,
+        "fn": 43.0,
+        "threshold": 0.5
+      },
+      "smote_report": {
+        "original_positive": 1458,
+        "original_negative": 3700,
+        "danger_positive": 216,
+        "synthetic_positive": 2242,
+        "output_positive": 3700,
+        "output_negative": 3700
+      }
+    },
+    {
+      "fold": 2,
+      "num_train": 5114,
+      "num_validation": 1273,
+      "best_epoch": 37,
+      "metrics_at_0_5": {
+        "accuracy": 0.9261586802827966,
+        "balanced_accuracy": 0.9169541004496833,
+        "precision": 0.848404255319149,
+        "recall": 0.8960674157303371,
+        "specificity": 0.9378407851690295,
+        "f1": 0.871584699453552,
+        "mcc": 0.820422887894342,
+        "auroc": 0.9612255400487667,
+        "auprc": 0.9314607682852155,
+        "tp": 319.0,
+        "tn": 860.0,
+        "fp": 57.0,
+        "fn": 37.0,
+        "threshold": 0.5
+      },
+      "smote_report": {
+        "original_positive": 1462,
+        "original_negative": 3652,
+        "danger_positive": 242,
+        "synthetic_positive": 2190,
+        "output_positive": 3652,
+        "output_negative": 3652
+      }
+    },
+    {
+      "fold": 3,
+      "num_train": 5096,
+      "num_validation": 1291,
+      "best_epoch": 17,
+      "metrics_at_0_5": {
+        "accuracy": 0.9372579395817195,
+        "balanced_accuracy": 0.9191656986268728,
+        "precision": 0.8954802259887006,
+        "recall": 0.8781163434903048,
+        "specificity": 0.9602150537634409,
+        "f1": 0.8867132867132868,
+        "mcc": 0.8434112321940652,
+        "auroc": 0.9664968873797397,
+        "auprc": 0.9365238578084231,
+        "tp": 317.0,
+        "tn": 893.0,
+        "fp": 37.0,
+        "fn": 44.0,
+        "threshold": 0.5
+      },
+      "smote_report": {
+        "original_positive": 1457,
+        "original_negative": 3639,
+        "danger_positive": 244,
+        "synthetic_positive": 2182,
+        "output_positive": 3639,
+        "output_negative": 3639
+      }
+    },
+    {
+      "fold": 4,
+      "num_train": 5064,
+      "num_validation": 1323,
+      "best_epoch": 34,
+      "metrics_at_0_5": {
+        "accuracy": 0.9281934996220711,
+        "balanced_accuracy": 0.9185712440180638,
+        "precision": 0.8575063613231552,
+        "recall": 0.8962765957446809,
+        "specificity": 0.9408658922914467,
+        "f1": 0.8764629388816645,
+        "mcc": 0.8262862902893475,
+        "auroc": 0.9644383720146488,
+        "auprc": 0.9274482621751348,
+        "tp": 337.0,
+        "tn": 891.0,
+        "fp": 56.0,
+        "fn": 39.0,
+        "threshold": 0.5
+      },
+      "smote_report": {
+        "original_positive": 1442,
+        "original_negative": 3622,
+        "danger_positive": 242,
+        "synthetic_positive": 2180,
+        "output_positive": 3622,
+        "output_negative": 3622
+      }
+    }
+  ],
+  "oof_at_0_5": {
+    "accuracy": 0.9290746829497417,
+    "balanced_accuracy": 0.9171423215860655,
+    "precision": 0.8651685393258427,
+    "recall": 0.8894389438943895,
+    "specificity": 0.9448456992777413,
+    "f1": 0.8771358828315704,
+    "mcc": 0.8274542748996995,
+    "auroc": 0.9623446476842913,
+    "auprc": 0.9266956999942711,
+    "tp": 1617.0,
+    "tn": 4317.0,
+    "fp": 252.0,
+    "fn": 201.0,
+    "threshold": 0.5
+  },
+  "oof_bacc_threshold": 0.35000000000000003,
+  "oof_at_bacc_threshold": {
+    "accuracy": 0.9275090026616565,
+    "balanced_accuracy": 0.9191942831840636,
+    "precision": 0.8534167970787689,
+    "recall": 0.8998899889988999,
+    "specificity": 0.9384985773692274,
+    "f1": 0.876037483266399,
+    "mcc": 0.8254448217051001,
+    "auroc": 0.9623446476842913,
+    "auprc": 0.9266956999942711,
+    "tp": 1636.0,
+    "tn": 4288.0,
+    "fp": 281.0,
+    "fn": 182.0,
+    "threshold": 0.35000000000000003
+  }
+}

@@ -1,0 +1,209 @@
+{
+  "protocol": {
+    "features": "data\\processed\\train_esm2_mean.pt",
+    "fold_manifest": "data\\folds\\train_cdhit080_fallback_folds.csv",
+    "augmentation": "borderline_smote",
+    "augmentation_scope": "training partition of each fold only",
+    "checkpoint_selection": "validation balanced_accuracy at threshold 0.5; MCC tie-break",
+    "seed": 42,
+    "epochs": 150,
+    "patience": 20,
+    "batch_size": 32,
+    "learning_rate": 0.0005,
+    "weight_decay": 0.0,
+    "neighbor_backend": "sklearn",
+    "smote_target_ratio": 0.75,
+    "feature_metadata": {
+      "processed": "data\\processed\\train_chemical_sites_final_esm2.pt",
+      "source_model": "ESM2-650M",
+      "pooling": "mean over valid residue embeddings",
+      "num_samples": 6387,
+      "feature_dim": 1280
+    }
+  },
+  "folds": [
+    {
+      "fold": 0,
+      "num_train": 5116,
+      "num_validation": 1271,
+      "best_epoch": 13,
+      "metrics_at_0_5": {
+        "accuracy": 0.9331235247836349,
+        "balanced_accuracy": 0.9269149354380235,
+        "precision": 0.8626943005181347,
+        "recall": 0.9123287671232877,
+        "specificity": 0.9415011037527594,
+        "f1": 0.8868175765645806,
+        "mcc": 0.8400721509092222,
+        "auroc": 0.9687139012368079,
+        "auprc": 0.9279895390523752,
+        "tp": 333.0,
+        "tn": 853.0,
+        "fp": 53.0,
+        "fn": 32.0,
+        "threshold": 0.5
+      },
+      "smote_report": {
+        "original_positive": 1453,
+        "original_negative": 3663,
+        "danger_positive": 249,
+        "synthetic_positive": 1294,
+        "output_positive": 2747,
+        "output_negative": 3663
+      }
+    },
+    {
+      "fold": 1,
+      "num_train": 5158,
+      "num_validation": 1229,
+      "best_epoch": 14,
+      "metrics_at_0_5": {
+        "accuracy": 0.9259560618388935,
+        "balanced_accuracy": 0.9110327963176064,
+        "precision": 0.8725761772853186,
+        "recall": 0.875,
+        "specificity": 0.9470655926352128,
+        "f1": 0.8737864077669903,
+        "mcc": 0.8213989556764169,
+        "auroc": 0.9622602608362102,
+        "auprc": 0.9310423852788511,
+        "tp": 315.0,
+        "tn": 823.0,
+        "fp": 46.0,
+        "fn": 45.0,
+        "threshold": 0.5
+      },
+      "smote_report": {
+        "original_positive": 1458,
+        "original_negative": 3700,
+        "danger_positive": 216,
+        "synthetic_positive": 1317,
+        "output_positive": 2775,
+        "output_negative": 3700
+      }
+    },
+    {
+      "fold": 2,
+      "num_train": 5114,
+      "num_validation": 1273,
+      "best_epoch": 10,
+      "metrics_at_0_5": {
+        "accuracy": 0.9206598586017282,
+        "balanced_accuracy": 0.9079818778871014,
+        "precision": 0.8436657681940701,
+        "recall": 0.8792134831460674,
+        "specificity": 0.9367502726281353,
+        "f1": 0.861072902338377,
+        "mcc": 0.8059169901008523,
+        "auroc": 0.959957359734356,
+        "auprc": 0.9137980861270529,
+        "tp": 313.0,
+        "tn": 859.0,
+        "fp": 58.0,
+        "fn": 43.0,
+        "threshold": 0.5
+      },
+      "smote_report": {
+        "original_positive": 1462,
+        "original_negative": 3652,
+        "danger_positive": 242,
+        "synthetic_positive": 1277,
+        "output_positive": 2739,
+        "output_negative": 3652
+      }
+    },
+    {
+      "fold": 3,
+      "num_train": 5096,
+      "num_validation": 1291,
+      "best_epoch": 50,
+      "metrics_at_0_5": {
+        "accuracy": 0.9287374128582494,
+        "balanced_accuracy": 0.9191835701307598,
+        "precision": 0.8548812664907651,
+        "recall": 0.8975069252077562,
+        "specificity": 0.9408602150537635,
+        "f1": 0.8756756756756756,
+        "mcc": 0.82625157227605,
+        "auroc": 0.9605352515414172,
+        "auprc": 0.9194811692155247,
+        "tp": 324.0,
+        "tn": 875.0,
+        "fp": 55.0,
+        "fn": 37.0,
+        "threshold": 0.5
+      },
+      "smote_report": {
+        "original_positive": 1457,
+        "original_negative": 3639,
+        "danger_positive": 244,
+        "synthetic_positive": 1272,
+        "output_positive": 2729,
+        "output_negative": 3639
+      }
+    },
+    {
+      "fold": 4,
+      "num_train": 5064,
+      "num_validation": 1323,
+      "best_epoch": 38,
+      "metrics_at_0_5": {
+        "accuracy": 0.9229024943310657,
+        "balanced_accuracy": 0.9164789705452829,
+        "precision": 0.8391089108910891,
+        "recall": 0.901595744680851,
+        "specificity": 0.9313621964097148,
+        "f1": 0.8692307692307691,
+        "mcc": 0.8157245756390887,
+        "auroc": 0.959532060931497,
+        "auprc": 0.9084781443081542,
+        "tp": 339.0,
+        "tn": 882.0,
+        "fp": 65.0,
+        "fn": 37.0,
+        "threshold": 0.5
+      },
+      "smote_report": {
+        "original_positive": 1442,
+        "original_negative": 3622,
+        "danger_positive": 242,
+        "synthetic_positive": 1274,
+        "output_positive": 2716,
+        "output_negative": 3622
+      }
+    }
+  ],
+  "oof_at_0_5": {
+    "accuracy": 0.9262564584311883,
+    "balanced_accuracy": 0.9163316856964752,
+    "precision": 0.8542872172540767,
+    "recall": 0.8932893289328933,
+    "specificity": 0.939374042460057,
+    "f1": 0.8733530518956709,
+    "mcc": 0.8217813596769201,
+    "auroc": 0.9603367482732077,
+    "auprc": 0.9070856284398874,
+    "tp": 1624.0,
+    "tn": 4292.0,
+    "fp": 277.0,
+    "fn": 194.0,
+    "threshold": 0.5
+  },
+  "oof_bacc_threshold": 0.45694395899772644,
+  "oof_at_bacc_threshold": {
+    "accuracy": 0.9268827305464225,
+    "balanced_accuracy": 0.917928578806666,
+    "precision": 0.8534798534798534,
+    "recall": 0.8971397139713971,
+    "specificity": 0.9387174436419348,
+    "f1": 0.8747653526414588,
+    "mcc": 0.8236907744090208,
+    "auroc": 0.9603367482732077,
+    "auprc": 0.9070856284398874,
+    "tp": 1631.0,
+    "tn": 4289.0,
+    "fp": 280.0,
+    "fn": 187.0,
+    "threshold": 0.45694395899772644
+  }
+}

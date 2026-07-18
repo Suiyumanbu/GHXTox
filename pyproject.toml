@@ -17,7 +17,7 @@ dependencies = [
 metrics = ["scikit-learn>=1.2"]
 similarity = ["biopython>=1.80"]
 reporting = ["matplotlib>=3.7", "scikit-learn>=1.2"]
-plm = ["fair-esm>=2.0.0"]
+plm = ["fair-esm>=2.0.0", "transformers>=4.30", "sentencepiece>=0.1.99"]
 esmfold = ["fair-esm[esmfold]>=2.0.0"]
 atom-graph = ["rdkit>=2023.9"]
 
@@ -53,3 +53,6 @@ ghxtox-interpret = "ghxtox.biological_interpretation:main"
 ghxtox-chemical-site-ablation = "ghxtox.chemical_site_ablation:main"
 ghxtox-chemical-site-report = "ghxtox.chemical_site_report:main"
 ghxtox-paper-validation = "ghxtox.paper_validation:main"
+ghxtox-plm-textcnn = "ghxtox.plm_textcnn:main"
+ghxtox-oof-fusion = "ghxtox.oof_fusion:main"
+ghxtox-prott5-tokens = "ghxtox.prott5_tokens:main"

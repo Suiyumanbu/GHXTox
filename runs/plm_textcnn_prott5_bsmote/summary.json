@@ -1,0 +1,210 @@
+{
+  "protocol": {
+    "features": "data\\processed\\train_prott5_official_mean.pt",
+    "fold_manifest": "data\\folds\\train_cdhit080_fallback_folds.csv",
+    "augmentation": "borderline_smote",
+    "augmentation_scope": "training partition of each fold only",
+    "checkpoint_selection": "validation balanced_accuracy at threshold 0.5; MCC tie-break",
+    "seed": 42,
+    "epochs": 150,
+    "patience": 20,
+    "batch_size": 32,
+    "learning_rate": 0.0005,
+    "weight_decay": 0.0,
+    "neighbor_backend": "auto",
+    "smote_target_ratio": 1.0,
+    "feature_metadata": {
+      "source_fasta": "data/cdhit/input/train.fasta",
+      "source_model": "/root/autodl-tmp/models/prot_t5_xl_half_uniref50-enc",
+      "pooling": "official_with_eos",
+      "includes_eos": true,
+      "num_samples": 6387,
+      "feature_dim": 1024
+    }
+  },
+  "folds": [
+    {
+      "fold": 0,
+      "num_train": 5116,
+      "num_validation": 1271,
+      "best_epoch": 38,
+      "metrics_at_0_5": {
+        "accuracy": 0.946498819826908,
+        "balanced_accuracy": 0.9379328071607851,
+        "precision": 0.8981233243967829,
+        "recall": 0.9178082191780822,
+        "specificity": 0.9580573951434879,
+        "f1": 0.907859078590786,
+        "mcc": 0.8702728269634907,
+        "auroc": 0.9747618615621881,
+        "auprc": 0.9550168223967178,
+        "tp": 335.0,
+        "tn": 868.0,
+        "fp": 38.0,
+        "fn": 30.0,
+        "threshold": 0.5
+      },
+      "smote_report": {
+        "original_positive": 1453,
+        "original_negative": 3663,
+        "danger_positive": 208,
+        "synthetic_positive": 2210,
+        "output_positive": 3663,
+        "output_negative": 3663
+      }
+    },
+    {
+      "fold": 1,
+      "num_train": 5158,
+      "num_validation": 1229,
+      "best_epoch": 31,
+      "metrics_at_0_5": {
+        "accuracy": 0.934092758340114,
+        "balanced_accuracy": 0.926548714998082,
+        "precision": 0.872,
+        "recall": 0.9083333333333333,
+        "specificity": 0.9447640966628308,
+        "f1": 0.889795918367347,
+        "mcc": 0.8431701108219511,
+        "auroc": 0.9647599411839918,
+        "auprc": 0.9166965205492217,
+        "tp": 327.0,
+        "tn": 821.0,
+        "fp": 48.0,
+        "fn": 33.0,
+        "threshold": 0.5
+      },
+      "smote_report": {
+        "original_positive": 1458,
+        "original_negative": 3700,
+        "danger_positive": 192,
+        "synthetic_positive": 2242,
+        "output_positive": 3700,
+        "output_negative": 3700
+      }
+    },
+    {
+      "fold": 2,
+      "num_train": 5114,
+      "num_validation": 1273,
+      "best_epoch": 8,
+      "metrics_at_0_5": {
+        "accuracy": 0.9316575019638649,
+        "balanced_accuracy": 0.911319275115484,
+        "precision": 0.8876080691642652,
+        "recall": 0.8651685393258427,
+        "specificity": 0.9574700109051254,
+        "f1": 0.8762446657183499,
+        "mcc": 0.8291793799415855,
+        "auroc": 0.9629164471346476,
+        "auprc": 0.9075042440503515,
+        "tp": 308.0,
+        "tn": 878.0,
+        "fp": 39.0,
+        "fn": 48.0,
+        "threshold": 0.5
+      },
+      "smote_report": {
+        "original_positive": 1462,
+        "original_negative": 3652,
+        "danger_positive": 197,
+        "synthetic_positive": 2190,
+        "output_positive": 3652,
+        "output_negative": 3652
+      }
+    },
+    {
+      "fold": 3,
+      "num_train": 5096,
+      "num_validation": 1291,
+      "best_epoch": 10,
+      "metrics_at_0_5": {
+        "accuracy": 0.9271882261812548,
+        "balanced_accuracy": 0.9181083013135556,
+        "precision": 0.8503937007874016,
+        "recall": 0.8975069252077562,
+        "specificity": 0.9387096774193548,
+        "f1": 0.8733153638814015,
+        "mcc": 0.8228689541213259,
+        "auroc": 0.9689065618205105,
+        "auprc": 0.9343586597517197,
+        "tp": 324.0,
+        "tn": 873.0,
+        "fp": 57.0,
+        "fn": 37.0,
+        "threshold": 0.5
+      },
+      "smote_report": {
+        "original_positive": 1457,
+        "original_negative": 3639,
+        "danger_positive": 206,
+        "synthetic_positive": 2182,
+        "output_positive": 3639,
+        "output_negative": 3639
+      }
+    },
+    {
+      "fold": 4,
+      "num_train": 5064,
+      "num_validation": 1323,
+      "best_epoch": 17,
+      "metrics_at_0_5": {
+        "accuracy": 0.927437641723356,
+        "balanced_accuracy": 0.9132324361365117,
+        "precision": 0.8664921465968587,
+        "recall": 0.8803191489361702,
+        "specificity": 0.9461457233368532,
+        "f1": 0.8733509234828496,
+        "mcc": 0.8225585444448801,
+        "auroc": 0.9604883282032848,
+        "auprc": 0.9145604475894688,
+        "tp": 331.0,
+        "tn": 896.0,
+        "fp": 51.0,
+        "fn": 45.0,
+        "threshold": 0.5
+      },
+      "smote_report": {
+        "original_positive": 1442,
+        "original_negative": 3622,
+        "danger_positive": 206,
+        "synthetic_positive": 2180,
+        "output_positive": 3622,
+        "output_negative": 3622
+      }
+    }
+  ],
+  "oof_at_0_5": {
+    "accuracy": 0.9333020197275717,
+    "balanced_accuracy": 0.9214217711987875,
+    "precision": 0.8745963401506996,
+    "recall": 0.8938393839383938,
+    "specificity": 0.9490041584591814,
+    "f1": 0.8841131664853101,
+    "mcc": 0.8373951997607374,
+    "auroc": 0.9657107098322001,
+    "auprc": 0.9254438723789051,
+    "tp": 1625.0,
+    "tn": 4336.0,
+    "fp": 233.0,
+    "fn": 193.0,
+    "threshold": 0.5
+  },
+  "oof_bacc_threshold": 0.5012562274932861,
+  "oof_at_bacc_threshold": {
+    "accuracy": 0.9334585877563801,
+    "balanced_accuracy": 0.9215312043351414,
+    "precision": 0.8750673128702208,
+    "recall": 0.8938393839383938,
+    "specificity": 0.9492230247318888,
+    "f1": 0.8843537414965985,
+    "mcc": 0.8377456676013446,
+    "auroc": 0.9657107098322001,
+    "auprc": 0.9254438723789051,
+    "tp": 1625.0,
+    "tn": 4337.0,
+    "fp": 232.0,
+    "fn": 193.0,
+    "threshold": 0.5012562274932861
+  }
+}
