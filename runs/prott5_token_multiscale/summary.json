@@ -1,0 +1,85 @@
+{
+  "status": "completed_rejected",
+  "date": "2026-07-19",
+  "question": "Can residue-level ProtT5 with local 3/5/7 convolutions and gated-attention pooling improve the pooled ProtT5 candidate?",
+  "cache_validation": {
+    "train": {"samples": 6387, "residues": 201994, "shards": 25, "feature_dim": 1024},
+    "test1": {"samples": 1126, "residues": 35532, "shards": 5, "feature_dim": 1024},
+    "test2": {"samples": 582, "residues": 17403, "shards": 3, "feature_dim": 1024},
+    "storage_dtype": "float16",
+    "eos_included": false,
+    "padding_included": false
+  },
+  "pooled_prott5_reference_oof": {
+    "balanced_accuracy": 0.9316898859945089,
+    "mcc": 0.8586185184928503,
+    "auroc": 0.9724224282791597,
+    "auprc": 0.9436250355128133,
+    "threshold": 0.45
+  },
+  "residue_multiscale_seed42": {
+    "architecture": "frozen ProtT5 residue tokens -> 3/5/7 CNN -> gated attention plus masked mean pooling",
+    "class_imbalance": "fold-local automatic positive BCE weight",
+    "oof": {
+      "balanced_accuracy": 0.9260266308968388,
+      "mcc": 0.8494033809660212,
+      "auroc": 0.962733382114749,
+      "auprc": 0.9383236028071134,
+      "threshold": 0.51953125
+    },
+    "test1": {
+      "balanced_accuracy": 0.9254613833746899,
+      "mcc": 0.8533530826438556,
+      "auroc": 0.9761088709677419,
+      "auprc": 0.9551534024154277
+    },
+    "test2": {
+      "balanced_accuracy": 0.8462443218689162,
+      "mcc": 0.6190092176610922,
+      "auroc": 0.9293072680077872,
+      "auprc": 0.6959998712693607
+    }
+  },
+  "positive_embedding_augmentation": {
+    "method": "repeat positives to class balance inside each training fold; apply 5% residue-token dropout and Gaussian noise std=0.01 only to repeated copies",
+    "oof": {
+      "balanced_accuracy": 0.924517681577744,
+      "mcc": 0.8371801922775666,
+      "auroc": 0.9674508050498637,
+      "auprc": 0.9431926782348706,
+      "threshold": 0.346923828125
+    },
+    "decision": "rejected: ranking became smoother but thresholded classification worsened"
+  },
+  "pooled_token_oof_fusion": {
+    "selection": "leave-one-fold-out balanced-accuracy optimization",
+    "frozen_weights": {"pooled_prott5": 0.65, "residue_prott5": 0.35},
+    "frozen_threshold": 0.3,
+    "crossfit_oof": {
+      "balanced_accuracy": 0.9340990402388893,
+      "mcc": 0.848619535500137,
+      "auroc": 0.9753929540469914,
+      "auprc": 0.9511089686015808
+    },
+    "test1": {
+      "balanced_accuracy": 0.9339872828784119,
+      "mcc": 0.84649868233873,
+      "auroc": 0.980404776674938,
+      "auprc": 0.9614916102958627
+    },
+    "test2": {
+      "balanced_accuracy": 0.8775957170668397,
+      "mcc": 0.6046949078228951,
+      "auroc": 0.9547777417261518,
+      "auprc": 0.7483164064532216
+    },
+    "decision": "rejected: OOF BACC gain did not transfer to either historical test set"
+  },
+  "final_decision": {
+    "replace_comprehensive_default": false,
+    "replace_bacc_auxiliary": false,
+    "run_multiseed": false,
+    "retain": "validated token caches, the resumable feature generator and this compact summary",
+    "remove": "non-improving classifier implementation and tests, failed checkpoints, histories and intermediate prediction tables"
+  }
+}
