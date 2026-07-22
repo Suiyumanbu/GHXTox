@@ -1,0 +1,95 @@
+{
+  "status": "completed_rejected_for_default",
+  "date": "2026-07-22",
+  "references": {
+    "ToxPLTC": {
+      "doi": "10.1021/acs.jcim.5c02745",
+      "dataset_relation": "same Train/Test1/Test2 as GHXTox",
+      "decision": "already implemented before this audit: pooled ProtT5, fold-local 1:1 Borderline-SMOTE, TextCNN windows 4/5/6 and three-seed averaging; no duplicate training"
+    },
+    "HyPepTox-Fuse": {
+      "doi": "10.1016/j.jpha.2025.101410",
+      "dataset_relation": "different balanced <=35-aa dataset: train 4414/4414 and independent 1104/1104 toxic/non-toxic",
+      "transferable_ideas": [
+        "rank and select conventional peptide descriptors before PLM fusion",
+        "pairwise residue-level PLM cross-attention followed by Transformer fusion",
+        "auxiliary supervised NT-Xent loss",
+        "fold-ensemble inference"
+      ]
+    }
+  },
+  "validation_boundary": {
+    "folds": "data/folds/train_cdhit080_fallback_folds.csv",
+    "selection": "fixed sequence-group five-fold OOF plus leave-one-group-fold-out fusion selection",
+    "test1_test2_used_for_new_route_selection": false,
+    "baseline": {
+      "model": "three-seed pooled ProtT5 + fold-local Borderline-SMOTE + TextCNN",
+      "threshold": 0.45,
+      "balanced_accuracy": 0.9316898859945089,
+      "mcc": 0.8586185184928503,
+      "auroc": 0.9724224282791597,
+      "auprc": 0.9436250355128133
+    }
+  },
+  "experiments": {
+    "conventional_descriptor_expert": {
+      "features": "AAC, grouped AAC, DPC, CKSAAP gaps 1-4 and ASDC; 2428 dimensions",
+      "selection": "top 887 ExtraTrees importances fitted independently inside each training fold",
+      "classifier": "ExtraTrees with balanced_subsample class weights",
+      "oof_at_0_5": {
+        "balanced_accuracy": 0.902571642587765,
+        "mcc": 0.8035550496783268,
+        "auroc": 0.9575282052171075,
+        "auprc": 0.9226559236344871
+      },
+      "leave_one_fold_out_fusion_with_prott5": {
+        "balanced_accuracy": 0.9259027511418246,
+        "mcc": 0.8539408545435158,
+        "auroc": 0.9715212602459633,
+        "auprc": 0.9454927225710346
+      },
+      "decision": "rejected: descriptor information is predictive and slightly raises AUPRC in fusion, but lowers BACC, MCC and AUROC"
+    },
+    "esm2_prott5_feature_interaction": {
+      "architecture": "frozen aligned ESM2-650M and ProtT5 residue tokens, bidirectional cross-attention, four pooled modality/interaction tokens, one-layer Transformer CLS",
+      "loss": "class-weighted BCE plus 0.05 supervised NT-Xent at temperature 0.1",
+      "oof": {
+        "threshold": 0.815,
+        "balanced_accuracy": 0.8995087788489946,
+        "mcc": 0.8116066873874285,
+        "auroc": 0.9554947232521457,
+        "auprc": 0.9065384163989898
+      },
+      "leave_one_fold_out_fusion_with_prott5": {
+        "balanced_accuracy": 0.9256335022865385,
+        "mcc": 0.8515492799184101,
+        "auroc": 0.9732113942407592,
+        "auprc": 0.9474616877801362
+      },
+      "decision": "rejected: ranking improves slightly after fusion but decision metrics fall; prior standalone SupCon failure means no further contrastive-weight search"
+    },
+    "constrained_three_expert_fusion": {
+      "constraint": "descriptor and interaction weights each <=0.20; combined auxiliary weight <=0.30",
+      "crossfit_oof": {
+        "balanced_accuracy": 0.9276652386184121,
+        "mcc": 0.8557561719250374,
+        "auroc": 0.9731687767157106,
+        "auprc": 0.9518488928082383
+      },
+      "frozen_weights": {
+        "prott5": 0.9,
+        "descriptor": 0.1,
+        "interaction": 0.0,
+        "threshold": 0.465
+      },
+      "decision": "rejected: AUPRC gain did not coexist with BACC/MCC improvement"
+    }
+  },
+  "final_decision": {
+    "change_default": false,
+    "run_test1_test2": false,
+    "retain": "this compact audit summary and README conclusions",
+    "remove": "temporary implementations, OOF prediction tables, PDF text extraction and rendered pages",
+    "next_step": "do not repeat these routes on the current development data; require a new pre-frozen external set before revisiting ranking-only auxiliaries"
+  }
+}

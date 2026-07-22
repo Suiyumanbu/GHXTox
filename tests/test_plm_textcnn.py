@@ -52,6 +52,8 @@ def test_probability_metrics_known_confusion_matrix() -> None:
     assert metrics["fn"] == 1
     assert metrics["balanced_accuracy"] == 0.5
     assert metrics["mcc"] == 0.0
+    assert "brier" in metrics
+    assert "ece_10" in metrics
 
 
 def test_import_feature_csv_requires_fasta_label_alignment(tmp_path) -> None:

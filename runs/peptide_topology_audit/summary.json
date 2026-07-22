@@ -1,0 +1,128 @@
+{
+  "interpretation": "Sequence heuristics identify samples that should not automatically be modelled as unconstrained linear peptides. They do not establish cyclization or disulfide connectivity.",
+  "splits": {
+    "test1": {
+      "samples": 1126,
+      "positive": 320,
+      "negative": 806,
+      "unlabeled": 0,
+      "cysteine_ge_2": 444,
+      "cysteine_ge_4": 316,
+      "length_3_to_30": 486,
+      "length_3_to_30_fraction": 0.43161634103019536,
+      "topology_flagged": 444,
+      "topology_flagged_fraction": 0.39431616341030196,
+      "high_risk": 247,
+      "high_risk_fraction": 0.21936056838365897,
+      "risk_counts": {
+        "high_cysteine_topology_risk": 247,
+        "no_sequence_visible_topology_flag": 682,
+        "possible_disulfide": 197
+      },
+      "risk_label_distribution": {
+        "high_cysteine_topology_risk": {
+          "samples": 247,
+          "positive": 199,
+          "negative": 48,
+          "positive_fraction": 0.805668016194332
+        },
+        "no_sequence_visible_topology_flag": {
+          "samples": 682,
+          "positive": 60,
+          "negative": 622,
+          "positive_fraction": 0.08797653958944282
+        },
+        "possible_disulfide": {
+          "samples": 197,
+          "positive": 61,
+          "negative": 136,
+          "positive_fraction": 0.3096446700507614
+        }
+      }
+    },
+    "test2": {
+      "samples": 582,
+      "positive": 46,
+      "negative": 536,
+      "unlabeled": 0,
+      "cysteine_ge_2": 147,
+      "cysteine_ge_4": 80,
+      "length_3_to_30": 284,
+      "length_3_to_30_fraction": 0.4879725085910653,
+      "topology_flagged": 147,
+      "topology_flagged_fraction": 0.25257731958762886,
+      "high_risk": 55,
+      "high_risk_fraction": 0.09450171821305842,
+      "risk_counts": {
+        "high_cysteine_topology_risk": 55,
+        "no_sequence_visible_topology_flag": 435,
+        "possible_disulfide": 92
+      },
+      "risk_label_distribution": {
+        "high_cysteine_topology_risk": {
+          "samples": 55,
+          "positive": 21,
+          "negative": 34,
+          "positive_fraction": 0.38181818181818183
+        },
+        "no_sequence_visible_topology_flag": {
+          "samples": 435,
+          "positive": 18,
+          "negative": 417,
+          "positive_fraction": 0.041379310344827586
+        },
+        "possible_disulfide": {
+          "samples": 92,
+          "positive": 7,
+          "negative": 85,
+          "positive_fraction": 0.07608695652173914
+        }
+      }
+    },
+    "train": {
+      "samples": 6387,
+      "positive": 1818,
+      "negative": 4569,
+      "unlabeled": 0,
+      "cysteine_ge_2": 2588,
+      "cysteine_ge_4": 1842,
+      "length_3_to_30": 2795,
+      "length_3_to_30_fraction": 0.43760764051980583,
+      "topology_flagged": 2588,
+      "topology_flagged_fraction": 0.40519805855644275,
+      "high_risk": 1459,
+      "high_risk_fraction": 0.22843275403162674,
+      "risk_counts": {
+        "high_cysteine_topology_risk": 1459,
+        "no_sequence_visible_topology_flag": 3799,
+        "possible_disulfide": 1129
+      },
+      "risk_label_distribution": {
+        "high_cysteine_topology_risk": {
+          "samples": 1459,
+          "positive": 1202,
+          "negative": 257,
+          "positive_fraction": 0.8238519533927348
+        },
+        "no_sequence_visible_topology_flag": {
+          "samples": 3799,
+          "positive": 262,
+          "negative": 3537,
+          "positive_fraction": 0.06896551724137931
+        },
+        "possible_disulfide": {
+          "samples": 1129,
+          "positive": 354,
+          "negative": 775,
+          "positive_fraction": 0.31355181576616475
+        }
+      }
+    }
+  },
+  "inputs": [
+    "data\\cdhit\\input\\train.fasta",
+    "data\\cdhit\\input\\test1.fasta",
+    "data\\cdhit\\input\\test2.fasta"
+  ],
+  "sample_csv": "runs\\peptide_topology_audit\\sample_topology_audit.csv"
+}

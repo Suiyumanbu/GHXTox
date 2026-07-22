@@ -1,0 +1,31 @@
+{
+  "model": "GHXTox 3D-v2 + ToxPLTC-derived pooled ProtT5 hybrid default",
+  "protocol": {
+    "config": "configs/default_toxpltc_hybrid.json",
+    "processed": "data/processed/test1_chemical_sites_final_esm2.pt",
+    "prott5_features": "data/processed/test1_prott5_official_mean.pt",
+    "structure_checkpoint": "runs/3d_v2_default/best_model.pt",
+    "num_prott5_members": 15,
+    "prott5_weight": 0.62,
+    "structure_weight": 0.38,
+    "threshold": 0.6,
+    "fallback_used": false,
+    "parameters_selected_from_test_labels": false
+  },
+  "metrics": {
+    "accuracy": 0.9431616341030196,
+    "balanced_accuracy": 0.9235538151364764,
+    "precision": 0.9183006535947712,
+    "recall": 0.878125,
+    "specificity": 0.9689826302729528,
+    "f1": 0.8977635782747604,
+    "mcc": 0.858842375062223,
+    "auroc": 0.9815291563275435,
+    "auprc": 0.9649193587798337,
+    "tp": 281.0,
+    "tn": 781.0,
+    "fp": 25.0,
+    "fn": 39.0,
+    "threshold": 0.6
+  }
+}

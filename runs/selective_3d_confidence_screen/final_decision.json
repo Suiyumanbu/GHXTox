@@ -1,0 +1,70 @@
+{
+  "question": "Can stronger sample-level 3D confidence handling robustly improve the current 3D-v2/ProtT5 default?",
+  "date": "2026-07-22",
+  "protocol": {
+    "selection_data": "frozen training OOF predictions only",
+    "nested_roles": {
+      "train": "fit the lightweight gate",
+      "validation": "select maximum 3D weight and fallback penalty",
+      "calibration": "fit monotonic Platt scaling and the MCC threshold",
+      "outer_test": "evaluation only"
+    },
+    "test1_or_test2_read_for_selection": false,
+    "current_default_mcc": 0.8665629394550806
+  },
+  "attempts_in_priority_order": [
+    {
+      "name": "fixed_plddt_quality_gate",
+      "mcc": 0.8548471356168723,
+      "auroc": 0.9755307386724665,
+      "auprc": 0.9477477480573288,
+      "decision": "rejected"
+    },
+    {
+      "name": "learned_fallback_safe_gate",
+      "mcc": 0.8603068405953438,
+      "auroc": 0.9763763474180642,
+      "auprc": 0.9510928460599751,
+      "decision": "rejected"
+    },
+    {
+      "name": "learned_gate_with_eight_sample_mc_dropout",
+      "mcc": 0.8605171291963258,
+      "auroc": 0.9763817047058175,
+      "auprc": 0.951099831784609,
+      "decision": "rejected"
+    },
+    {
+      "name": "learned_gate_with_3d_v1_v2_disagreement",
+      "mcc": 0.859294170432224,
+      "auroc": 0.9763795377130184,
+      "auprc": 0.9510816732665658,
+      "decision": "rejected"
+    },
+    {
+      "name": "prott5_plus_3d_v1_v2_nonnegative_multicheckpoint",
+      "mcc": 0.8615888136801154,
+      "auroc": 0.9766318719856227,
+      "auprc": 0.9515857207834465,
+      "decision": "rejected"
+    },
+    {
+      "name": "prott5_plus_two_3d_v2_architecture_checkpoints",
+      "mcc": 0.8596684965104334,
+      "auroc": 0.9765827534821768,
+      "auprc": 0.9513429722407083,
+      "decision": "rejected"
+    }
+  ],
+  "diagnosis": {
+    "raw_internal_gate_mean": 0.3546110700159699,
+    "raw_internal_gate_std": 0.032356966395074654,
+    "finding": "Static pLDDT summaries, MC-dropout variance and available checkpoint disagreement did not identify a transferable sample-level 3D advantage. Learned gates tended toward a nearly fixed high 3D weight instead of a strong quality-dependent fallback."
+  },
+  "decision": {
+    "replace_default": false,
+    "run_historical_tests": false,
+    "retain_current_default": true,
+    "next_valid_evidence": "independently trained 3D-v2 seeds or a new pre-frozen external set; do not continue formula search on the same OOF/Test1/Test2 labels"
+  }
+}

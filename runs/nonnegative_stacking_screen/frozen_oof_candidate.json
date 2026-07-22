@@ -1,0 +1,34 @@
+{
+  "status": "candidate_only_not_engineering_default",
+  "selection_data": "all group-aware OOF rows",
+  "member_order": [
+    "3d_v2",
+    "prott5_seed42",
+    "prott5_seed123",
+    "prott5_seed2025",
+    "esm2_seed42",
+    "esm2_seed123",
+    "esm2_seed2025"
+  ],
+  "weights": [
+    0.19921323657035828,
+    0.14586152136325836,
+    0.16898497939109802,
+    0.14370878040790558,
+    0.08703114837408066,
+    0.09411557763814926,
+    0.16108480095863342
+  ],
+  "platt": {
+    "method": "platt",
+    "scale": 0.7426488399505615,
+    "bias": -0.3022567331790924,
+    "monotonic": true
+  },
+  "threshold": 0.455,
+  "constraints": {
+    "sn_min": 0.875,
+    "sp_min": 0.96
+  },
+  "warning": "Do not apply this candidate to already inspected historical tests for model selection. Use it only on a future pre-frozen external set."
+}

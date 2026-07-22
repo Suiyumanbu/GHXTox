@@ -38,7 +38,11 @@ Lib/
 *.npy
 *.npz
 *.fasta
-/data/
+/data/*
+!/data/pepflow_pilot/
+/data/pepflow_pilot/*
+!/data/pepflow_pilot/train_pilot_250.fasta
+!/data/pepflow_pilot/train_pilot_250.csv
 /dataset/
 /temp/
 

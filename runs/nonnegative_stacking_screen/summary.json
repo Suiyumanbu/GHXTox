@@ -1,0 +1,70 @@
+{
+  "updated_at": "2026-07-22",
+  "question": "Can non-negative stacking convert the seven existing OOF experts' ranking complementarity into a robust default-model improvement?",
+  "candidates": [
+    "3d_v2",
+    "prott5_seed42",
+    "prott5_seed123",
+    "prott5_seed2025",
+    "esm2_seed42",
+    "esm2_seed123",
+    "esm2_seed2025"
+  ],
+  "current_default": {
+    "model": "3D-v2 + three-seed pooled ProtT5 OOF-frozen fusion",
+    "mcc": 0.8665629394550806,
+    "auroc": 0.9771855386457884,
+    "auprc": 0.9534740379104638,
+    "brier": 0.04474502941370227,
+    "ece_10": 0.02477935828523095
+  },
+  "stage_1_leave_one_fold_out": {
+    "protocol": "Fit non-negative weights, affine-logit probability scale and MCC threshold on four OOF folds; evaluate the untouched fifth fold.",
+    "accuracy": 0.9473931423203382,
+    "balanced_accuracy": 0.9279588661426879,
+    "sn": 0.8828382838283828,
+    "sp": 0.9730794484569928,
+    "f1": 0.9052453468697123,
+    "mcc": 0.8694033675275792,
+    "auroc": 0.9775365914792399,
+    "auprc": 0.955576782753298,
+    "brier": 0.043549097227643184,
+    "ece_10": 0.01626206093298614,
+    "mcc_fold_wins": 4,
+    "all_predeclared_gates_passed": true
+  },
+  "stage_2_nested_calibration": {
+    "protocol": "Fit weights on nested train+validation roles, fit Platt and threshold only on the disjoint calibration role, and evaluate only on the outer-test role.",
+    "accuracy": 0.9447314858305934,
+    "balanced_accuracy": 0.9313975225493659,
+    "sn": 0.9004400440044005,
+    "sp": 0.9623550010943314,
+    "f1": 0.9026743865453543,
+    "mcc": 0.8640880185001522,
+    "auroc": 0.9771993833220047,
+    "auprc": 0.9542925468562058,
+    "brier": 0.043800492344479705,
+    "ece_10": 0.014180539191806047,
+    "mcc_fold_wins_vs_current_default": 3,
+    "delta_vs_current_default": {
+      "mcc": -0.0024749209549284057,
+      "auroc": 0.000013844676216345775,
+      "auprc": 0.0008185089457419803,
+      "brier_lower_is_better": 0.0009445370692225674,
+      "ece_10_lower_is_better": 0.010598819093424904
+    },
+    "failed_gate": "MCC did not exceed the current frozen default."
+  },
+  "biological_and_model_interpretation": {
+    "positive_evidence": "All seven experts receive non-zero fold-stable weights, supporting complementary sequence-semantic and structure-aware information.",
+    "tradeoff": "Dedicated calibration moves the operating point toward higher toxic-peptide recall, but the accompanying specificity loss prevents an MCC improvement.",
+    "limitation": "This is training-only meta-model evidence; Test1, Test2 and ToxinPred3 were not read for this screen."
+  },
+  "decision": {
+    "retain_method_and_compact_results": true,
+    "replace_engineering_default": false,
+    "run_historical_tests": false,
+    "paper_role": "Positive ranking/reliability ablation with a decision-boundary tradeoff, not the final default model.",
+    "next_action": "Require a new pre-frozen external set before choosing between the current default and the stacking candidate."
+  }
+}

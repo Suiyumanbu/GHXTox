@@ -1,0 +1,72 @@
+{
+  "status": "retained_as_hybrid_default",
+  "date": "2026-07-19",
+  "model": "3D-v2 structure expert + three-seed pooled ProtT5-BSMOTE TextCNN expert",
+  "source_reference": "ToxPLTC (JCIM 2026)",
+  "reference_points_adopted": [
+    "frozen ProtT5-XL-UniRef50 mean representation",
+    "1024-to-128 projection and 4/5/6 TextCNN expert",
+    "1:1 Borderline-SMOTE fitted only inside each training fold",
+    "multi-seed probability stabilization"
+  ],
+  "project_modifications": [
+    "fixed sequence-homology group folds",
+    "leave-one-group-fold-out selection of fusion weight and threshold",
+    "independent auditable 3D and ProtT5 experts",
+    "ProtT5-only fallback when full chemical-site tensors are unavailable"
+  ],
+  "frozen_fusion": {
+    "prott5_weight": 0.62,
+    "structure_weight": 0.38,
+    "threshold": 0.6,
+    "objective": "MCC",
+    "test_labels_used_for_selection": false
+  },
+  "crossfit_oof": {
+    "balanced_accuracy": 0.9257024848906428,
+    "mcc": 0.8665629394550806,
+    "auroc": 0.9771855386457884,
+    "auprc": 0.9534740379104638
+  },
+  "screened_alternatives": {
+    "balanced_accuracy_objective": {
+      "crossfit_balanced_accuracy": 0.9318785949507623,
+      "crossfit_mcc": 0.8513124075500771,
+      "decision": "rejected because MCC was below the retained MCC-objective fusion"
+    },
+    "balanced_mcc_objective": {
+      "crossfit_balanced_accuracy": 0.9267782162326541,
+      "crossfit_mcc": 0.8568535332392071,
+      "decision": "rejected because both the primary combined score and MCC were lower"
+    }
+  },
+  "test1": {
+    "balanced_accuracy": 0.9235538151364764,
+    "mcc": 0.858842375062223,
+    "auroc": 0.9815291563275435,
+    "auprc": 0.9649193587798337
+  },
+  "test2": {
+    "balanced_accuracy": 0.8499756651524983,
+    "mcc": 0.6455687533467624,
+    "auroc": 0.9576979234263465,
+    "auprc": 0.7851430518611153
+  },
+  "paired_vs_3d_v2": {
+    "test1_mcc_delta": 0.012436940441622135,
+    "test1_auroc_delta": 0.010429590570719571,
+    "test1_auprc_delta": 0.01750024897697877,
+    "test2_mcc_delta": 0.03280727662195815,
+    "test2_auroc_delta": 0.028228423101881894,
+    "test2_auprc_delta": 0.0610520318189246,
+    "ranking_delta_bootstrap_intervals_above_zero": true,
+    "mcc_delta_bootstrap_intervals_cross_zero": true,
+    "note": "retrospective paired evidence because Test1/Test2 labels were previously viewed"
+  },
+  "positioning": {
+    "hybrid_engineering_default": true,
+    "structure_innovation_submodel": "3D-v2",
+    "same_data_comprehensive_candidate": "three-seed pooled ProtT5-BSMOTE TextCNN",
+    "fully_exceeds_mentor_paper": false
+  }
+}

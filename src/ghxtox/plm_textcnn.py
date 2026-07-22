@@ -528,16 +528,36 @@ def _probability_metrics(labels: np.ndarray, probabilities: np.ndarray, threshol
     auprc = float(
         (cumulative_positive[positive_ranks] / (positive_ranks + 1)).sum() / max(positives, 1)
     )
+    ece = 0.0
+    for index in range(10):
+        lower = index / 10.0
+        upper = (index + 1) / 10.0
+        selected = (probabilities >= lower) & (
+            probabilities <= upper if index == 9 else probabilities < upper
+        )
+        if np.any(selected):
+            ece += float(
+                np.mean(selected)
+                * abs(
+                    float(np.mean(probabilities[selected]))
+                    - float(np.mean(labels[selected]))
+                )
+            )
     return {
         "accuracy": (tp + tn) / max(len(labels), 1),
         "balanced_accuracy": 0.5 * (recall + specificity),
         "precision": precision,
+        "sensitivity": recall,
+        "sn": recall,
         "recall": recall,
         "specificity": specificity,
+        "sp": specificity,
         "f1": f1,
         "mcc": (tp * tn - fp * fn) / denominator,
         "auroc": float(auroc),
         "auprc": auprc,
+        "brier": float(np.mean((probabilities - labels) ** 2)),
+        "ece_10": ece,
         "tp": float(tp),
         "tn": float(tn),
         "fp": float(fp),

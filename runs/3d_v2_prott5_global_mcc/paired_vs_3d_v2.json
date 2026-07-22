@@ -1,0 +1,164 @@
+{
+  "test1": {
+    "protocol": {
+      "paired_samples": 1126,
+      "num_positive": 320,
+      "num_negative": 806,
+      "bootstrap": "class-stratified paired percentile bootstrap",
+      "bootstrap_iterations": 2000,
+      "randomization": "within-sample exchange of the two frozen model outputs",
+      "permutation_iterations": 2000,
+      "seed": 2026,
+      "interpretation": "Existing Test1/Test2 labels were previously viewed; p-values are descriptive retrospective evidence, not independent confirmatory inference."
+    },
+    "metrics": {
+      "balanced_accuracy": {
+        "v1": 0.9207738833746898,
+        "v2": 0.9235538151364764,
+        "delta_v2_minus_v1": 0.0027799317617865915,
+        "paired_bootstrap_95_ci": {
+          "lower": -0.0053311104218362075,
+          "upper": 0.010867710918114119
+        },
+        "bootstrap_probability_v2_better": 0.727,
+        "paired_randomization_two_sided_p": 0.5402298850574713
+      },
+      "f1": {
+        "v1": 0.8895899053627759,
+        "v2": 0.8977635782747604,
+        "delta_v2_minus_v1": 0.008173672911984453,
+        "paired_bootstrap_95_ci": {
+          "lower": -0.004255557547425864,
+          "upper": 0.02098537923261752
+        },
+        "bootstrap_probability_v2_better": 0.883,
+        "paired_randomization_two_sided_p": 0.25337331334332835
+      },
+      "mcc": {
+        "v1": 0.8464054346206009,
+        "v2": 0.858842375062223,
+        "delta_v2_minus_v1": 0.012436940441622135,
+        "paired_bootstrap_95_ci": {
+          "lower": -0.005136396775450139,
+          "upper": 0.03075691280895005
+        },
+        "bootstrap_probability_v2_better": 0.8945,
+        "paired_randomization_two_sided_p": 0.25337331334332835
+      },
+      "auroc": {
+        "v1": 0.9710995657568239,
+        "v2": 0.9815291563275435,
+        "delta_v2_minus_v1": 0.010429590570719571,
+        "paired_bootstrap_95_ci": {
+          "lower": 0.004687403070719557,
+          "upper": 0.016711189516129033
+        },
+        "bootstrap_probability_v2_better": 1.0,
+        "paired_randomization_two_sided_p": 0.10944527736131934
+      },
+      "auprc": {
+        "v1": 0.9474191098028549,
+        "v2": 0.9649193587798337,
+        "delta_v2_minus_v1": 0.01750024897697877,
+        "paired_bootstrap_95_ci": {
+          "lower": 0.008589775821339815,
+          "upper": 0.02726132276584295
+        },
+        "bootstrap_probability_v2_better": 1.0,
+        "paired_randomization_two_sided_p": 0.09395302348825588
+      },
+      "brier": {
+        "v1": 0.058653626112225354,
+        "v2": 0.04331487210414761,
+        "delta_v2_minus_v1": -0.015338754008077743,
+        "paired_bootstrap_95_ci": {
+          "lower": -0.022284579428864224,
+          "upper": -0.0088359381070773
+        },
+        "bootstrap_probability_v2_better": 0.0,
+        "paired_randomization_two_sided_p": 0.0004997501249375312
+      }
+    }
+  },
+  "test2": {
+    "protocol": {
+      "paired_samples": 582,
+      "num_positive": 46,
+      "num_negative": 536,
+      "bootstrap": "class-stratified paired percentile bootstrap",
+      "bootstrap_iterations": 2000,
+      "randomization": "within-sample exchange of the two frozen model outputs",
+      "permutation_iterations": 2000,
+      "seed": 2026,
+      "interpretation": "Existing Test1/Test2 labels were previously viewed; p-values are descriptive retrospective evidence, not independent confirmatory inference."
+    },
+    "metrics": {
+      "balanced_accuracy": {
+        "v1": 0.8453114860480208,
+        "v2": 0.8499756651524983,
+        "delta_v2_minus_v1": 0.004664179104477584,
+        "paired_bootstrap_95_ci": {
+          "lower": -0.000932835820895539,
+          "upper": 0.011194029850746245
+        },
+        "bootstrap_probability_v2_better": 0.9195,
+        "paired_randomization_two_sided_p": 0.2288855572213893
+      },
+      "f1": {
+        "v1": 0.6415094339622641,
+        "v2": 0.6732673267326733,
+        "delta_v2_minus_v1": 0.03175789277040919,
+        "paired_bootstrap_95_ci": {
+          "lower": -0.007460104251204685,
+          "upper": 0.07315046888320545
+        },
+        "bootstrap_probability_v2_better": 0.9195,
+        "paired_randomization_two_sided_p": 0.2288855572213893
+      },
+      "mcc": {
+        "v1": 0.6127614767248043,
+        "v2": 0.6455687533467624,
+        "delta_v2_minus_v1": 0.03280727662195815,
+        "paired_bootstrap_95_ci": {
+          "lower": -0.007922083433856891,
+          "upper": 0.07624379047751598
+        },
+        "bootstrap_probability_v2_better": 0.9195,
+        "paired_randomization_two_sided_p": 0.2288855572213893
+      },
+      "auroc": {
+        "v1": 0.9294695003244646,
+        "v2": 0.9576979234263465,
+        "delta_v2_minus_v1": 0.028228423101881894,
+        "paired_bootstrap_95_ci": {
+          "lower": 0.007016547696301112,
+          "upper": 0.05540537800129785
+        },
+        "bootstrap_probability_v2_better": 0.999,
+        "paired_randomization_two_sided_p": 0.28835582208895555
+      },
+      "auprc": {
+        "v1": 0.7240910200421906,
+        "v2": 0.7851430518611152,
+        "delta_v2_minus_v1": 0.0610520318189246,
+        "paired_bootstrap_95_ci": {
+          "lower": 0.013223700657148427,
+          "upper": 0.11529006564309269
+        },
+        "bootstrap_probability_v2_better": 0.993,
+        "paired_randomization_two_sided_p": 0.21539230384807595
+      },
+      "brier": {
+        "v1": 0.06390215211722017,
+        "v2": 0.047495301661827125,
+        "delta_v2_minus_v1": -0.016406850455393043,
+        "paired_bootstrap_95_ci": {
+          "lower": -0.026013454757064305,
+          "upper": -0.007716199136902876
+        },
+        "bootstrap_probability_v2_better": 0.0,
+        "paired_randomization_two_sided_p": 0.0014992503748125937
+      }
+    }
+  }
+}

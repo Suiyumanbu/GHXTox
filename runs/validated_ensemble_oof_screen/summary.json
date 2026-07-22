@@ -1,0 +1,70 @@
+{
+  "updated_at": "2026-07-22",
+  "question": "Does a HyPepTox-Fuse-inspired multi-member probability ensemble improve the current OOF-frozen 3D-v2/ProtT5 default?",
+  "protocol": {
+    "selection_data": "6387 training samples with fixed group-aware OOF predictions only",
+    "candidates": [
+      "3d_v2",
+      "prott5_seed42",
+      "prott5_seed123",
+      "prott5_seed2025",
+      "esm2_seed42",
+      "esm2_seed123",
+      "esm2_seed2025"
+    ],
+    "search": "leave-one-fold-out greedy uniform-subset selection",
+    "objective": "mcc",
+    "threshold_metric": "mcc",
+    "threshold_step": 0.005,
+    "minimum_improvement": 0.0002,
+    "constraints": {
+      "sn_min": 0.875,
+      "sp_min": 0.96
+    },
+    "test1_or_test2_predictions_read": false
+  },
+  "current_default_crossfit": {
+    "model": "3D-v2 + three-seed pooled ProtT5, fold-specific OOF selection",
+    "mcc": 0.8665629394550806,
+    "auroc": 0.9771855386457884,
+    "auprc": 0.9534740379104638,
+    "brier": 0.04474502941370227,
+    "ece_10": 0.02477935828523095
+  },
+  "multi_member_crossfit": {
+    "mcc": 0.8643598288739667,
+    "auroc": 0.976613091381364,
+    "auprc": 0.9560281170020196,
+    "brier": 0.04549297539241741,
+    "ece_10": 0.026422848970692178,
+    "sn": 0.8800880088008801,
+    "sp": 0.9713285182753337
+  },
+  "all_oof_frozen_candidate": {
+    "members": [
+      "3d_v2",
+      "prott5_seed42",
+      "prott5_seed123",
+      "esm2_seed42"
+    ],
+    "uniform_weight": 0.25,
+    "threshold": 0.59,
+    "mcc": 0.8703346275352345,
+    "auroc": 0.9767694760283645,
+    "auprc": 0.9561050609629672,
+    "warning": "The all-OOF fitted value is optimistic and is not the retention criterion."
+  },
+  "delta_crossfit_minus_current": {
+    "mcc": -0.0022031105811139,
+    "auroc": -0.0005724472644244,
+    "auprc": 0.0025540790915558,
+    "brier_lower_is_better": -0.0007479459787151,
+    "ece_10_lower_is_better": -0.0016434906854612
+  },
+  "decision": {
+    "replace_default": false,
+    "run_test1_test2": false,
+    "reason": "AUPRC improved, but the leakage-controlled cross-fit MCC, AUROC, Brier and ECE-10 did not improve together.",
+    "retain": "Only this compact negative-result summary and the reusable validation-only tooling."
+  }
+}
