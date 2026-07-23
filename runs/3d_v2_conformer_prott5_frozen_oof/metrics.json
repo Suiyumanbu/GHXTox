@@ -1,0 +1,31 @@
+{
+  "protocol": {
+    "baseline_predictions": "runs/conformer_ensemble_residual_oof/full_calibrated_predictions.csv",
+    "expert_predictions": "runs/plm_textcnn_prott5_bsmote_multiseed/oof_predictions.csv",
+    "expert_weight": 0.62,
+    "baseline_weight": 0.38,
+    "threshold": 0.6,
+    "parameters_selected_from_test_labels": false
+  },
+  "metrics": {
+    "accuracy": 0.9473931423203382,
+    "balanced_accuracy": 0.9274620830434981,
+    "precision": 0.9303135888501742,
+    "sensitivity": 0.8811881188118812,
+    "sn": 0.8811881188118812,
+    "recall": 0.8811881188118812,
+    "specificity": 0.9737360472751149,
+    "sp": 0.9737360472751149,
+    "f1": 0.9050847457627119,
+    "mcc": 0.8693461082852422,
+    "auroc": 0.97729725916343,
+    "auprc": 0.9535979034173744,
+    "brier": 0.04465947688067197,
+    "ece_10": 0.02540724160935088,
+    "tp": 1602.0,
+    "tn": 4449.0,
+    "fp": 120.0,
+    "fn": 216.0,
+    "threshold": 0.6
+  }
+}

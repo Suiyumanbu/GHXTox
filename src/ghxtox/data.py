@@ -17,6 +17,10 @@ from ghxtox.geometry_features import (
     chemical_structure_feature_matrix,
     structure_feature_matrix,
 )
+from ghxtox.conformer_features import (
+    CONFORMER_GLOBAL_FEATURE_DIM,
+    CONFORMER_RESIDUE_FEATURE_DIM,
+)
 
 
 GLOBAL_FEATURE_DIM = 5
@@ -172,6 +176,28 @@ def collate_peptides(
         "mask": mask,
         "labels": label_tensor,
     }
+    conformer_residue_features = []
+    conformer_global_features = []
+    conformer_available = []
+    for item in batch:
+        length = int(item["aa_ids"].shape[0])
+        residue = item.get("conformer_residue_features")
+        global_value = item.get("conformer_global_features")
+        available = bool(item.get("conformer_available", False))
+        if not torch.is_tensor(residue):
+            residue = torch.zeros(length, CONFORMER_RESIDUE_FEATURE_DIM, dtype=torch.float32)
+            available = False
+        if not torch.is_tensor(global_value):
+            global_value = torch.zeros(CONFORMER_GLOBAL_FEATURE_DIM, dtype=torch.float32)
+            available = False
+        conformer_residue_features.append(
+            _pad_2d(residue.float(), max_len, CONFORMER_RESIDUE_FEATURE_DIM)
+        )
+        conformer_global_features.append(global_value.float()[:CONFORMER_GLOBAL_FEATURE_DIM])
+        conformer_available.append(available)
+    result["conformer_residue_features"] = torch.stack(conformer_residue_features)
+    result["conformer_global_features"] = torch.stack(conformer_global_features)
+    result["conformer_available"] = torch.tensor(conformer_available, dtype=torch.bool)
     if include_structure:
         result["coords"] = torch.stack([_pad_2d(item["coords"], max_len, 3) for item in batch])
         backbone_coords = []

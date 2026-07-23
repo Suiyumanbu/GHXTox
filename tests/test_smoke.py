@@ -416,7 +416,7 @@ def test_model_forwards_with_plm_features():
 
 def test_evaluate_parser_constructs():
     args = build_evaluate_arg_parser().parse_args([])
-    assert args.checkpoint == "runs/3d_v2_default/best_model.pt"
+    assert args.checkpoint == "runs/3d_v2_conformer_ensemble_candidate/best_model.pt"
     assert args.processed == "data/processed/test1_chemical_sites_final_esm2.pt"
     assert args.threshold is None
 

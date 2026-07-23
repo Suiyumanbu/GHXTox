@@ -1,0 +1,87 @@
+{
+  "protocol": "fold-specific group-aware OOF; fixed threshold and equal conformer weights",
+  "threshold": 0.677819,
+  "confidence_mode": "base",
+  "samples": 250,
+  "metrics": {
+    "base_single_esmfold": {
+      "accuracy": 0.756,
+      "balanced_accuracy": 0.7352064294510339,
+      "precision": 0.8472222222222222,
+      "sensitivity": 0.5495495495495496,
+      "sn": 0.5495495495495496,
+      "recall": 0.5495495495495496,
+      "specificity": 0.920863309352518,
+      "sp": 0.920863309352518,
+      "f1": 0.6666666666666666,
+      "mcc": 0.516145119292144,
+      "brier": 0.20460355281829834,
+      "ece_10": 0.19846324622631073,
+      "tp": 61.0,
+      "tn": 128.0,
+      "fp": 11.0,
+      "fn": 50.0,
+      "auroc": 0.8188800311102468,
+      "auprc": 0.8222957623992531
+    },
+    "pepflow_conformer_mean": {
+      "accuracy": 0.756,
+      "balanced_accuracy": 0.7352064294510339,
+      "precision": 0.8472222222222222,
+      "sensitivity": 0.5495495495495496,
+      "sn": 0.5495495495495496,
+      "recall": 0.5495495495495496,
+      "specificity": 0.920863309352518,
+      "sp": 0.920863309352518,
+      "f1": 0.6666666666666666,
+      "mcc": 0.516145119292144,
+      "brier": 0.20391184091567993,
+      "ece_10": 0.1912146955728531,
+      "tp": 61.0,
+      "tn": 128.0,
+      "fp": 11.0,
+      "fn": 50.0,
+      "auroc": 0.818880031110247,
+      "auprc": 0.822151442713348
+    },
+    "esmfold_plus_pepflow_mean": {
+      "accuracy": 0.756,
+      "balanced_accuracy": 0.7352064294510339,
+      "precision": 0.8472222222222222,
+      "sensitivity": 0.5495495495495496,
+      "sn": 0.5495495495495496,
+      "recall": 0.5495495495495496,
+      "specificity": 0.920863309352518,
+      "sp": 0.920863309352518,
+      "f1": 0.6666666666666666,
+      "mcc": 0.516145119292144,
+      "brier": 0.20398187637329102,
+      "ece_10": 0.19288715720176697,
+      "tp": 61.0,
+      "tn": 128.0,
+      "fp": 11.0,
+      "fn": 50.0,
+      "auroc": 0.8189448441247001,
+      "auprc": 0.8221520286583006
+    }
+  },
+  "delta_vs_single_esmfold": {
+    "pepflow_conformer_mean": {
+      "balanced_accuracy": 0.0,
+      "mcc": 0.0,
+      "auroc": 2.220446049250313e-16,
+      "auprc": -0.00014431968590511435,
+      "brier": -0.0006917119026184082,
+      "ece_10": -0.007248550653457642
+    },
+    "esmfold_plus_pepflow_mean": {
+      "balanced_accuracy": 0.0,
+      "mcc": 0.0,
+      "auroc": 6.481301445337984e-05,
+      "auprc": -0.0001437337409524453,
+      "brier": -0.0006216764450073242,
+      "ece_10": -0.005576089024543762
+    }
+  },
+  "decision_boundary": "Exploratory OOF evidence only. Do not replace the default unless the full predeclared OOF cohort improves MCC without material BACC/AUROC/AUPRC regression."
+}

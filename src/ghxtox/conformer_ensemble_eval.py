@@ -27,6 +27,20 @@ def _read_csv(path: str | Path) -> list[dict[str, str]]:
         return list(csv.DictReader(handle))
 
 
+def _local_cache_path(manifest: str | Path, value: str) -> str:
+    """Resolve server-authored absolute cache paths after an archive is moved locally."""
+
+    supplied = Path(value)
+    if supplied.exists():
+        return str(supplied)
+    parts = value.replace("\\", "/").rstrip("/").split("/")
+    if len(parts) >= 2:
+        relocated = Path(manifest).parent / parts[-2] / parts[-1]
+        if relocated.exists():
+            return str(relocated)
+    return value
+
+
 def record_from_conformer_cache(
     base_record: dict[str, Any],
     cache_path: str | Path,
@@ -95,7 +109,11 @@ def evaluate_oof_conformer_ensemble(
     folds = {str(row["sample_id"]): int(row["fold"]) for row in _read_csv(fold_manifest)}
     conformers: dict[str, list[str]] = {}
     for row in _read_csv(conformer_manifest):
-        conformers.setdefault(str(row["sample_id"]), []).append(str(row["cache_path"]))
+        candidates = [str(row.get("original_id") or ""), str(row["sample_id"])]
+        sample_id = next((value for value in candidates if value in records), candidates[-1])
+        conformers.setdefault(sample_id, []).append(
+            _local_cache_path(conformer_manifest, str(row["cache_path"]))
+        )
     for sample_id in conformers:
         conformers[sample_id] = sorted(conformers[sample_id])
         if max_conformers is not None:

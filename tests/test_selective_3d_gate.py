@@ -7,6 +7,7 @@ import numpy as np
 from ghxtox.nested_folds import create_nested_group_folds
 from ghxtox.selective_3d_gate import (
     _apply_learned_gate,
+    _read_rows,
     run_nested_selective_gate,
 )
 
@@ -139,6 +140,17 @@ def test_learned_gate_is_bounded_and_monotonic_in_safety_features() -> None:
     }
     gate = _apply_learned_gate(np.asarray([[0.0, 0.0], [1.0, 1.0]]), state)
     assert 0.0 <= gate[0] < gate[1] <= 0.4
+
+
+def test_prediction_reader_recovers_missing_source_index_from_frozen_order(tmp_path) -> None:
+    path = tmp_path / "legacy_frozen_fusion.csv"
+    with path.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=["sample_id", "sequence", "label"])
+        writer.writeheader()
+        writer.writerow({"sample_id": "a", "sequence": "AAA", "label": 0})
+        writer.writerow({"sample_id": "b", "sequence": "BBB", "label": 1})
+    rows = _read_rows(path)
+    assert [row["source_index"] for row in rows] == ["0", "1"]
 
 
 def test_nested_selective_gate_keeps_roles_disjoint_and_writes_summary(tmp_path) -> None:

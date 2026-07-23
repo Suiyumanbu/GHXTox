@@ -258,6 +258,7 @@ def _run_epoch(
     atom_residual_l1: float = 0.0,
     residual_base_aux_weight: float = 0.0,
     residual_delta_l1: float = 0.0,
+    conformer_delta_l1: float = 0.0,
 ) -> dict[str, Any]:
     training = optimizer is not None
     model.train(training)
@@ -283,6 +284,11 @@ def _run_epoch(
         if residual_delta_l1 > 0.0 and "atom_delta" in output and "spatial_delta" in output:
             residual_size = output["atom_delta"].abs().mean() + output["spatial_delta"].abs().mean()
             loss = loss + residual_delta_l1 * residual_size
+        if conformer_delta_l1 > 0.0 and "conformer_delta" in output:
+            available = output.get("conformer_available")
+            if available is not None and available.sum() > 0:
+                residual_size = (output["conformer_delta"].abs() * available).sum() / available.sum()
+                loss = loss + conformer_delta_l1 * residual_size
         if training and atom_residual_l1 > 0.0 and "atom_residual_weight" in output:
             loss = loss + atom_residual_l1 * output["atom_residual_weight"].abs()
         if training and contrastive_weight > 0.0:
@@ -335,7 +341,7 @@ def train(config: dict, args: argparse.Namespace) -> Path:
     _validate_loader_plm_features(val_loader, required_plm_dim, args.val or args.train)
 
     model = GHXToxModel(config).to(device)
-    initial_checkpoint = train_cfg.get("initial_checkpoint")
+    initial_checkpoint = args.initial_checkpoint or train_cfg.get("initial_checkpoint")
     initial_checkpoint_metrics: dict[str, Any] = {}
     if initial_checkpoint:
         initial_checkpoint = str(initial_checkpoint).format(
@@ -389,7 +395,11 @@ def train(config: dict, args: argparse.Namespace) -> Path:
     if args.full_data_epochs is not None:
         if args.val or args.fold_manifest or args.nested_manifest:
             raise ValueError("--full-data-epochs cannot be combined with validation manifests.")
-        sequence_only = str(config.get("model", {}).get("modality", "fusion")).lower() == "sequence_only"
+        full_modality = str(config.get("model", {}).get("modality", "fusion")).lower()
+        sequence_only = full_modality == "sequence_only"
+        include_atom = full_modality in {
+            "atom_only", "sequence_atom", "fusion_atom_residual", "residual_experts"
+        }
         full_dataset = PeptideTensorDataset(args.train, require_labels=True)
         full_loader = DataLoader(
             full_dataset,
@@ -398,7 +408,7 @@ def train(config: dict, args: argparse.Namespace) -> Path:
             collate_fn=partial(
                 collate_peptides,
                 include_structure=not sequence_only,
-                include_atom=not sequence_only,
+                include_atom=include_atom,
             ),
         )
         _validate_loader_plm_features(full_loader, required_plm_dim, args.train)
@@ -484,6 +494,7 @@ def train(config: dict, args: argparse.Namespace) -> Path:
     atom_residual_l1 = float(train_cfg.get("atom_residual_l1", 0.0))
     residual_base_aux_weight = float(train_cfg.get("residual_base_aux_weight", 0.0))
     residual_delta_l1 = float(train_cfg.get("residual_delta_l1", 0.0))
+    conformer_delta_l1 = float(train_cfg.get("conformer_delta_l1", 0.0))
     selection_mode = str(train_cfg.get("selection_mode", "monitor")).lower()
     if selection_mode not in {"monitor", "pareto"}:
         raise ValueError("train.selection_mode must be 'monitor' or 'pareto'.")
@@ -521,6 +532,7 @@ def train(config: dict, args: argparse.Namespace) -> Path:
             atom_residual_l1=atom_residual_l1,
             residual_base_aux_weight=residual_base_aux_weight,
             residual_delta_l1=residual_delta_l1,
+            conformer_delta_l1=conformer_delta_l1,
         )
         with torch.no_grad():
             val_metrics = _run_epoch(model, val_loader, criterion, device, optimizer=None)
@@ -638,6 +650,11 @@ def build_arg_parser() -> argparse.ArgumentParser:
     parser.add_argument("--nested-manifest", default=None, help="Nested role manifest created by ghxtox.nested_folds.")
     parser.add_argument("--outer-fold", type=int, default=0, help="Outer fold used with --nested-manifest.")
     parser.add_argument("--config", default="configs/default.json")
+    parser.add_argument(
+        "--initial-checkpoint",
+        default=None,
+        help="Optional warm-start checkpoint overriding train.initial_checkpoint.",
+    )
     parser.add_argument("--output-dir", default="runs/plm_sequence_only_esm2_mcc")
     parser.add_argument("--device", default=DEFAULT_DEVICE)
     parser.add_argument("--epochs", type=int, default=None)

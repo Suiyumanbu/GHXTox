@@ -1,8 +1,9 @@
 {
-  "name": "GHXTox 3D-v2 + ToxPLTC-derived pooled ProtT5 hybrid default",
+  "name": "GHXTox 3D-v2 conformer-residual + ToxPLTC-derived pooled ProtT5 hybrid default",
   "structure_expert": {
-    "checkpoint": "runs/3d_v2_default/best_model.pt",
-    "inputs": "ESM2 sequence Transformer + pLDDT-aware C-alpha EGNN + all-atom chemical-site residual"
+    "checkpoint": "runs/3d_v2_conformer_ensemble_candidate/best_model.pt",
+    "inputs": "ESM2 sequence Transformer + pLDDT-aware C-alpha EGNN + all-atom chemical-site residual + optional PepFlow ensemble-statistics residual",
+    "conformer_fallback": "hard-masked exact 3D-v2 fallback when conformer statistics are unavailable"
   },
   "prott5_expert": {
     "feature_model": "Rostlab/prot_t5_xl_half_uniref50-enc",

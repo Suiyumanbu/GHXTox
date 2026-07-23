@@ -37,7 +37,12 @@ def _read_rows(path: str | Path) -> list[dict[str, str]]:
     if not rows:
         raise ValueError(f"Prediction file is empty: {path}")
     if "source_index" not in rows[0]:
-        raise ValueError(f"Prediction file lacks source_index: {path}")
+        # Some frozen fusion artifacts preserve the immutable processed-data
+        # row order but predate the explicit source_index column.  Recover the
+        # index from that order; downstream alignment still verifies sequence
+        # and label row by row, so a reordered file cannot pass silently.
+        for source_index, row in enumerate(rows):
+            row["source_index"] = str(source_index)
     rows.sort(key=lambda row: int(row["source_index"]))
     indices = [int(row["source_index"]) for row in rows]
     if indices != list(range(len(rows))):

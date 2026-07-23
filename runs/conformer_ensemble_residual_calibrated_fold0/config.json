@@ -43,36 +43,40 @@
     "chemical_site_use_hydrophobic_sites": true,
     "chemical_site_max_site_slots": 2,
     "chemical_site_exclude_same_residue_edges": false,
-    "chemical_site_zero_init_residual": true
+    "chemical_site_zero_init_residual": true,
+    "conformer_ensemble_branch": true,
+    "conformer_ensemble_hidden_dim": 32,
+    "conformer_ensemble_dropout": 0.25,
+    "conformer_ensemble_initial_weight": 0.25
   },
   "train": {
-    "epochs": 30,
+    "epochs": 50,
     "batch_size": 32,
-    "learning_rate": 0.0005,
-    "weight_decay": 0.0001,
+    "learning_rate": 0.001,
+    "weight_decay": 0.0005,
     "val_fraction": 0.15,
     "early_stop_patience": 8,
-    "pos_weight": "auto",
-    "coord_noise_std": 0.12,
-    "coord_noise_plddt_scale": 2.0,
-    "monitor": "mcc",
-    "initial_checkpoint": "runs/plm_fusion_esm2_geometry_confidence/best_model.pt",
-    "allowed_missing_prefixes": ["chemical_site_branch."],
-    "trainable_prefixes": ["chemical_site_branch."]
-  },
-  "inference": {
-    "default_checkpoint": "runs/3d_v2_conformer_ensemble_candidate/best_model.pt",
-    "default_threshold": 0.677819,
-    "threshold_source": "five-fold group-aware OOF MCC optimization",
-    "fallback_checkpoint": "runs/plm_fusion_esm2_geometry_confidence/best_model.pt",
-    "fallback_threshold": 0.85,
-    "fallback_condition": "chemical-site tensors are unavailable"
+    "pos_weight": "none",
+    "coord_noise_std": 0.0,
+    "monitor": "loss",
+    "initial_checkpoint": "runs/chemical_site_ablation_include_same_residue_fold{fold}/best_model.pt",
+    "allowed_missing_prefixes": [
+      "conformer_residue_encoder.",
+      "conformer_global_encoder.",
+      "conformer_ensemble_branch.",
+      "conformer_ensemble_logit"
+    ],
+    "trainable_prefixes": [
+      "conformer_residue_encoder.",
+      "conformer_global_encoder.",
+      "conformer_ensemble_branch.",
+      "conformer_ensemble_logit"
+    ],
+    "conformer_delta_l1": 0.005
   },
   "experiment": {
-    "name": "3d_v2_conformer_residual_default",
-    "fixed_epochs": 8,
-    "epoch_source": "median of five Pareto-selected best epochs: 8, 8, 14, 2, 4",
-    "selection_data": "training-only CD-HIT 0.80 group folds",
-    "external_sets_used_for_selection": false
+    "name": "pepflow_conformer_ensemble_residual_calibrated",
+    "change_from_first_pass": "avoid a second class-weight correction and select by held-out BCE",
+    "scope": "single prespecified refinement after probability-shift diagnosis"
   }
 }

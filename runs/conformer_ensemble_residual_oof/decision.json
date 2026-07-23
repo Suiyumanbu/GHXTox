@@ -1,0 +1,62 @@
+{
+  "decision": "retain_as_capability_aware_default_structure_checkpoint",
+  "date": "2026-07-23",
+  "coverage": {
+    "pepflow_samples": 250,
+    "total_training_samples": 6387,
+    "fraction": 0.03914200720212933,
+    "conformers_per_sample": 8,
+    "total_conformers": 2000,
+    "supported_length": "3-15 aa",
+    "pilot_observed_length": "11-15 aa"
+  },
+  "fixed_threshold": 0.677819,
+  "pilot": {
+    "baseline": {
+      "balanced_accuracy": 0.7352064294510339,
+      "mcc": 0.516145119292144,
+      "auroc": 0.8188476246030202,
+      "auprc": 0.8223443453952044,
+      "brier": 0.20460372136702767,
+      "ece_10": 0.1984632103936704
+    },
+    "conformer_residual": {
+      "balanced_accuracy": 0.7658305787802191,
+      "mcc": 0.5721836026833185,
+      "auroc": 0.8211160801088858,
+      "auprc": 0.8248427738155694,
+      "brier": 0.20128318366503153,
+      "ece_10": 0.19598812283907688
+    }
+  },
+  "full_oof": {
+    "baseline": {
+      "balanced_accuracy": 0.9132485966915799,
+      "mcc": 0.8362022452360004,
+      "auroc": 0.9605914301213444,
+      "auprc": 0.9280011612594266,
+      "brier": 0.05952945358642396,
+      "ece_10": 0.05117581532163025
+    },
+    "conformer_residual": {
+      "balanced_accuracy": 0.9150081948444352,
+      "mcc": 0.8390181404798325,
+      "auroc": 0.960692676840457,
+      "auprc": 0.9281708597568626,
+      "brier": 0.05939949004168534,
+      "ece_10": 0.05110902710928455
+    }
+  },
+  "frozen_prott5_hybrid": {
+    "weights": {
+      "structure": 0.38,
+      "prott5": 0.62
+    },
+    "threshold": 0.6,
+    "baseline_mcc": 0.8689460155166863,
+    "conformer_residual_mcc": 0.8693461082852422
+  },
+  "fallback": "If conformer_available is false, the conformer delta is exactly zero and the checkpoint reproduces the 3D-v2 base path.",
+  "evidence_boundary": "Training-only group-aware OOF after model development; exploratory and not a substitute for a new pre-frozen external set.",
+  "next_validation": "Generate conformers for a pre-frozen external set or verify contact occupancies with an independent generator such as BioEmu or short MD."
+}

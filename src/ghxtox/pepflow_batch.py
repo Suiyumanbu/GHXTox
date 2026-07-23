@@ -152,7 +152,7 @@ def build_arg_parser() -> argparse.ArgumentParser:
     parser.add_argument("--num-samples", type=int, default=8)
     parser.add_argument("--chunk-size", type=int, default=4)
     parser.add_argument("--min-length", type=int, default=3)
-    parser.add_argument("--max-length", type=int, default=30)
+    parser.add_argument("--max-length", type=int, default=15)
     parser.add_argument("--start-index", type=int, default=1)
     parser.add_argument("--limit", type=int)
     parser.add_argument("--python", default=sys.executable)

@@ -7,6 +7,7 @@ from torch import nn
 
 from ghxtox.constants import AA_TO_IDX, FUNCTIONAL_GROUPS
 from ghxtox.data import GLOBAL_FEATURE_DIM
+from ghxtox.conformer_features import CONFORMER_GLOBAL_FEATURE_DIM, CONFORMER_RESIDUE_FEATURE_DIM
 from ghxtox.features import RESIDUE_FEATURE_DIM
 from ghxtox.geometry_features import STRUCTURE_FEATURE_DIM
 from ghxtox.atom_graph import ATOM_FEATURE_DIM, EDGE_FEATURE_DIM
@@ -201,6 +202,38 @@ class GHXToxModel(nn.Module):
             nn.Dropout(dropout),
             nn.Linear(hidden_dim // 2, 1),
         )
+        self.conformer_ensemble_branch = None
+        if bool(model_cfg.get("conformer_ensemble_branch", False)):
+            conformer_hidden = int(model_cfg.get("conformer_ensemble_hidden_dim", 48))
+            conformer_dropout = float(model_cfg.get("conformer_ensemble_dropout", dropout))
+            self.conformer_residue_encoder = nn.Sequential(
+                nn.Linear(CONFORMER_RESIDUE_FEATURE_DIM, conformer_hidden),
+                nn.LayerNorm(conformer_hidden),
+                nn.GELU(),
+                nn.Dropout(conformer_dropout),
+            )
+            self.conformer_global_encoder = nn.Sequential(
+                nn.Linear(CONFORMER_GLOBAL_FEATURE_DIM, conformer_hidden),
+                nn.LayerNorm(conformer_hidden),
+                nn.GELU(),
+                nn.Dropout(conformer_dropout),
+            )
+            self.conformer_ensemble_branch = nn.Sequential(
+                nn.Linear(hidden_dim * 2 + conformer_hidden * 3, conformer_hidden),
+                nn.LayerNorm(conformer_hidden),
+                nn.GELU(),
+                nn.Dropout(conformer_dropout),
+                nn.Linear(conformer_hidden, 1),
+            )
+            nn.init.zeros_(self.conformer_ensemble_branch[-1].weight)
+            nn.init.zeros_(self.conformer_ensemble_branch[-1].bias)
+            initial_weight = min(
+                max(float(model_cfg.get("conformer_ensemble_initial_weight", 0.10)), 1e-4),
+                1.0 - 1e-4,
+            )
+            self.conformer_ensemble_logit = nn.Parameter(
+                torch.logit(torch.tensor(initial_weight, dtype=torch.float32))
+            )
 
     def _classifier_input(self, pooled: torch.Tensor, batch: dict[str, torch.Tensor]) -> torch.Tensor:
         parts = [pooled]
@@ -210,6 +243,35 @@ class GHXToxModel(nn.Module):
                 global_features = pooled.new_zeros((pooled.shape[0], GLOBAL_FEATURE_DIM))
             parts.append(global_features.to(device=pooled.device, dtype=pooled.dtype))
         return torch.cat(parts, dim=-1)
+
+    def _apply_conformer_ensemble_residual(
+        self,
+        logits: torch.Tensor,
+        pooled: torch.Tensor,
+        mask: torch.Tensor,
+        batch: dict[str, torch.Tensor],
+    ) -> tuple[torch.Tensor, dict[str, torch.Tensor]]:
+        if self.conformer_ensemble_branch is None:
+            return logits, {}
+        residue = batch["conformer_residue_features"].to(dtype=pooled.dtype)
+        global_value = batch["conformer_global_features"].to(dtype=pooled.dtype)
+        available = batch["conformer_available"].to(dtype=pooled.dtype)
+        residue_h = self.conformer_residue_encoder(residue)
+        conformer_pooled = torch.cat(
+            [masked_mean(residue_h, mask), masked_max(residue_h, mask)], dim=-1
+        )
+        global_h = self.conformer_global_encoder(global_value)
+        raw_delta = self.conformer_ensemble_branch(
+            torch.cat([pooled, conformer_pooled, global_h], dim=-1)
+        ).squeeze(-1)
+        weight = torch.sigmoid(self.conformer_ensemble_logit)
+        delta = available * weight * raw_delta
+        return logits + delta, {
+            "base_logits": logits,
+            "conformer_delta": delta,
+            "conformer_ensemble_weight": weight,
+            "conformer_available": available,
+        }
 
     def forward(self, batch: dict[str, torch.Tensor]) -> dict[str, torch.Tensor]:
         mask = batch["mask"].bool()
@@ -443,5 +505,14 @@ class GHXToxModel(nn.Module):
             diagnostics["atom_residual_weight"] = atom_weight
         pooled = masked_mean(fused_nodes, mask)
         logits = self.classifier(self._classifier_input(pooled, batch)).squeeze(-1)
-        return {"logits": logits, "embedding": pooled, **diagnostics, **chemical_diagnostics}
+        logits, conformer_diagnostics = self._apply_conformer_ensemble_residual(
+            logits, pooled, mask, batch
+        )
+        return {
+            "logits": logits,
+            "embedding": pooled,
+            **diagnostics,
+            **chemical_diagnostics,
+            **conformer_diagnostics,
+        }
 

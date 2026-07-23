@@ -1,0 +1,27 @@
+{
+  "samples": 250,
+  "threshold": 0.677819,
+  "pepflow_vs_base": {
+    "mean_signed_probability_delta": -0.001033062793581095,
+    "mean_absolute_probability_delta": 0.0020441152047596775,
+    "max_absolute_probability_delta": 0.07260876893997192,
+    "probability_correlation": 0.9998131937645124,
+    "threshold_flip_count": 0
+  },
+  "joint_vs_base": {
+    "mean_signed_probability_delta": -0.0009182790867857591,
+    "mean_absolute_probability_delta": 0.0018169923699605875,
+    "max_absolute_probability_delta": 0.06454110145568848,
+    "probability_correlation": 0.999852436956559,
+    "threshold_flip_count": 0
+  },
+  "conformer_probability_std": {
+    "mean": 0.0020932918741122385,
+    "median": 7.65756544751639e-06,
+    "max": 0.08450806885957718
+  },
+  "gate": {
+    "base_mean": 0.3641614490747452,
+    "pepflow_mean": 0.3641614490747452
+  }
+}
